@@ -5,6 +5,7 @@ import com.webingate.paysmartcustomerapp.customerapp.Deo.AvailableVehiclesRespon
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CalculatePriceResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerBookingStatusResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerChangePwdResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerEOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerGetstopsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerPayResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerPwdVerificationResponse;
@@ -83,7 +84,7 @@ public interface APIInterface  {
     public Observable<List<GetAvailableServicesResponse>> GetAvailableServices(@Query("srcId") String srcId, @Query("destId") String destId);//i
 
     @POST("/api/UserAccount/EOTPVerification")
-    public Observable<List<DefaultResponse>> EOTPVerification(@Body JsonObject jsonObject);//i
+    public Observable<List<CustomerEOTPVerificationResponse>> CustomerEOTPVerification(@Body JsonObject jsonObject);//i
 
     @POST("/api/UserAccount/MOTPVerifications")
     public Observable<List<DefaultResponse>> MOTPVerifications(@Body JsonObject jsonObject);//i

@@ -158,7 +158,7 @@ public class VerificationActivity extends FragmentActivity {
 
         StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(VerificationActivity.this).getrestadapter()
-                .EOTPVerification(jsonObject)
+                .MOTPVerifications(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<DefaultResponse>>() {
