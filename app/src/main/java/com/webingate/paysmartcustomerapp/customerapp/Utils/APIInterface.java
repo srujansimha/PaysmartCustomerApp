@@ -18,6 +18,7 @@ import com.webingate.paysmartcustomerapp.customerapp.Deo.GetBookingHistoryRespon
 import com.webingate.paysmartcustomerapp.customerapp.Deo.GetCurrentBalanceResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.GetCustomerAccountResponce;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.GetWalletTransDetailsResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.MOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.MakepaymentResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.RegisterUserResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.SaveBookingDetailsResponse;
@@ -87,7 +88,7 @@ public interface APIInterface  {
     public Observable<List<CustomerEOTPVerificationResponse>> CustomerEOTPVerification(@Body JsonObject jsonObject);//i
 
     @POST("/api/UserAccount/MOTPVerifications")
-    public Observable<List<DefaultResponse>> MOTPVerifications(@Body JsonObject jsonObject);//i
+    public Observable<List<MOTPVerificationResponse>> MOTPVerifications(@Body JsonObject jsonObject);//i
 
     @POST("/api/ChangePwd/change")
     public Observable<List<CustomerChangePwdResponse>> ChangePassword(@Body JsonObject jsonObject);
@@ -110,7 +111,7 @@ public interface APIInterface  {
     @POST("/api/VehicleBooking/AvailableVehicles")
     public Observable<List<AvailableVehiclesResponse>> AvailableVehicles(@Body JsonObject jsonObject);
 
-    @POST("/api/UserAccount/Forgotpassword")
+    @POST("/api/Forgotpassword/Forgotpassword")
     public Observable<List<CustomerforgotPwdResponse>> Forgotpassword(@Body JsonObject jsonObject);
 
     @POST("/api/UserAccount/Passwordverification")

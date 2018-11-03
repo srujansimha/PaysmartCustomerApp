@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.rilixtech.CountryCodePicker;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.RegisterUserResponse;
@@ -33,6 +34,7 @@ import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
 public class customerSignUpActivity extends AppCompatActivity {
 
     public static final String MyPREFERENCES = "MyPrefs";
+    public static final String ID ="idKey";
     public static final String Name = "nameKey";
     public static final String Phone = "phoneKey";
     public static final String Email = "emailKey";
@@ -42,6 +44,7 @@ public class customerSignUpActivity extends AppCompatActivity {
     public static final String Profilepic = "profilepic";
     private boolean isprofilePic = false;
     Toast toast;
+    CountryCodePicker ccp;
 
     @BindView(R.id.mobileNo)
     EditText S_mobileNo;
@@ -67,6 +70,8 @@ public class customerSignUpActivity extends AppCompatActivity {
         initDataBindings();
 
         initActions();
+        ccp = (CountryCodePicker) findViewById(R.id.ccp);
+        ccp.setCustomMasterCountries("IN,ZW,AF");
 
     }
 
@@ -117,10 +122,10 @@ public class customerSignUpActivity extends AppCompatActivity {
             object.addProperty("Mobilenumber",S_mobileNo.getText().toString());
             object.addProperty("Password", S_password.getText().toString());
             //object.addProperty("Usename",S_username.getText().toString());
-            object.addProperty("CountryId","1");
+            object.addProperty("CountryId",ccp.getSelectedCountryCode());
             object.addProperty("CCode","91");
             object.addProperty("CurrentStateId","1");
-            object.addProperty("UserAccountNo","10991"+S_mobileNo.getText().toString());
+            object.addProperty("UserAccountNo",ccp.getSelectedCountryCode()+S_mobileNo.getText().toString());
             //object.addProperty("UserTypeId","109");
             RegisterUser(object);
 //            Intent intent = new Intent(this, customerEOTPVerificationActivity.class);
@@ -187,8 +192,6 @@ public class customerSignUpActivity extends AppCompatActivity {
 //            });
         }
 
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -205,8 +208,8 @@ public class customerSignUpActivity extends AppCompatActivity {
                 .subscribe(new Subscriber<List<RegisterUserResponse>>() {
                     @Override
                     public void onCompleted() {
-                        DisplayToast("Successfully Registered");
-                        StopDialogue();
+                        //DisplayToast("Successfully Registered");
+                        //StopDialogue();
                     }
                     @Override
                     public void onError(Throwable e) {
@@ -226,6 +229,7 @@ public class customerSignUpActivity extends AppCompatActivity {
                         } else {
                             SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString(ID, response.getId());
                             editor.putString(Name, response.getUsername());
                             editor.putString(Phone, response.getMobilenumber());
                             editor.putString(Email,response.getEmail());

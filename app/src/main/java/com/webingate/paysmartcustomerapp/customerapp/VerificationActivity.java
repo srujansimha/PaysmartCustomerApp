@@ -17,7 +17,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerMOTPVerificationActivity;
+import com.webingate.paysmartcustomerapp.activity.customerapp.login_activity;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerEOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.DefaultResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.MOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.ValidateCredentialsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
 
@@ -158,10 +162,10 @@ public class VerificationActivity extends FragmentActivity {
 
         StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(VerificationActivity.this).getrestadapter()
-                .MOTPVerifications(jsonObject)
+                .CustomerEOTPVerification(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<DefaultResponse>>() {
+                .subscribe(new Subscriber<List<CustomerEOTPVerificationResponse>>() {
                     @Override
                     public void onCompleted() {
                         //  DisplayToast("Successfully Registered");
@@ -179,19 +183,14 @@ public class VerificationActivity extends FragmentActivity {
                     }
 
                     @Override
-                    public void onNext(List<DefaultResponse> responselist) {
-                        DefaultResponse response=responselist.get(0);
-                        if(response.getCode().contains("ERR")){
-                            DisplayToast(response.getDescription());
-                        }else {
-                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedpreferences.edit();
-                            editor.putString(Emailotp, null);
-                            editor.commit();
-                            startActivity(new Intent(VerificationActivity.this, VerificationActivity.class));
+                    public void onNext(List<CustomerEOTPVerificationResponse> responselist) {
+                        CustomerEOTPVerificationResponse response=responselist.get(0);
+                        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedpreferences.edit();
+                        editor.putString(Emailotp, response.getEmail());
+                        editor.commit();//
+                        startActivity(new Intent(VerificationActivity.this, customerMOTPVerificationActivity.class));
                             finish();
-
-                        }
                     }
                 });
     }
@@ -204,7 +203,7 @@ public class VerificationActivity extends FragmentActivity {
                 .MOTPVerifications(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<DefaultResponse>>() {
+                .subscribe(new Subscriber<List<MOTPVerificationResponse>>() {
                     @Override
                     public void onCompleted() {
                         //  DisplayToast("Successfully Registered");
@@ -222,20 +221,12 @@ public class VerificationActivity extends FragmentActivity {
                     }
 
                     @Override
-                    public void onNext(List<DefaultResponse> responselist) {
-                        DefaultResponse response=responselist.get(0);
-                        if(response.getCode().contains("ERR")){
-                            DisplayToast(response.getDescription());
-                        }else {
-                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedpreferences.edit();
-                            editor.putString(Mobileotp, null);
-                            editor.commit();
-                            DisplayToast("Registration Successfull");
-                            ApplicationConstants.verify_email = true;
-                            startActivity(new Intent(VerificationActivity.this, LoginActivity.class));
-                            finish();
-                        }
+                    public void onNext(List<MOTPVerificationResponse> responselist) {
+                        MOTPVerificationResponse response=responselist.get(0);
+                        Intent intent = new Intent(VerificationActivity.this, login_activity.class);
+                        intent.putExtra("Mobilenumber",response.getMobilenumber());
+                        //intent.putExtra("Uid",E_uid);
+                        startActivity(intent);
                     }
                 });
     }

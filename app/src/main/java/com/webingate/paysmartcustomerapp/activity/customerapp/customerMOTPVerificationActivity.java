@@ -22,6 +22,7 @@ import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.DefaultResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.MOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
 import com.webingate.paysmartcustomerapp.customerapp.LoginActivity;
 import com.webingate.paysmartcustomerapp.customerapp.VerificationActivity;
@@ -35,26 +36,23 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class customerMOTPVerificationActivity extends AppCompatActivity {
-
     String response = "", serverurl = "", email, phoneNo;
-    private int otpflag;
+
     public static final String MyPREFERENCES = "MyPrefs";
+    public static final String ID = "idKey";
     public static final String Phone = "phoneKey";
-    public static final String Email = "emailKey";
     public static final String Mobileotp = "mobileotpkey";
-    public static final String Emailotp = "emailotpkey";
     Toast toast;
     ProgressDialog dialog ;
 
-@BindView(R.id.mobile_otp)
-TextView motp;
-    @BindView(R.id.otp_hint)
-    TextView otp;
-    @BindView(R.id.input_otp)
-    EditText otpHint;
-    @BindView(R.id.btn_confirm)
-    AppCompatButton confirm;
-    String emailOtp;
+    String id,mobileno;
+
+    @BindView(R.id.mobile_otp)
+    EditText motp;
+
+    @BindView(R.id.submitOTPButton)
+    Button sbtn;
+
 
     ImageView bgImageView;
     Button changeButton, resendButton, submitOTPButton;
@@ -63,30 +61,10 @@ TextView motp;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_motpverification_activity);
-        dialog =  new ProgressDialog.Builder(customerMOTPVerificationActivity.this)
-                .setTitle("Loading...")
-                .setTitleColorRes(R.color.gray)
-                .build();
-        otp = (EditText) findViewById(R.id.input_otp);
-
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        emailOtp = prefs.getString(Emailotp, null);
-        String mobileOtp = prefs.getString(Mobileotp, null);
-        email = prefs.getString(Email, null);
-        phoneNo = prefs.getString(Phone, null);
-//        if (emailOtp != null) {
-//            otpflag = 0;
-//            otpHint.setText(getString(R.string.email_otp));
-//            otp.setHint("Enter email address OTP ");
-//            serverurl = getResources().getString(R.string.url_server) + getResources().getString(R.string.url_eotpverification);
-//            Toast.makeText(getApplicationContext(), emailOtp, Toast.LENGTH_SHORT).show();
-//        } else {
-//            otpflag = 1;
-//            otpHint.setText(getString(R.string.mobile_otp));
-//            otp.setHint("Enter Mobile Number OTP ");
-//            serverurl = getResources().getString(R.string.url_server) + getResources().getString(R.string.url_motpverification);
-//            Toast.makeText(getApplicationContext(), mobileOtp, Toast.LENGTH_SHORT).show();
-//        }
+        id = prefs.getString(ID, null);
+        mobileno = prefs.getString(Phone, null);
+
         initUI();
 
         initActions();
@@ -119,7 +97,7 @@ TextView motp;
         changeButton = findViewById(R.id.changeButton);
 
         resendButton = findViewById(R.id.resendButton);
-
+        motp = findViewById(R.id.mobile_otp);
         submitOTPButton = findViewById(R.id.submitOTPButton);
     }
 
@@ -144,9 +122,9 @@ TextView motp;
             else
             {
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("Mobilenumber", "8801050103");
+                jsonObject.addProperty("Mobilenumber",mobileno);
                 jsonObject.addProperty("MVerificationCode", motp.getText().toString());
-                jsonObject.addProperty("userId","1");
+                jsonObject.addProperty("userId",id);
                 MOTPVerifications(jsonObject);
             }
         });
@@ -186,18 +164,22 @@ TextView motp;
         }
 
     }
-    public void MOTPVerifications(JsonObject jsonObject){
 
-        StartDialogue();
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    public void MOTPVerifications(JsonObject jsonObject){
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerMOTPVerificationActivity.this).getrestadapter()
                 .MOTPVerifications(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<DefaultResponse>>() {
+                .subscribe(new Subscriber<List<MOTPVerificationResponse>>() {
                     @Override
                     public void onCompleted() {
-                        //  DisplayToast("Successfully Registered");
-                        StopDialogue();
+                        DisplayToast("Successfully Registered");
+                        //StopDialogue();
                     }
                     @Override
                     public void onError(Throwable e) {
@@ -211,19 +193,32 @@ TextView motp;
                     }
 
                     @Override
-                    public void onNext(List<DefaultResponse> responselist) {
-                        DefaultResponse response=responselist.get(0);
-                        if(response.getCode().contains("ERR")){
+                    public void onNext(List<MOTPVerificationResponse> responselist) {
+                        MOTPVerificationResponse response = responselist.get(0);
+                        if (response.getCode() != null) {
                             DisplayToast(response.getDescription());
-                        }else {
+                        } else {
+
+//                        if(response.getCode().contains("ERR")){
+//                            DisplayToast(response.getDescription());
+//                        }else {
+//                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+//                            SharedPreferences.Editor editor = sharedpreferences.edit();
+//                            editor.putString(Mobileotp, null);
+//                            editor.commit();
+//                            DisplayToast("Registration Successfull");
+//                            ApplicationConstants.verify_email = true;
+//                            startActivity(new Intent(customerMOTPVerificationActivity.this, login_activity.class));
+//                            finish();
+//                        }
                             SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             editor.putString(Mobileotp, null);
+                            Intent intent = new Intent(customerMOTPVerificationActivity.this, login_activity.class);
+                            intent.putExtra("Mobilenumber", response.getMobilenumber());
+                            //intent.putExtra("Uid",E_uid);
+                            startActivity(intent);
                             editor.commit();
-                            DisplayToast("Registration Successfull");
-                            ApplicationConstants.verify_email = true;
-                            startActivity(new Intent(customerMOTPVerificationActivity.this, login_activity.class));
-                            finish();
                         }
                     }
                 });

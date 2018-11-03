@@ -160,7 +160,7 @@
                             app:ccp_hideNameCode="true"
                             android:layout_marginStart="16dp"
                             android:layout_marginLeft="16dp"
-                            app:layout_constraintBottom_toBottomOf="@+id/editText8"
+                            app:layout_constraintBottom_toBottomOf="@+id/s_mobileno"
                             tools:layout_editor_absoluteX="16dp" />
                         <!--<EditText-->
                         <!--android:layout_width="match_parent"-->
@@ -200,7 +200,7 @@
                         <!--app:layout_constraintLeft_toRightOf="@id/countryImg"-->
                         <!--/>-->
                         <EditText
-                            android:id="@+id/editText8"
+                            android:id="@+id/s_mobileno"
                             android:layout_width="0dp"
                             android:layout_height="21dp"
                             android:layout_marginStart="8dp"
@@ -237,13 +237,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:tint="@color/md_grey_500"
-                            app:layout_constraintBottom_toBottomOf="@+id/textView185"
+                            app:layout_constraintBottom_toBottomOf="@+id/s_password"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="@+id/textView185"
+                            app:layout_constraintTop_toTopOf="@+id/s_password"
                             app:srcCompat="@drawable/baseline_lock" />
 
                         <EditText
-                            android:id="@+id/textView185"
+                            android:id="@+id/s_password"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"

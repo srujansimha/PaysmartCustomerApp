@@ -2,13 +2,12 @@ package com.webingate.paysmartcustomerapp.customerapp.Deo;
 
 import com.google.gson.annotations.SerializedName;
 
-public class CustomerEOTPVerificationResponse {
+public class MOTPVerificationResponse {
+    @SerializedName("Mobilenumber")
+    private String Mobilenumber;
 
-    @SerializedName("Email")
-    private String Email;
-
-    @SerializedName("EVerificationCode")
-    private String EVerificationCode;
+    @SerializedName("MVerificationCode")
+    private String MVerificationCode;
 
     @SerializedName("userId")
     private String userId;
@@ -20,9 +19,8 @@ public class CustomerEOTPVerificationResponse {
     private String description;
 
 
-
-    public String getEmail(){
-        return Email;
+    public String getMobilenumber(){
+        return Mobilenumber;
     }
     public String getCode() {
         return Code;
@@ -30,11 +28,10 @@ public class CustomerEOTPVerificationResponse {
     public String getDescription() {
         return description;
     }
-    @Override
     public String toString(){
         return
-                "CustomerEOTPResponse{" +
-                        "Email = '" + Email + '\'' +
+                "CustomerMOTPResponse{" +
+                        "Mobilenumber = '" + Mobilenumber + '\'' +
                         "}";
     }
 }

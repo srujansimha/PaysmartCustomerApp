@@ -21,10 +21,12 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -35,6 +37,7 @@ import com.rilixtech.CountryCodePicker;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.adapter.uicollection.GeneralItemSpinnerAdapter;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.ValidateCredentialsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.WelcomeActivity;
 import com.webingate.paysmartcustomerapp.object.GeneralList;
 import com.webingate.paysmartcustomerapp.repository.customerapp.customerappRepository;
@@ -54,20 +57,8 @@ import rx.schedulers.Schedulers;
 //public class login_activity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
 public class login_activity extends AppCompatActivity{
 
-   // ArrayList<GeneralList> countriesList;
-    TextView forgotTextView, signUpTextView;
-    @BindView(R.id.loginButton)
-    Button loginButton;
-    CardView facebookCardView, twitterCardView;
-   // Spinner spinner;
-    ImageView bgImageView;
-   // ImageView countryImage;
-   // ArrayList<String> list;
-    ArrayAdapter<GeneralList> adapter;
-    CountryCodePicker ccp;
-
     public static final String MyPREFERENCES = "MyPrefs";
-    public static final String Phone = "phoneKey";
+   // public static final String Phone = "phoneKey";
     public static final String ID = "idKey";
     public static final String Name = "nameKey";
     public static final String Email = "emailKey";
@@ -78,6 +69,33 @@ public class login_activity extends AppCompatActivity{
     public static final String Gender = "gender";
     public static final String Paymenttype = "paymenttype";
     public static final String Profilepic = "profilepic";
+
+    private String response;
+
+   ArrayList<GeneralList> countriesList;
+    TextView forgotTextView, signUpTextView;
+    @BindView(R.id.loginButton)
+    Button loginButton;
+
+    @BindView(R.id.s_mobileno)
+    EditText mno;
+    @BindView(R.id.s_password)
+    EditText pwd;
+
+    Toast toast;
+    com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog dialog ;
+
+
+    int loginasOption = -1;
+    CardView facebookCardView, twitterCardView;
+   // Spinner spinner;
+    ImageView bgImageView;
+    ImageView countryImage;
+    ArrayList<String> list;
+    ArrayAdapter<GeneralList> adapter;
+    CountryCodePicker ccp;
+
+
     public final static int REQUEST_CODE = 10101;
     private boolean isServerOn;
     String mobNo, id, emailOTP, mobileOTP;
@@ -99,7 +117,7 @@ public class login_activity extends AppCompatActivity{
         login_activity.CheckServerTask checkServerTask = new login_activity.CheckServerTask();
         checkServerTask.execute();
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        mobNo = prefs.getString(Phone, null);
+        //mobNo = prefs.getString(Phone, null);
         id = prefs.getString(ID, null);
         emailOTP = prefs.getString(Emailotp, null);
         mobileOTP = prefs.getString(Mobileotp, null);
@@ -122,29 +140,23 @@ public class login_activity extends AppCompatActivity{
         initDataBindings();
 
         initActions();
+
+        ccp = (CountryCodePicker) findViewById(R.id.ccp);
+        ccp.setCustomMasterCountries("IN,ZW,AF");
     }
 
     //region Init Functions
     private void initUI() {
         forgotTextView = findViewById(R.id.forgotTextView);
         signUpTextView = findViewById(R.id.signuptTextView);
+        mno = findViewById(R.id.s_mobileno);
+        pwd = findViewById(R.id.s_password);
 
         loginButton = findViewById(R.id.loginButton);
 //        facebookCardView = findViewById(R.id.facebookCardView);
 //        twitterCardView = findViewById(R.id.twitterCardView);
         bgImageView = findViewById(R.id.bgImageView);
-        ccp = (CountryCodePicker) findViewById(R.id.ccp);
-        ccp.setCustomMasterCountries("IN,ZW,AF");
-//      //  countryImage = findViewById(R.id.countryImg);
-//        spinner = findViewById(R.id.spinner);
-//        spinner.setOnItemSelectedListener(this);
-//
-//       // list = new ArrayList<GeneralList>(countriesList);
-//        countriesList = customerappRepository.getcountriesListJson();
-//        adapter = new ArrayAdapter<GeneralList>(this, android.R.layout.simple_spinner_item, countriesList);
-//
-//        GeneralItemSpinnerAdapter uiloginasCustomSpinnerAdapter =new GeneralItemSpinnerAdapter(getApplicationContext(),countriesList);
-//        spinner.setAdapter(uiloginasCustomSpinnerAdapter);
+      //  countryImage = findViewById(R.id.countryImg);
     }
 
     private void initDataBindings() {
@@ -172,12 +184,15 @@ public class login_activity extends AppCompatActivity{
 
         loginButton.setOnClickListener(view -> {
             //Toast.makeText(getApplicationContext(), "Clicked Login.", Toast.LENGTH_SHORT).show();
-
-            Intent intent = new Intent(this, customerDashboardActivity.class);
-            // EditText editText = (EditText) findViewById(R.id.editText);
-            // String message = editText.getText().toString();
-            //  intent.putExtra(EXTRA_MESSAGE, message);
-            startActivity(intent);
+            if (mno.getText().toString().matches("") || pwd.getText().toString().matches("")) {
+                Toast.makeText(getApplicationContext(), "Please Enter details", Toast.LENGTH_SHORT).show();
+            } else {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("CountryId", ccp.getSelectedCountryCode());
+                jsonObject.addProperty("Password", pwd.getText().toString());
+                jsonObject.addProperty("UserAccountNo", ccp.getSelectedCountryCode()+mno.getText().toString());
+                CustomerLogin(jsonObject);
+            }
 
         });
 
@@ -189,6 +204,57 @@ public class login_activity extends AppCompatActivity{
 //            Toast.makeText(getApplicationContext(), "Clicked Twitter.", Toast.LENGTH_SHORT).show();
 //        });
     }
+
+    public void CustomerLogin(JsonObject jsonObject){
+
+        // StartDialogue();
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
+                .ValidateCredentials(jsonObject)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<ValidateCredentialsResponse>>() {
+                    @Override
+                    public void onCompleted() {
+                        //    DisplayToast("Successfully LoggedIn");
+                        //   StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            Log.d("OnError ", e.getLocalizedMessage());
+                            DisplayToast("Unable to Login");
+                            StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<ValidateCredentialsResponse> responce) {
+                        ValidateCredentialsResponse credentialsResponse=responce.get(0);
+                        if(credentialsResponse.getCode()!=null){
+                            DisplayToast(credentialsResponse.getDescription());
+                        }else {
+                            SharedPreferences sharedPref = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+//                            editor.putString(DRIVERID, credentialsResponse.getDid());
+//                            editor.putString(VEHICLEID, credentialsResponse.getVehicleId());
+//                            editor.putString(Phone, mobileNo.getText().toString());
+//                            editor.putString(Emailotp, null);
+//                            editor.putString(Mobileotp, null);
+                            Intent intent = new Intent(login_activity.this, customerDashboardActivity.class);
+                            intent.putExtra("mobilenumber", credentialsResponse.getMobilenumber());
+                            //intent.putExtra("Uid",E_uid);
+                            startActivity(intent);
+                            editor.commit();
+                            finish();
+                        }
+
+                    }
+                });
+    }
+
+
 
         private void checkPermissions() {
 
@@ -259,12 +325,12 @@ public class login_activity extends AppCompatActivity{
                 if (dialog.isShowing())
                     dialog.dismiss();
                 if (isServerOn) {
-                    if (mobNo != null && emailOTP == null && mobileOTP == null) {
+                    if (emailOTP == null && mobileOTP != null) {
                         ApplicationConstants.mobileNo = mobNo;
                         ApplicationConstants.id = id;
-                        startActivity(new Intent(login_activity.this, customerMOTPVerificationActivity.class));
+                        startActivity(new Intent(login_activity.this,customerMOTPVerificationActivity.class));
                         finish();
-                    } else if (mobNo != null && (emailOTP != null || mobileOTP != null)) {
+                    } else if (emailOTP != null || mobileOTP != null) {
                         startActivity(new Intent(login_activity.this, customerEOTPVerificationActivity.class));
                         finish();
                     }
@@ -342,6 +408,27 @@ public class login_activity extends AppCompatActivity{
                 Log.i("Checking Server","Error in reaching the Host");
             }*/
 
+    }
+
+    public void DisplayToast(String text){
+        if(toast!=null){
+            toast.cancel();
+            toast=null;
+
+        }
+        toast=Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT);
+        toast.show();
+
+    }
+    public void StartDialogue(){
+
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+    }
+    public void StopDialogue(){
+        if(dialog.isShowing()){
+            dialog.cancel();
+        }
     }
     }
 

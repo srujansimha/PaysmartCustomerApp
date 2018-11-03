@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerEOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.DefaultResponse;
 import com.webingate.paysmartcustomerapp.utils.Utils;
@@ -33,13 +34,11 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
 
 
     public static final String MyPREFERENCES = "MyPrefs";
-    public static final String Phone = "phoneKey";
+    public static final String ID = "idKey";
     public static final String Email = "emailKey";
-    public static final String Mobileotp = "mobileotpkey";
     public static final String Emailotp = "emailotpkey";
 
-    String E_etop;  int E_uid; String E_email;String M_otp;String M_mno;
-
+String id,email;
     Toast toast;
 
     @BindView(R.id.s_email)
@@ -55,13 +54,9 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_eotpverification_activity);
-        Intent intent = getIntent();
-        E_etop=intent.getStringExtra("etop");
-        E_uid=intent.getIntExtra("uid",0);
-        E_email=intent.getStringExtra("email");
-        M_otp=intent.getStringExtra("motp");
-        M_mno=intent.getStringExtra("mno");
-
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        id = prefs.getString(ID, null);
+        email = prefs.getString(Email, null);
         initUI();
 
         initActions();
@@ -123,9 +118,9 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
             else
             {
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("Email", "webingateteam@gmail.com");
+                jsonObject.addProperty("Email",email);
                 jsonObject.addProperty("EVerificationCode", etop.getText().toString());
-                jsonObject.addProperty("userId", "1");
+                jsonObject.addProperty("userId", id);
                 EOTPVerification(jsonObject);
             }
         });
@@ -165,6 +160,11 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
         }
 
     }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
     public void EOTPVerification(JsonObject jsonObject){
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
                 .CustomerEOTPVerification(jsonObject)
@@ -180,7 +180,7 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
                     public void onError(Throwable e) {
                         try {
                             //Log.d("OnError ", e.getMessage());
-                            DisplayToast("Error");
+                            DisplayToast("Error"+e.getMessage());
                             //StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -189,20 +189,24 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(List<CustomerEOTPVerificationResponse> responselist) {
-                        CustomerEOTPVerificationResponse response=responselist.get(0);
-                        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedpreferences.edit();
-                        //editor.putString(Emailotp, null);
+                        CustomerEOTPVerificationResponse response = responselist.get(0);
+                        if (response.getCode() != null) {
+                            DisplayToast(response.getDescription());
+                        } else {
+                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString(Emailotp, null);
 
-                        Intent intent = new Intent(customerEOTPVerificationActivity.this, customerMOTPVerificationActivity.class);
-                        intent.putExtra("Mnumber",M_mno);
-                        intent.putExtra("Uid",E_uid);
-                        startActivity(intent);
-                        editor.commit();
-                        //startActivity(new Intent(customerEOTPVerificationActivity.this, login_activity.class));
+                            Intent intent = new Intent(customerEOTPVerificationActivity.this, customerMOTPVerificationActivity.class);
+                            intent.putExtra("Email", response.getEmail());
+                            //intent.putExtra("Uid",E_uid);
+                            startActivity(intent);
+                            editor.commit();
+                            //startActivity(new Intent(customerEOTPVerificationActivity.this, login_activity.class));
 //                       Intent intent = new Intent(customerEOTPVerificationActivity.this, businessappMOTPVerificationActivity.class);
 //                        intent.putExtra("eotp","");
-                        finish();
+                            finish();
+                        }
                     }
                 });
     }

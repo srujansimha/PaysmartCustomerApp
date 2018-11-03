@@ -1,6 +1,8 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +20,12 @@ import com.webingate.paysmartcustomerapp.utils.Utils;
 
 public class customerpwdOTPVerificationActivity extends AppCompatActivity {
 
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String ID = "idKey";
+    public static final String Password = "passwordkey";
+    public static final String Phone = "phoneKey";
+String mobno;
+
 
     ImageView bgImageView;
     Button changeButton, resendButton, submitOTPButton;
@@ -26,6 +34,9 @@ public class customerpwdOTPVerificationActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_pwdotpverification_activity);
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        //mobNo = prefs.getString(Phone, null);
+        mobno = prefs.getString(Phone, null);
 
         initUI();
 
