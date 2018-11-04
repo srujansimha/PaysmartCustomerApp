@@ -131,6 +131,7 @@ public class customerForgotPasswordActivity extends AppCompatActivity {
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             Intent intent = new Intent(customerForgotPasswordActivity.this, customerpwdOTPVerificationActivity.class);
                             intent.putExtra("passwordotp", response.getPasswordotp());
+                            intent.putExtra("UserAccountNo", response.getUserAccountNo());
                             //intent.putExtra("Uid",E_uid);
                             startActivity(intent);
                             editor.commit();

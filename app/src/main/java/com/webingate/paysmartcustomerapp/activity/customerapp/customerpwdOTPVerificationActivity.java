@@ -35,11 +35,14 @@ public class customerpwdOTPVerificationActivity extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String Password = "passwordkey";
     public static final String Phone = "phoneKey";
-String mobno;
+    public static final String UserAccountNo = "UserAccountNo";
+String useracntno;
 
     Toast toast;
     @BindView(R.id.s_passwordotp)
     EditText potp;
+    @BindView(R.id.s_newpassword)
+    EditText newpwd;
 
 
 
@@ -52,7 +55,8 @@ String mobno;
         setContentView(R.layout.customerapp_pwdotpverification_activity);
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         //mobNo = prefs.getString(Phone, null);
-        mobno = prefs.getString(Phone, null);
+        //mobno = prefs.getString(Phone, null);
+        useracntno = prefs.getString(UserAccountNo,null);
 
         initUI();
 
@@ -89,6 +93,7 @@ String mobno;
 
         submitOTPButton = findViewById(R.id.submitOTPButton);
         potp = findViewById(R.id.s_passwordotp);
+        newpwd = findViewById(R.id.s_newpassword);
     }
 
     private void initActions(){
@@ -104,13 +109,13 @@ String mobno;
         submitOTPButton.setOnClickListener((View v) ->{
             //Toast.makeText(getApplicationContext(),"OTP is Resent.",Toast.LENGTH_SHORT).show();
             if(potp.getText().toString().matches("")){
-                Toast.makeText(getApplicationContext(),"Please Enter Mobile Number",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Please Enter OTP",Toast.LENGTH_SHORT).show();
             }
             else
             {
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("UserAccountNo","918801050103");
-                jsonObject.addProperty("Password","12345");
+                jsonObject.addProperty("UserAccountNo",useracntno);
+                jsonObject.addProperty("Password",newpwd.getText().toString());
                 jsonObject.addProperty("Passwordotp",potp.getText().toString());
                 ForgotPassword(jsonObject);
             }
@@ -130,7 +135,7 @@ String mobno;
                 .subscribe(new Subscriber<List<CustomerPwdVerificationResponse>>() {
                     @Override
                     public void onCompleted() {
-                        DisplayToast("Successfully Registered");
+                        DisplayToast("Password Updated Successfully");
                         //StopDialogue();
                     }
                     @Override

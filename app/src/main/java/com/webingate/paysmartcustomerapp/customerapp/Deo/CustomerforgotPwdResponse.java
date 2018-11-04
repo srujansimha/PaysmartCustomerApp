@@ -4,6 +4,12 @@ import com.google.gson.annotations.SerializedName;
 
 public class CustomerforgotPwdResponse{
 
+	@SerializedName("UserAccountNo")
+	private String UserAccountNo;
+
+	@SerializedName("Email")
+	private String Email;
+
 	@SerializedName("Passwordotp")
 	private String passwordotp;
 
@@ -37,11 +43,28 @@ public class CustomerforgotPwdResponse{
 		return passwordotp;
 	}
 
+	public void setUserAccountNo(String UserAccountNo){
+		this.UserAccountNo = UserAccountNo;
+	}
+	public String getUserAccountNo(){
+		return UserAccountNo;
+	}
+
+	public void setEmail(String UserAccountNo){
+		this.Email = Email;
+	}
+	public String getEmail(){
+		return Email;
+	}
+
 	@Override
  	public String toString(){
 		return 
 			"CustomerforgotPwdResponse{" + 
-			"passwordotp = '" + passwordotp + '\'' + 
+			"passwordotp = '" + passwordotp + '\'' +
+			",UserAccountNo = '" + UserAccountNo + '\''	+
+			",Email = '" + Email + '\''+
+
 			"}";
 		}
 }
