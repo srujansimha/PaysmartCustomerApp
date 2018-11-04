@@ -12,19 +12,35 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+import com.rilixtech.CountryCodePicker;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerPwdVerificationResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerforgotPwdResponse;
 import com.webingate.paysmartcustomerapp.utils.Utils;
+
+import java.util.List;
+
+import butterknife.BindView;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class customerpwdOTPVerificationActivity extends AppCompatActivity {
 
     public static final String MyPREFERENCES = "MyPrefs";
-    public static final String ID = "idKey";
     public static final String Password = "passwordkey";
     public static final String Phone = "phoneKey";
 String mobno;
+
+    Toast toast;
+    @BindView(R.id.s_passwordotp)
+    EditText potp;
+
 
 
     ImageView bgImageView;
@@ -72,6 +88,7 @@ String mobno;
         resendButton = findViewById(R.id.resendButton);
 
         submitOTPButton = findViewById(R.id.submitOTPButton);
+        potp = findViewById(R.id.s_passwordotp);
     }
 
     private void initActions(){
@@ -86,9 +103,77 @@ String mobno;
 
         submitOTPButton.setOnClickListener((View v) ->{
             //Toast.makeText(getApplicationContext(),"OTP is Resent.",Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, login_activity.class);
-            startActivity(intent);
+            if(potp.getText().toString().matches("")){
+                Toast.makeText(getApplicationContext(),"Please Enter Mobile Number",Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                JsonObject jsonObject = new JsonObject();
+                jsonObject.addProperty("UserAccountNo","918801050103");
+                jsonObject.addProperty("Password","12345");
+                jsonObject.addProperty("Passwordotp",potp.getText().toString());
+                ForgotPassword(jsonObject);
+            }
         });
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
+
+    public void ForgotPassword(JsonObject jsonObject){
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
+                .Passwordverification(jsonObject)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<CustomerPwdVerificationResponse>>() {
+                    @Override
+                    public void onCompleted() {
+                        DisplayToast("Successfully Registered");
+                        //StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            //Log.d("OnError ", e.getMessage());
+                            DisplayToast("onError"+e.getMessage());
+                            //StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<CustomerPwdVerificationResponse> responselist) {
+                        CustomerPwdVerificationResponse response = responselist.get(0);
+                        if (response.getCode() != null) {
+                            DisplayToast(response.getDescription());
+                        } else {
+                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            Intent intent = new Intent(customerpwdOTPVerificationActivity.this, login_activity.class);
+                            intent.putExtra("mobilenumber", response.getMobilenumber());
+                            //intent.putExtra("Uid",E_uid);
+                            startActivity(intent);
+                            editor.commit();
+                            //startActivity(new Intent(customerEOTPVerificationActivity.this, login_activity.class));
+//                       Intent intent = new Intent(customerEOTPVerificationActivity.this, businessappMOTPVerificationActivity.class);
+//                        intent.putExtra("eotp","");
+                            finish();
+                        }
+                    }
+                });
+    }
+    public void DisplayToast(String text){
+        if(toast!=null){
+            toast.cancel();
+            toast=null;
+
+        }
+        toast= Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT);
+        toast.show();
+
     }
 
 

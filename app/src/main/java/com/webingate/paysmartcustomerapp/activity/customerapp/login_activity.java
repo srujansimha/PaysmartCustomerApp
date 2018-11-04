@@ -69,6 +69,7 @@ public class login_activity extends AppCompatActivity{
     public static final String Gender = "gender";
     public static final String Paymenttype = "paymenttype";
     public static final String Profilepic = "profilepic";
+    public static final String Passwordotp = "passwordotpkey";
 
     private String response;
 
@@ -98,7 +99,7 @@ public class login_activity extends AppCompatActivity{
 
     public final static int REQUEST_CODE = 10101;
     private boolean isServerOn;
-    String mobNo, id, emailOTP, mobileOTP;
+    String mobNo, id, emailOTP, mobileOTP,pwdotp;
     private static final int PERMISSIONS_ALL = 7;
     String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -121,6 +122,7 @@ public class login_activity extends AppCompatActivity{
         id = prefs.getString(ID, null);
         emailOTP = prefs.getString(Emailotp, null);
         mobileOTP = prefs.getString(Mobileotp, null);
+        pwdotp = prefs.getString(Passwordotp, null);
         ApplicationConstants.username = prefs.getString(Name, null);
         ApplicationConstants.email = prefs.getString(Email, null);
         ApplicationConstants.dateofbirth = prefs.getString(Dateofbirth, null);
@@ -332,6 +334,10 @@ public class login_activity extends AppCompatActivity{
                         finish();
                     } else if (emailOTP != null || mobileOTP != null) {
                         startActivity(new Intent(login_activity.this, customerEOTPVerificationActivity.class));
+                        finish();
+                    }
+                    else if (pwdotp != null) {
+                        startActivity(new Intent(login_activity.this, customerpwdOTPVerificationActivity.class));
                         finish();
                     }
                 } else {
