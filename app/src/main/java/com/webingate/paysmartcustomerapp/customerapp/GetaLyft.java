@@ -119,11 +119,11 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
     TableRow tableRow;
     @BindView(R.id.map_destination)
     TextView selectDestination;
-    @BindView(R.id.taxi)
-    AppCompatButton taxi;
-    @BindView(R.id.meteredtaxi)
-    AppCompatButton meteredtaxi;
-    @BindView(R.id.bus)
+//    @BindView(R.id.taxi)
+//    AppCompatButton taxi;
+//    @BindView(R.id.meteredtaxi)
+//    AppCompatButton meteredtaxi;
+//    @BindView(R.id.bus)
     AppCompatButton bus;
     @BindView(R.id.ridenow)
     AppCompatButton rideNow;
@@ -205,9 +205,9 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
         setSupportActionBar(toolbar);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        taxi.setVisibility(View.GONE);
-        meteredtaxi.setVisibility(View.GONE);
-        bus.setVisibility(View.GONE);
+//        taxi.setVisibility(View.GONE);
+//        meteredtaxi.setVisibility(View.GONE);
+//        bus.setVisibility(View.GONE);
         selectsource.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1263,7 +1263,11 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
 
     }
 
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_more, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
 
 
