@@ -120,6 +120,9 @@
         <activity
             android:name=".activity.customerapp.customerappTrainBookingSearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappHireBookingSearchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
     </application>
