@@ -72,11 +72,11 @@ public class customerappHireBookingSearchActivity extends AppCompatActivity impl
     @BindView(R.id.map_destination)
     TextView mapDestination;
 
-    @BindView(R.id.taxi)
-    AppCompatButton taxi;
-    @BindView(R.id.meteredtaxi)
-    AppCompatButton meteredtaxi;
-    @BindView(R.id.bus)
+//    @BindView(R.id.taxi)
+//    AppCompatButton taxi;
+//    @BindView(R.id.meteredtaxi)
+//    AppCompatButton meteredtaxi;
+//    @BindView(R.id.bus)
     AppCompatButton bus;
     @BindView(R.id.ridenow)
     AppCompatButton rideNow;

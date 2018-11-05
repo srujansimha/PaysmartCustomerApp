@@ -128,9 +128,9 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 //            navigationView.setTextDirection(View.TEXT_DIRECTION_LTR);
 //        }
 
-        View headerLayout = navigationView.getHeaderView(0);
-        ImageView userImageView = headerLayout.findViewById(R.id.userImageView);
-        Utils.setCircleImageToImageView(this, userImageView, R.drawable.profile1, 0, 0);
+//        View headerLayout = navigationView.getHeaderView(0);
+//        ImageView userImageView = headerLayout.findViewById(R.id.userImageView);
+//        Utils.setCircleImageToImageView(this, userImageView, R.drawable.profile1, 0, 0);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
