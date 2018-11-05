@@ -40,6 +40,7 @@ public class customerSignUpActivity extends AppCompatActivity {
     public static final String Email = "emailKey";
     public static final String Password = "passwordkey";
     public static final String Mobileotp = "mobileotpkey";
+    public static final String UserAccountNo = "UserAccountNokey";
     public static final String Emailotp = "emailotpkey";
     public static final String Profilepic = "profilepic";
     private boolean isprofilePic = false;
@@ -123,7 +124,7 @@ public class customerSignUpActivity extends AppCompatActivity {
             object.addProperty("Password", S_password.getText().toString());
             //object.addProperty("Usename",S_username.getText().toString());
             object.addProperty("CountryId",ccp.getSelectedCountryCode());
-            object.addProperty("CCode","91");
+            object.addProperty("CCode",ccp.getSelectedCountryCode());
             object.addProperty("CurrentStateId","1");
             object.addProperty("UserAccountNo",ccp.getSelectedCountryCode()+S_mobileNo.getText().toString());
             //object.addProperty("UserTypeId","109");
@@ -236,6 +237,7 @@ public class customerSignUpActivity extends AppCompatActivity {
                             editor.putString(Password, response.getPassword());
                             editor.putString(Emailotp, response.getEmailotp());
                             editor.putString(Mobileotp, response.getMobileotp());
+                            editor.putString(UserAccountNo, response.getUserAccountNo());
                             editor.putString(Profilepic, ApplicationConstants.driverimage);
                             editor.commit();
                             ApplicationConstants.driverimage = null;
