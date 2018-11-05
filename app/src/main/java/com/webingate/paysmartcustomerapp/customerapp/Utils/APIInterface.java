@@ -10,6 +10,7 @@ import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerGetstopsRespons
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerPayResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerPwdVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerRateTheRideResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerResendOTPResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerRideDetailsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerforgotPwdResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.DefaultResponse;
@@ -113,6 +114,9 @@ public interface APIInterface  {
 
     @POST("/api/Forgotpassword/Forgotpassword")
     public Observable<List<CustomerforgotPwdResponse>> Forgotpassword(@Body JsonObject jsonObject);
+
+    @POST("/api/Forgotpassword/Forgotpassword")
+    public Observable<List<CustomerResendOTPResponse>> ResendOTP(@Body JsonObject jsonObject);
 
     @POST("/api/UserAccount/Passwordverification")
     public Observable<List<CustomerPwdVerificationResponse>> Passwordverification(@Body JsonObject jsonObject);

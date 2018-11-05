@@ -20,6 +20,7 @@ import com.google.gson.JsonObject;
 import com.rilixtech.CountryCodePicker;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerPwdVerificationResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerResendOTPResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerforgotPwdResponse;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
@@ -35,7 +36,7 @@ public class customerpwdOTPVerificationActivity extends AppCompatActivity {
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String Password = "passwordkey";
     public static final String Phone = "phoneKey";
-    public static final String UserAccountNo = "UserAccountNo";
+    public static final String UserAccountNo = "UserAccountNoKey";
 String useracntno;
 
     Toast toast;
@@ -103,7 +104,11 @@ String useracntno;
         });
 
         resendButton.setOnClickListener((View v) ->{
-            Toast.makeText(getApplicationContext(),"OTP is Resent.",Toast.LENGTH_SHORT).show();
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("UserAccountNo",useracntno);
+            jsonObject.addProperty("change","3");
+            ResendOTP(jsonObject);
+            //Toast.makeText(getApplicationContext(),"OTP is Resent.",Toast.LENGTH_SHORT).show();
         });
 
         submitOTPButton.setOnClickListener((View v) ->{
@@ -159,6 +164,50 @@ String useracntno;
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             Intent intent = new Intent(customerpwdOTPVerificationActivity.this, login_activity.class);
                             intent.putExtra("mobilenumber", response.getMobilenumber());
+                            //intent.putExtra("Uid",E_uid);
+                            startActivity(intent);
+                            editor.commit();
+                            //startActivity(new Intent(customerEOTPVerificationActivity.this, login_activity.class));
+//                       Intent intent = new Intent(customerEOTPVerificationActivity.this, businessappMOTPVerificationActivity.class);
+//                        intent.putExtra("eotp","");
+                            finish();
+                        }
+                    }
+                });
+    }
+
+    public void ResendOTP(JsonObject jsonObject){
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
+                .ResendOTP(jsonObject)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<CustomerResendOTPResponse>>() {
+                    @Override
+                    public void onCompleted() {
+                        DisplayToast("OTP has been Resent");
+                        //StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            //Log.d("OnError ", e.getMessage());
+                            DisplayToast("onError"+e.getMessage());
+                            //StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<CustomerResendOTPResponse> responselist) {
+                        CustomerResendOTPResponse response = responselist.get(0);
+                        if (response.getCode() != null) {
+                            DisplayToast(response.getDescription());
+                        } else {
+                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            Intent intent = new Intent(customerpwdOTPVerificationActivity.this, customerpwdOTPVerificationActivity.class);
+                            editor.putString(UserAccountNo, response.getUserAccountNo());
                             //intent.putExtra("Uid",E_uid);
                             startActivity(intent);
                             editor.commit();
