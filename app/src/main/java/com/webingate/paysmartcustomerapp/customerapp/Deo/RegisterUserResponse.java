@@ -52,6 +52,9 @@ public class RegisterUserResponse{
 	@SerializedName("Password")
 	private String password;
 
+	@SerializedName("UserAccountNo")
+	private String UserAccountNo;
+
 	@SerializedName("Code")
 	private String code;
 
@@ -202,6 +205,14 @@ public class RegisterUserResponse{
 		return password;
 	}
 
+	public void setUserAccountNo(String UserAccountNo){
+		this.UserAccountNo = password;
+	}
+
+	public String getUserAccountNo(){
+		return UserAccountNo;
+	}
+
 	@Override
  	public String toString(){
 		return 
@@ -221,7 +232,8 @@ public class RegisterUserResponse{
 			",emailotp = '" + emailotp + '\'' + 
 			",id = '" + id + '\'' + 
 			",mobilenumber = '" + mobilenumber + '\'' + 
-			",password = '" + password + '\'' + 
+			",password = '" + password + '\'' +
+			",UserAccountNo = '" + UserAccountNo + '\''+
 			"}";
 		}
 }

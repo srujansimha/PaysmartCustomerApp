@@ -20,6 +20,7 @@ import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerEOTPVerificationResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerResendOTPResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.DefaultResponse;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
@@ -37,8 +38,10 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
     public static final String ID = "idKey";
     public static final String Email = "emailKey";
     public static final String Emailotp = "emailotpkey";
+    public static final String UserAccountNo = "UserAccountNokey";
 
-String id,email;
+String id,email,useracntno;
+
     Toast toast;
 
     @BindView(R.id.s_email)
@@ -57,6 +60,7 @@ String id,email;
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         id = prefs.getString(ID, null);
         email = prefs.getString(Email, null);
+        useracntno = prefs.getString(UserAccountNo,null);
         initUI();
 
         initActions();
@@ -100,7 +104,11 @@ String id,email;
         });
 
         resendButton.setOnClickListener((View v) ->{
-            Toast.makeText(getApplicationContext(),"OTP is Resent.",Toast.LENGTH_SHORT).show();
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("UserAccountNo",useracntno);
+            jsonObject.addProperty("change","3");
+            ResendOTP(jsonObject);
+            //Toast.makeText(getApplicationContext(),"OTP is Resent.",Toast.LENGTH_SHORT).show();
         });
 
 //        submitOTPButton.setOnClickListener((View v) ->{
@@ -210,6 +218,51 @@ String id,email;
                     }
                 });
     }
+
+    public void ResendOTP(JsonObject jsonObject){
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
+                .ResendOTP(jsonObject)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<CustomerResendOTPResponse>>() {
+                    @Override
+                    public void onCompleted() {
+                        DisplayToast("OTP has been Resent");
+                        //StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            //Log.d("OnError ", e.getMessage());
+                            DisplayToast("onError"+e.getMessage());
+                            //StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<CustomerResendOTPResponse> responselist) {
+                        CustomerResendOTPResponse response = responselist.get(0);
+                        if (response.getCode() != null) {
+                            DisplayToast(response.getDescription());
+                        } else {
+                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            Intent intent = new Intent(customerEOTPVerificationActivity.this, customerEOTPVerificationActivity.class);
+                            editor.putString(UserAccountNo, response.getUserAccountNo());
+                            //intent.putExtra("Uid",E_uid);
+                            startActivity(intent);
+                            editor.commit();
+                            //startActivity(new Intent(customerEOTPVerificationActivity.this, login_activity.class));
+//                       Intent intent = new Intent(customerEOTPVerificationActivity.this, businessappMOTPVerificationActivity.class);
+//                        intent.putExtra("eotp","");
+                            finish();
+                        }
+                    }
+                });
+    }
+
     public void DisplayToast(String text){
         if(toast!=null){
             toast.cancel();

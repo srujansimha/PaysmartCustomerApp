@@ -30,6 +30,7 @@ public class customerForgotPasswordActivity extends AppCompatActivity {
 
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String Phone = "phoneKey";
+    public static final String UserAccountNo = "UserAccountNoKey";
 
     Button resetButton;
     TextView signInTextView;
@@ -130,8 +131,8 @@ public class customerForgotPasswordActivity extends AppCompatActivity {
                             SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedpreferences.edit();
                             Intent intent = new Intent(customerForgotPasswordActivity.this, customerpwdOTPVerificationActivity.class);
-                            intent.putExtra("passwordotp", response.getPasswordotp());
-                            intent.putExtra("UserAccountNo", response.getUserAccountNo());
+                            //intent.putExtra("passwordotp", response.getPasswordotp());
+                            editor.putString(UserAccountNo, response.getUserAccountNo());
                             //intent.putExtra("Uid",E_uid);
                             startActivity(intent);
                             editor.commit();

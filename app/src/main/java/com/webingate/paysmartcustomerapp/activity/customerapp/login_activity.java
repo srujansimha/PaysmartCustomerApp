@@ -327,18 +327,20 @@ public class login_activity extends AppCompatActivity{
                 if (dialog.isShowing())
                     dialog.dismiss();
                 if (isServerOn) {
-                    if (emailOTP == null && mobileOTP != null) {
+                    if (emailOTP != null && mobileOTP != null) {
                         ApplicationConstants.mobileNo = mobNo;
                         ApplicationConstants.id = id;
-                        startActivity(new Intent(login_activity.this,customerMOTPVerificationActivity.class));
+                        startActivity(new Intent(login_activity.this,customerEOTPVerificationActivity.class));
                         finish();
-                    } else if (emailOTP != null || mobileOTP != null) {
-                        startActivity(new Intent(login_activity.this, customerEOTPVerificationActivity.class));
-                        finish();
-                    }
-                    else if (pwdotp != null) {
-                        startActivity(new Intent(login_activity.this, customerpwdOTPVerificationActivity.class));
-                        finish();
+                    } else {
+                        if (emailOTP == null && mobileOTP != null) {
+                            startActivity(new Intent(login_activity.this, customerMOTPVerificationActivity.class));
+                            finish();
+                    } else if(emailOTP != null && mobileOTP == null){
+
+                            startActivity(new Intent(login_activity.this,customerEOTPVerificationActivity.class));
+                            finish();
+                        }
                     }
                 } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(login_activity.this, R.style.Theme_AppCompat_DayNight_Dialog);
