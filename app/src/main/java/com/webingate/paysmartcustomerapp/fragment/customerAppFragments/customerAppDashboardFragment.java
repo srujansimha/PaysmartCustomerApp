@@ -18,6 +18,7 @@ import com.webingate.paysmartcustomerapp.R;
 
 
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappFlightBookingSearchActivity;
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappGetaLyftActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappTrainBookingSearchActivity;
 import com.webingate.paysmartcustomerapp.adapter.customerapp_FlightsAdapter;
 import com.webingate.paysmartcustomerapp.adapter.customerapp_PopularAdapter;
@@ -147,7 +148,7 @@ public class customerAppDashboardFragment extends Fragment {
                 switch(position){
                     case 0:
                         ApplicationConstants.marker = R.mipmap.marker_taxi;
-                        Intent intent = new Intent(getActivity(), GetaLyft.class);
+                        Intent intent = new Intent(getActivity(), customerappGetaLyftActivity.class);
                         startActivity(intent);
                         break;
                     case 1:

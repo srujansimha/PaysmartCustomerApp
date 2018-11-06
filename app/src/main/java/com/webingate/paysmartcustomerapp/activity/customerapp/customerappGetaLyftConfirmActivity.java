@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -18,7 +17,6 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,7 +34,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -85,7 +82,6 @@ import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerBookingStatusRe
 import com.webingate.paysmartcustomerapp.customerapp.Deo.SaveBookingDetailsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.UpdateBookingstatusResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
-import com.webingate.paysmartcustomerapp.customerapp.GetaLyft;
 import com.webingate.paysmartcustomerapp.customerapp.LatLngInterpolator;
 import com.webingate.paysmartcustomerapp.customerapp.Payments_Dialoguebox;
 import com.webingate.paysmartcustomerapp.customerapp.RideLater_Dialoguebox;
@@ -93,26 +89,13 @@ import com.webingate.paysmartcustomerapp.object.DirectoryHome9ProductsVO;
 import com.webingate.paysmartcustomerapp.repository.directory.DirectoryHome9Repository;
 
 import org.joda.time.DateTime;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -121,7 +104,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class customerappGetaLyftActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
+public class customerappGetaLyftConfirmActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.map_source)
@@ -138,10 +121,8 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 //    AppCompatButton meteredtaxi;
 //    @BindView(R.id.bus)
     AppCompatButton bus;
-    @BindView(R.id.ridenow)
-    AppCompatButton rideNow;
-    @BindView(R.id.ridelater)
-    AppCompatButton rideLater;
+    @BindView(R.id.ConfirmBooking)
+    AppCompatButton ConfirmBooking;
     private GoogleMap.OnCameraIdleListener onCameraIdleListener;
     String serverUrl = "";
     int bookingId = 0;
@@ -211,9 +192,9 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.customerapp_getalyft_activity);
+        setContentView(R.layout.customerapp_getalyftconfirm_activity);
         ButterKnife.bind(this);
-        dialog = new ProgressDialog.Builder(customerappGetaLyftActivity.this)
+        dialog = new ProgressDialog.Builder(customerappGetaLyftConfirmActivity.this)
                 .setTitle("Loading...")
                 .setTitleColorRes(R.color.gray)
                 .build();
@@ -233,7 +214,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                     dest = 1;
                     Intent intent =
                             new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                                    .build(customerappGetaLyftActivity.this);
+                                    .build(customerappGetaLyftConfirmActivity.this);
                     startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
                 } catch (GooglePlayServicesRepairableException e) {
                     // TODO: Handle the error.
@@ -245,7 +226,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         sourceGpsLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(customerappGetaLyftActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -255,7 +236,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
-                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftActivity.this);
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftConfirmActivity.this);
                /* if (marker != null) {
                     latlngnew = new LatLng(latitude, longitude);
                     MarkerOptions markerOptions = new MarkerOptions();
@@ -285,7 +266,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                     dest = 2;
                     Intent intent =
                             new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                                    .build(customerappGetaLyftActivity.this);
+                                    .build(customerappGetaLyftConfirmActivity.this);
                     startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
                 } catch (GooglePlayServicesRepairableException e) {
                     // TODO: Handle the error.
@@ -294,34 +275,16 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                 }
             }
         });
-        rideNow.setOnClickListener(new View.OnClickListener() {
+        ConfirmBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (selectDestination.getText().toString().matches("")) {
                     DisplayToast("Please Select Destination");
                 } else {
-//                    JsonObject object=new JsonObject();
-//                    object.addProperty("BNo", ApplicationConstants.bookingNo);
-//                    object.addProperty("PackageId", "3");
-//                    CalculatePrice(object);
-                    Toast.makeText(getApplicationContext(), "Clicked : get a lyft details", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(customerappGetaLyftActivity.this, customerappGetaLyftDetailsActivity.class);
-//                    intent.putExtra("source", source.getName() + "," + source.getAddress());
-//                    intent.putExtra("destination", destination.getName() + "," + destination.getAddress());
-                    startActivity(intent);
-                }
-            }
-        });
-        rideLater.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (selectDestination.getText().toString().matches("")) {
-                    DisplayToast("Please Select Destination");
-                } else {
-
-                    RideLater_Dialoguebox rideLater_dialoguebox = new RideLater_Dialoguebox(customerappGetaLyftActivity.this);
-                    rideLater_dialoguebox.setCanceledOnTouchOutside(false);
-                    rideLater_dialoguebox.show();
+                    JsonObject object=new JsonObject();
+                    object.addProperty("BNo", ApplicationConstants.bookingNo);
+                    object.addProperty("PackageId", "3");
+                    CalculatePrice(object);
                 }
             }
         });
@@ -341,7 +304,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                 case 0:
                     Toast.makeText(getApplicationContext(), "Clicked : get a lyft", Toast.LENGTH_SHORT).show();
                     ApplicationConstants.marker = R.mipmap.marker_taxi;
-                    Intent intent = new Intent(this, customerappGetaLyftActivity.class);
+                    Intent intent = new Intent(this, customerappGetaLyftConfirmActivity.class);
                     startActivity(intent);
                     break;
                 case 1:
@@ -600,10 +563,10 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                     markerDesst.remove();
                 markerDesst = mMap.addMarker(markerOptions);
                 // Getting Directions from source to destination
-                customerappGetaLyftActivity.DirectionsTask downloadTask2 = new customerappGetaLyftActivity.DirectionsTask();
+                customerappGetaLyftConfirmActivity.DirectionsTask downloadTask2 = new customerappGetaLyftConfirmActivity.DirectionsTask();
                 downloadTask2.execute();
                 dest = 0;
-                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, customerappGetaLyftActivity.this);
+                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, customerappGetaLyftConfirmActivity.this);
             }
         });
 
@@ -612,7 +575,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     /* Initiate Google API Client  */
     private void initGoogleAPIClient() {
         //Without Google API Client Auto Location Dialog will not work
-        mGoogleApiClient = new GoogleApiClient.Builder(customerappGetaLyftActivity.this)
+        mGoogleApiClient = new GoogleApiClient.Builder(customerappGetaLyftConfirmActivity.this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -625,11 +588,11 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     /* Check Location Permission for Marshmallow Devices */
     private void checkPermissions() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (ContextCompat.checkSelfPermission(customerappGetaLyftActivity.this,
+            if (ContextCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this,
                     Manifest.permission.CALL_PHONE)
                     != PackageManager.PERMISSION_GRANTED)
                 requestcallPermission();
-            if (ContextCompat.checkSelfPermission(customerappGetaLyftActivity.this,
+            if (ContextCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this,
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED)
                 requestLocationPermission();
@@ -642,26 +605,26 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 
     /*  Show Popup to access User Permission  */
     private void requestLocationPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(customerappGetaLyftActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            ActivityCompat.requestPermissions(customerappGetaLyftActivity.this,
+        if (ActivityCompat.shouldShowRequestPermissionRationale(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            ActivityCompat.requestPermissions(customerappGetaLyftConfirmActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_INTENT_ID);
 
         } else {
-            ActivityCompat.requestPermissions(customerappGetaLyftActivity.this,
+            ActivityCompat.requestPermissions(customerappGetaLyftConfirmActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_INTENT_ID);
         }
     }
 
     private void requestcallPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(customerappGetaLyftActivity.this, Manifest.permission.CALL_PHONE)) {
-            ActivityCompat.requestPermissions(customerappGetaLyftActivity.this,
+        if (ActivityCompat.shouldShowRequestPermissionRationale(customerappGetaLyftConfirmActivity.this, Manifest.permission.CALL_PHONE)) {
+            ActivityCompat.requestPermissions(customerappGetaLyftConfirmActivity.this,
                     new String[]{Manifest.permission.CALL_PHONE},
                     ACCESS_FINE_LOCATION_INTENT_ID);
 
         } else {
-            ActivityCompat.requestPermissions(customerappGetaLyftActivity.this,
+            ActivityCompat.requestPermissions(customerappGetaLyftConfirmActivity.this,
                     new String[]{Manifest.permission.CALL_PHONE},
                     ACCESS_FINE_LOCATION_INTENT_ID);
         }
@@ -700,7 +663,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                         try {
                             // Show the dialog by calling startResolutionForResult(),
                             // and check the result in onActivityResult().
-                            status.startResolutionForResult(customerappGetaLyftActivity.this, REQUEST_CHECK_SETTINGS);
+                            status.startResolutionForResult(customerappGetaLyftConfirmActivity.this, REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
                             e.printStackTrace();
                             // Ignore the error.
@@ -739,7 +702,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                         mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
                         // Getting Directions from source to destination
                         if (!selectDestination.getText().toString().matches("")) {
-                            customerappGetaLyftActivity.DirectionsTask downloadTask = new customerappGetaLyftActivity.DirectionsTask();
+                            customerappGetaLyftConfirmActivity.DirectionsTask downloadTask = new customerappGetaLyftConfirmActivity.DirectionsTask();
                             downloadTask.execute();
                         }
                         dest = 0;
@@ -760,7 +723,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                             markerDesst.remove();
                         markerDesst = mMap.addMarker(markerOptions);
                         // Getting Directions from source to destination
-                        customerappGetaLyftActivity.DirectionsTask downloadTask = new customerappGetaLyftActivity.DirectionsTask();
+                        customerappGetaLyftConfirmActivity.DirectionsTask downloadTask = new customerappGetaLyftConfirmActivity.DirectionsTask();
                         downloadTask.execute();
                         dest = 0;
                         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -935,7 +898,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         //  if (mGoogleApiClient != null)
         if (!selectDestination.getText().toString().matches("")) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-            customerappGetaLyftActivity.DirectionsTask downloadTask = new customerappGetaLyftActivity.DirectionsTask();
+            customerappGetaLyftConfirmActivity.DirectionsTask downloadTask = new customerappGetaLyftConfirmActivity.DirectionsTask();
             downloadTask.execute();
         }
     }
@@ -1043,7 +1006,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 
     public void SaveBookingDetails(JsonObject jsonObject) {
         StartDialogue();
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftConfirmActivity.this).getrestadapter()
                 .SaveBookingDetails(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1072,7 +1035,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                         if(response.getBookingNumber()!=null) {
                             ApplicationConstants.bookingNo = response.getBookingNumber();
                             isBookingStarted = true;
-                            checkingCabsDialogue = new CheckingCabsDialogue(customerappGetaLyftActivity.this);
+                            checkingCabsDialogue = new CheckingCabsDialogue(customerappGetaLyftConfirmActivity.this);
                             checkingCabsDialogue.setCanceledOnTouchOutside(false);
                             checkingCabsDialogue.show();
                             BookingStatus();
@@ -1086,7 +1049,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 
     public void CalculatePrice(JsonObject jsonObject) {
         StartDialogue();
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftConfirmActivity.this).getrestadapter()
                 .CalculatePrice(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1112,14 +1075,9 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                     @Override
                     public void onNext(List<CalculatePriceResponse> responselist) {
                         CalculatePriceResponse response = responselist.get(0);
-                        Intent intent = new Intent(customerappGetaLyftActivity.this, customerappGetaLyftDetailsActivity.class);
-                        intent.putExtra("source", source.getLatLng());
-                        intent.putExtra("destination", destination.getLatLng());
-                        //Payments_Dialoguebox payments_dialoguebox = new Payments_Dialoguebox(customerappGetaLyftActivity.this, response.getPrice()+"");
-                        //payments_dialoguebox.setCanceledOnTouchOutside(false);
-                        //payments_dialoguebox.show();
-                        startActivity(intent);
-                        finish();
+                        Payments_Dialoguebox payments_dialoguebox = new Payments_Dialoguebox(customerappGetaLyftConfirmActivity.this, response.getPrice()+"");
+                        payments_dialoguebox.setCanceledOnTouchOutside(false);
+                        payments_dialoguebox.show();
                     }
                 });
     }
@@ -1132,7 +1090,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     }
     public void BookingStatus(JsonObject jsonObject) {
         // StartDialogue();
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftConfirmActivity.this).getrestadapter()
                 .BookingStatus(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1162,7 +1120,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                             if (checkingCabsDialogue != null)
                                 checkingCabsDialogue.dismiss();
                             isBookingStarted=false;
-                            Intent intent = new Intent(customerappGetaLyftActivity.this, CurrentTrip.class);
+                            Intent intent = new Intent(customerappGetaLyftConfirmActivity.this, CurrentTrip.class);
                             intent.putExtra("lat", sourceLatitude);
                             intent.putExtra("lon", sourceLongitude);
                             intent.putExtra("destlat", destLatitude);
@@ -1179,7 +1137,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 
     public void UpdateBookingStatus(JsonObject jsonObject) {
         StartDialogue();
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftConfirmActivity.this).getrestadapter()
                 .UpdateBookingStatus(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1203,7 +1161,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 
                     @Override
                     public void onNext(List<UpdateBookingstatusResponse> responselist) {
-                        AlertDialog alertDialog = new AlertDialog.Builder(customerappGetaLyftActivity.this, R.style.Dialog_Theme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(customerappGetaLyftConfirmActivity.this, R.style.Dialog_Theme).create();
                         alertDialog.setTitle("Alert");
                         alertDialog.setMessage("All Cabs Were Busy Please Try Again");
                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -1219,7 +1177,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 
     public void AdvanceBookingDetails(JsonObject jsonObject) {
         StartDialogue();
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftConfirmActivity.this).getrestadapter()
                 .AdvanceBookingDetails(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1259,7 +1217,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         }
     }
     public void AvailableVehicles(JsonObject jsonObject){
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftConfirmActivity.this).getrestadapter()
                 .AvailableVehicles(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

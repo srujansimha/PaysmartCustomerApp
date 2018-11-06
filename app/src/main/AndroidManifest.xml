@@ -98,9 +98,7 @@
             android:name=".activity.customerapp.customerappFAQMainMenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <activity
-            android:name=".customerapp.GetaLyft"
-            android:theme="@style/AppTheme.NoActionBar" />
+
 
         <activity
             android:name=".activity.customerapp.customerappFAQListDetailActivity"
@@ -130,6 +128,12 @@
 
         <activity
             android:name=".customerapp.GetaLyft"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappGetaLyftDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappGetaLyftConfirmActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 </manifest>
