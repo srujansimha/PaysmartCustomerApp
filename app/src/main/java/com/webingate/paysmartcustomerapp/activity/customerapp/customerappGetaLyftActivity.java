@@ -1,4 +1,4 @@
-package com.webingate.paysmartcustomerapp.customerapp;
+package com.webingate.paysmartcustomerapp.activity.customerapp;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
@@ -28,12 +28,15 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.HorizontalScrollView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,13 +74,23 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.android.PolyUtil;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
+import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.adapter.customerapp_ProductsAdapter;
+import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
+import com.webingate.paysmartcustomerapp.customerapp.CheckingCabsDialogue;
+import com.webingate.paysmartcustomerapp.customerapp.CurrentTrip;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.AvailableVehiclesResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CalculatePriceResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerBookingStatusResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.SaveBookingDetailsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.UpdateBookingstatusResponse;
-import com.webingate.paysmartcustomerapp.customerapp.Deo.ValidateCredentialsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
+import com.webingate.paysmartcustomerapp.customerapp.GetaLyft;
+import com.webingate.paysmartcustomerapp.customerapp.LatLngInterpolator;
+import com.webingate.paysmartcustomerapp.customerapp.Payments_Dialoguebox;
+import com.webingate.paysmartcustomerapp.customerapp.RideLater_Dialoguebox;
+import com.webingate.paysmartcustomerapp.object.DirectoryHome9ProductsVO;
+import com.webingate.paysmartcustomerapp.repository.directory.DirectoryHome9Repository;
 
 import org.joda.time.DateTime;
 import org.json.JSONArray;
@@ -107,8 +120,8 @@ import butterknife.ButterKnife;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import com.webingate.paysmartcustomerapp.R;
-public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
+
+public class customerappGetaLyftActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.map_source)
@@ -119,7 +132,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
     TableRow tableRow;
     @BindView(R.id.map_destination)
     TextView selectDestination;
-//    @BindView(R.id.taxi)
+    //    @BindView(R.id.taxi)
 //    AppCompatButton taxi;
 //    @BindView(R.id.meteredtaxi)
 //    AppCompatButton meteredtaxi;
@@ -153,12 +166,17 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
     private static final int ACCESS_FINE_LOCATION_INTENT_ID = 3;
     private static final String BROADCAST_ACTION = "android.location.PROVIDERS_CHANGED";
     final Handler handler = new Handler();
-   // HirevehicleRequest hirevehicleRequest;
+    // HirevehicleRequest hirevehicleRequest;
     CheckingCabsDialogue checkingCabsDialogue;
     DirectionsResult result;
     boolean isBookingStarted=true;
     Toast toast;
     ProgressDialog dialog;
+
+    //TODO: this is to test then scroll view navigation
+    List<DirectoryHome9ProductsVO> productsList;
+    customerapp_ProductsAdapter productsAdapter;
+    RecyclerView rvProduct;
 
     @Override
     public void onBackPressed() {
@@ -187,15 +205,15 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
     private LatLng latLng, latlngnew;
     private String response;
     private Polyline line;
-   // private Timer timer;
+    // private Timer timer;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.hirevehicle);
+        setContentView(R.layout.customerapp_getalyft_activity);
         ButterKnife.bind(this);
-        dialog = new ProgressDialog.Builder(GetaLyft.this)
+        dialog = new ProgressDialog.Builder(customerappGetaLyftActivity.this)
                 .setTitle("Loading...")
                 .setTitleColorRes(R.color.gray)
                 .build();
@@ -215,7 +233,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
                     dest = 1;
                     Intent intent =
                             new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                                    .build(GetaLyft.this);
+                                    .build(customerappGetaLyftActivity.this);
                     startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
                 } catch (GooglePlayServicesRepairableException e) {
                     // TODO: Handle the error.
@@ -227,7 +245,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
         sourceGpsLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(GetaLyft.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(GetaLyft.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(customerappGetaLyftActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -237,7 +255,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
-                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, GetaLyft.this);
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftActivity.this);
                /* if (marker != null) {
                     latlngnew = new LatLng(latitude, longitude);
                     MarkerOptions markerOptions = new MarkerOptions();
@@ -267,7 +285,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
                     dest = 2;
                     Intent intent =
                             new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
-                                    .build(GetaLyft.this);
+                                    .build(customerappGetaLyftActivity.this);
                     startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
                 } catch (GooglePlayServicesRepairableException e) {
                     // TODO: Handle the error.
@@ -296,13 +314,57 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
                     DisplayToast("Please Select Destination");
                 } else {
 
-                    RideLater_Dialoguebox rideLater_dialoguebox = new RideLater_Dialoguebox(GetaLyft.this);
+                    RideLater_Dialoguebox rideLater_dialoguebox = new RideLater_Dialoguebox(customerappGetaLyftActivity.this);
                     rideLater_dialoguebox.setCanceledOnTouchOutside(false);
                     rideLater_dialoguebox.show();
                 }
             }
         });
-     //   AvailableVehicles();
+        //   AvailableVehicles();
+        productsList = DirectoryHome9Repository.getProductsList();
+        productsAdapter = new customerapp_ProductsAdapter(productsList);
+
+
+        rvProduct = findViewById(R.id.rvProducts);
+
+        RecyclerView.LayoutManager productLayoutManager =  new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+        rvProduct.setLayoutManager(productLayoutManager);
+        rvProduct.setAdapter(productsAdapter);
+        productsAdapter.setOnItemClickListener((view, promotion, position) -> {
+
+            switch(position){
+                case 0:
+                    Toast.makeText(getApplicationContext(), "Clicked : get a lyft", Toast.LENGTH_SHORT).show();
+                    ApplicationConstants.marker = R.mipmap.marker_taxi;
+                    Intent intent = new Intent(this, customerappGetaLyftActivity.class);
+                    startActivity(intent);
+                    break;
+                case 1:
+                    intent = new Intent(this, customerappFlightBookingSearchActivity.class);
+                    startActivity(intent);
+//                        AppDirectoryHome1Fragment af1 = new AppDirectoryHome1Fragment();
+//
+//                        getActivity().getSupportFragmentManager().beginTransaction()
+//                                .replace(R.id.home9Frame, af1)
+//                                .commitAllowingStateLoss();
+                    break;
+                case 2:
+
+
+                    break;
+                case 3:
+                    intent = new Intent(this, customerappTrainBookingSearchActivity.class);
+                    startActivity(intent);
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                default:
+                    break;
+            }
+            //Toast.makeText(getContext(), "Clicked : " + promotion.getName(), Toast.LENGTH_SHORT).show();
+        });
 
 
     }
@@ -533,10 +595,10 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
                     markerDesst.remove();
                 markerDesst = mMap.addMarker(markerOptions);
                 // Getting Directions from source to destination
-                DirectionsTask downloadTask2 = new DirectionsTask();
+                customerappGetaLyftActivity.DirectionsTask downloadTask2 = new customerappGetaLyftActivity.DirectionsTask();
                 downloadTask2.execute();
                 dest = 0;
-                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, GetaLyft.this);
+                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, customerappGetaLyftActivity.this);
             }
         });
 
@@ -545,7 +607,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
     /* Initiate Google API Client  */
     private void initGoogleAPIClient() {
         //Without Google API Client Auto Location Dialog will not work
-        mGoogleApiClient = new GoogleApiClient.Builder(GetaLyft.this)
+        mGoogleApiClient = new GoogleApiClient.Builder(customerappGetaLyftActivity.this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -558,11 +620,11 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
     /* Check Location Permission for Marshmallow Devices */
     private void checkPermissions() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (ContextCompat.checkSelfPermission(GetaLyft.this,
+            if (ContextCompat.checkSelfPermission(customerappGetaLyftActivity.this,
                     Manifest.permission.CALL_PHONE)
                     != PackageManager.PERMISSION_GRANTED)
                 requestcallPermission();
-            if (ContextCompat.checkSelfPermission(GetaLyft.this,
+            if (ContextCompat.checkSelfPermission(customerappGetaLyftActivity.this,
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED)
                 requestLocationPermission();
@@ -575,26 +637,26 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
 
     /*  Show Popup to access User Permission  */
     private void requestLocationPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(GetaLyft.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            ActivityCompat.requestPermissions(GetaLyft.this,
+        if (ActivityCompat.shouldShowRequestPermissionRationale(customerappGetaLyftActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            ActivityCompat.requestPermissions(customerappGetaLyftActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_INTENT_ID);
 
         } else {
-            ActivityCompat.requestPermissions(GetaLyft.this,
+            ActivityCompat.requestPermissions(customerappGetaLyftActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_INTENT_ID);
         }
     }
 
     private void requestcallPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(GetaLyft.this, Manifest.permission.CALL_PHONE)) {
-            ActivityCompat.requestPermissions(GetaLyft.this,
+        if (ActivityCompat.shouldShowRequestPermissionRationale(customerappGetaLyftActivity.this, Manifest.permission.CALL_PHONE)) {
+            ActivityCompat.requestPermissions(customerappGetaLyftActivity.this,
                     new String[]{Manifest.permission.CALL_PHONE},
                     ACCESS_FINE_LOCATION_INTENT_ID);
 
         } else {
-            ActivityCompat.requestPermissions(GetaLyft.this,
+            ActivityCompat.requestPermissions(customerappGetaLyftActivity.this,
                     new String[]{Manifest.permission.CALL_PHONE},
                     ACCESS_FINE_LOCATION_INTENT_ID);
         }
@@ -633,7 +695,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
                         try {
                             // Show the dialog by calling startResolutionForResult(),
                             // and check the result in onActivityResult().
-                            status.startResolutionForResult(GetaLyft.this, REQUEST_CHECK_SETTINGS);
+                            status.startResolutionForResult(customerappGetaLyftActivity.this, REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
                             e.printStackTrace();
                             // Ignore the error.
@@ -672,7 +734,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
                         mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
                         // Getting Directions from source to destination
                         if (!selectDestination.getText().toString().matches("")) {
-                            DirectionsTask downloadTask = new DirectionsTask();
+                            customerappGetaLyftActivity.DirectionsTask downloadTask = new customerappGetaLyftActivity.DirectionsTask();
                             downloadTask.execute();
                         }
                         dest = 0;
@@ -693,7 +755,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
                             markerDesst.remove();
                         markerDesst = mMap.addMarker(markerOptions);
                         // Getting Directions from source to destination
-                        DirectionsTask downloadTask = new DirectionsTask();
+                        customerappGetaLyftActivity.DirectionsTask downloadTask = new customerappGetaLyftActivity.DirectionsTask();
                         downloadTask.execute();
                         dest = 0;
                         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
@@ -795,7 +857,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
 //
 //                } else {
 //                    updateGPSStatus("Location Permission denied.");
-//                    Toast.makeText(GetaLyft.this, "Location Permission denied.", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(customerappGetaLyftActivity.this, "Location Permission denied.", Toast.LENGTH_SHORT).show();
 //                    // permission denied, boo! Disable the
 //                    // functionality that depends on this permission.
 //                }
@@ -868,7 +930,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
         //  if (mGoogleApiClient != null)
         if (!selectDestination.getText().toString().matches("")) {
             LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-            DirectionsTask downloadTask = new DirectionsTask();
+            customerappGetaLyftActivity.DirectionsTask downloadTask = new customerappGetaLyftActivity.DirectionsTask();
             downloadTask.execute();
         }
     }
@@ -976,7 +1038,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
 
     public void SaveBookingDetails(JsonObject jsonObject) {
         StartDialogue();
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(GetaLyft.this).getrestadapter()
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
                 .SaveBookingDetails(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1005,7 +1067,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
                         if(response.getBookingNumber()!=null) {
                             ApplicationConstants.bookingNo = response.getBookingNumber();
                             isBookingStarted = true;
-                            checkingCabsDialogue = new CheckingCabsDialogue(GetaLyft.this);
+                            checkingCabsDialogue = new CheckingCabsDialogue(customerappGetaLyftActivity.this);
                             checkingCabsDialogue.setCanceledOnTouchOutside(false);
                             checkingCabsDialogue.show();
                             BookingStatus();
@@ -1019,7 +1081,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
 
     public void CalculatePrice(JsonObject jsonObject) {
         StartDialogue();
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(GetaLyft.this).getrestadapter()
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
                 .CalculatePrice(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1045,7 +1107,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
                     @Override
                     public void onNext(List<CalculatePriceResponse> responselist) {
                         CalculatePriceResponse response = responselist.get(0);
-                        Payments_Dialoguebox payments_dialoguebox = new Payments_Dialoguebox(GetaLyft.this, response.getPrice()+"");
+                        Payments_Dialoguebox payments_dialoguebox = new Payments_Dialoguebox(customerappGetaLyftActivity.this, response.getPrice()+"");
                         payments_dialoguebox.setCanceledOnTouchOutside(false);
                         payments_dialoguebox.show();
                     }
@@ -1060,7 +1122,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
     }
     public void BookingStatus(JsonObject jsonObject) {
         // StartDialogue();
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(GetaLyft.this).getrestadapter()
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
                 .BookingStatus(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1090,7 +1152,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
                             if (checkingCabsDialogue != null)
                                 checkingCabsDialogue.dismiss();
                             isBookingStarted=false;
-                            Intent intent = new Intent(GetaLyft.this, CurrentTrip.class);
+                            Intent intent = new Intent(customerappGetaLyftActivity.this, CurrentTrip.class);
                             intent.putExtra("lat", sourceLatitude);
                             intent.putExtra("lon", sourceLongitude);
                             intent.putExtra("destlat", destLatitude);
@@ -1107,7 +1169,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
 
     public void UpdateBookingStatus(JsonObject jsonObject) {
         StartDialogue();
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(GetaLyft.this).getrestadapter()
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
                 .UpdateBookingStatus(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1131,7 +1193,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
 
                     @Override
                     public void onNext(List<UpdateBookingstatusResponse> responselist) {
-                        AlertDialog alertDialog = new AlertDialog.Builder(GetaLyft.this, R.style.Dialog_Theme).create();
+                        AlertDialog alertDialog = new AlertDialog.Builder(customerappGetaLyftActivity.this, R.style.Dialog_Theme).create();
                         alertDialog.setTitle("Alert");
                         alertDialog.setMessage("All Cabs Were Busy Please Try Again");
                         alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
@@ -1147,7 +1209,7 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
 
     public void AdvanceBookingDetails(JsonObject jsonObject) {
         StartDialogue();
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(GetaLyft.this).getrestadapter()
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
                 .AdvanceBookingDetails(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -1187,14 +1249,14 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
         }
     }
     public void AvailableVehicles(JsonObject jsonObject){
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(GetaLyft.this).getrestadapter()
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
                 .AvailableVehicles(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<AvailableVehiclesResponse>>() {
                     @Override
                     public void onCompleted() {
-                      //  DisplayToast("Booking Completed");
+                        //  DisplayToast("Booking Completed");
                         AvailableVehicles();
                     }
                     @Override
@@ -1270,353 +1332,6 @@ public class GetaLyft extends AppCompatActivity implements OnMapReadyCallback, G
     }
 
 
-
-
-
-
-    /*class HirevehicleRequest extends AsyncTask<String, Void, String[]> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (ApplicationConstants.tripFlag != GETBOOKINGSTATUS && ApplicationConstants.tripFlag != GETNEARESTVEHICLES) {
-                dialog.setMessage("Please Wait..." + ApplicationConstants.tripFlag);
-                dialog.setCancelable(false);
-                dialog.show();
-            }
-
-        }
-
-        @Override
-        protected String[] doInBackground(String... params) {
-            try {
-                Hirevehicle();
-                return new String[]{"Success"};
-            } catch (Exception e) {
-                return new String[]{"error"};
-            }
-        }
-
-        @Override
-        protected void onPostExecute(String... result) {
-            try {
-                if (response.matches("")) {
-                    DisplayToast("An error has occurred ");
-                } else {
-                    //Toast.makeText(getApplicationContext(), response.substring(0,10), Toast.LENGTH_LONG).show();
-
-                    switch (ApplicationConstants.tripFlag) {
-                        case CHECKPRICE:
-                            JSONArray jsonObj = new JSONArray(response);
-                            JSONObject c = jsonObj.getJSONObject(0);
-                            ApplicationConstants.tripFlag = 0;
-                            ApplicationConstants.estPrice = c.getString("Price");
-                            Log.i("Booking status", "Got Price : " + ApplicationConstants.estPrice);
-                            Payments_Dialoguebox payments_dialoguebox = new Payments_Dialoguebox(GetaLyft.this);
-                            payments_dialoguebox.setCanceledOnTouchOutside(false);
-                            payments_dialoguebox.show();
-                            break;
-                        case BOOKCAB:
-                            jsonObj = new JSONArray(response);
-                            c = jsonObj.getJSONObject(0);
-                            ApplicationConstants.tripFlag = GETBOOKINGSTATUS;
-                            ApplicationConstants.bookingNo = c.getString("bookingNumber");
-                            Log.i("Booking status", "Got Booking No : " + ApplicationConstants.bookingNo);
-                            if (dialog.isShowing()) {
-                                dialog.dismiss();
-                            }
-                            checkingCabsDialogue = new CheckingCabsDialogue(GetaLyft.this);
-                            checkingCabsDialogue.setCanceledOnTouchOutside(false);
-                            checkingCabsDialogue.show();
-                            break;
-                        case GETBOOKINGSTATUS:
-                            ApplicationConstants.booKingOTP = "";
-                            jsonObj = new JSONArray(response);
-                            if (jsonObj.isNull(0)) {
-                                Log.i("Booking status", "No Otp found : " + response);
-                            } else {
-                                c = jsonObj.getJSONObject(0);
-                                if (c.has("BooKingOTP")) {
-                                    ApplicationConstants.booKingOTP = c.getString("BooKingOTP");
-                                    Log.i("Booking status", "Got BookingOtp : " + ApplicationConstants.booKingOTP);
-                                    ApplicationConstants.driverName = c.getString("Name");
-                                    ApplicationConstants.mobNo = c.getString("PMobNo");
-                                    //ApplicationConstants.driverimage = c.getString("img");
-                                    // ApplicationConstants.vehicleimage = c.getString("VPhoto");
-                                    ApplicationConstants.registrationNo = c.getString("RegistrationNo");
-                                    ApplicationConstants.vModel = c.getString("VModel");
-                                    ApplicationConstants.tripFlag = 0;
-                                    timer.cancel();
-                                    if (checkingCabsDialogue != null)
-                                        checkingCabsDialogue.dismiss();
-                                    ApplicationConstants.tripFlag = 0;
-                                    timer.cancel();
-                                    Intent intent = new Intent(GetaLyft.this, CurrentTrip.class);
-                                    intent.putExtra("lat", sourceLatitude);
-                                    intent.putExtra("lon", sourceLongitude);
-                                    intent.putExtra("destlat", destLatitude);
-                                    intent.putExtra("destlon", destLongitude);
-                                    startActivity(intent);
-                                    finish();
-                                }
-                            }
-                            break;
-                        case CANCELBOOKING:
-                            jsonObj = new JSONArray(response);
-                            c = jsonObj.getJSONObject(0);
-                            Log.i("Booking status", "Booking cancelled : " + response);
-                            //   Toast.makeText(getApplicationContext(), response, Toast.LENGTH_LONG).show();
-                            if (dialog.isShowing())
-                                dialog.dismiss();
-                            AlertDialog alertDialog = new AlertDialog.Builder(GetaLyft.this, R.style.Dialog_Theme).create();
-                            alertDialog.setTitle("Alert");
-                            alertDialog.setMessage("All Cabs Were Busy Please Try Again");
-                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            dialog.dismiss();
-                                        }
-                                    });
-                            alertDialog.show();
-                            ApplicationConstants.tripFlag = 0;
-
-                            break;
-                        case RIDELATER:
-                            Log.i("Booking status", "Ride later : " + response);
-                            //  jsonObj = new JSONArray(response);
-                            // c = jsonObj.getJSONObject(0);
-                            ApplicationConstants.tripFlag = 0;
-                            timer.cancel();
-                            break;
-                        case GETNEARESTVEHICLES:
-                            jsonObj = new JSONArray(response);
-                            if (jsonObj.isNull(0)) {
-                                for (int i = 0; i < 5; i++) {
-                                    if (cabs[i] != null)
-                                        cabs[i].remove();
-                                }
-                                Log.i("Booking status", "No Cabs Found : ");
-                                DisplayToast("No Cabs Found , Checking For cabs.....");
-                            } else {
-                                for (int i = 0; i < 5; i++) {
-                                    if (cabs[i] != null)
-                                        cabs[i].remove();
-                                }
-                                Log.i("Booking status", "Cabs Found ");
-                                for (int i = 0; i < jsonObj.length(); i++) {
-                                    c = jsonObj.getJSONObject(i);
-                                    double lat = Double.parseDouble(c.getString("Latitude"));
-                                    double lon = Double.parseDouble(c.getString("Longitude"));
-                                    LatLng lng = new LatLng(lat, lon);
-                                    MarkerOptions markerOptions = new MarkerOptions();
-                                    markerOptions.position(lng);
-                                    markerOptions.title(c.getString("RegistrationNo"));
-                                    markerOptions.icon(BitmapDescriptorFactory.fromResource(ApplicationConstants.marker));
-                                    cabs[i] = mMap.addMarker(markerOptions);
-                                }
-
-                            }
-                            break;
-
-
-                    }
-                }
-
-                if (dialog.isShowing())
-                    dialog.dismiss();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
-
-    public void Hirevehicle() {
-        BufferedReader reader = null;
-        response = "";
-        try {
-            JSONObject object = new JSONObject();
-            switch (ApplicationConstants.tripFlag) {
-                case CHECKPRICE:
-                    Log.i("Booking status", "CHECKING PRICE");
-                    object.put("BNo", ApplicationConstants.bookingNo);
-                    object.put("PackageId", "3");
-                    serverUrl = getResources().getString(R.string.url_server) + getResources().getString(R.string.url_calculateprice);
-                    break;
-                case BOOKCAB:
-                    Log.i("Booking status", "Booking Ride");
-                    DateFormat dateFormatter = new SimpleDateFormat("dd/mm/yyyy hh:mm:ss");
-                    dateFormatter.setLenient(false);
-                    Date today = new Date();
-                    String datetime = dateFormatter.format(today);
-                    object.put("flag", "i");
-                    object.put("Id", "");
-                    object.put("CompanyId", "2");
-                    object.put("BNo", ApplicationConstants.bookingNo);
-                    object.put("BookedDate", datetime.substring(0, 11));
-                    object.put("BookedTime", datetime.substring(11));
-                    object.put("DepartueDate", datetime.substring(0, 11));
-                    object.put("DepartureTime", datetime.substring(11));
-                    object.put("BookingType", "currentbooking");
-                    object.put("Src", selectsource.getText().toString());
-                    object.put("Dest", selectDestination.getText().toString());
-                    object.put("SrcId", "15");
-                    object.put("DestId", "35");
-                    object.put("SrcLatitude", sourceLatitude + "");
-                    object.put("SrcLongitude", sourceLongitude + "");
-                    object.put("DestLatitude", destLatitude + "");
-                    object.put("DestLongitude", destLongitude + "");
-                    object.put("VechId", "12");
-                    object.put("PackageId", "101");
-                    object.put("Pricing", "300");
-                    object.put("DriverId", "");
-                    object.put("DriverPhoneNo", "");
-                    object.put("CustomerPhoneNo", ApplicationConstants.mobileNo);
-                    object.put("CustomerId", "568");
-                    object.put("BookingStatus", "New");
-                    object.put("NoofVehicles", "1");
-                    object.put("NoofSeats", "1");
-                    object.put("ClosingDate", "");
-                    object.put("ClosingTime", "");
-                    object.put("CancelledOn", "");
-                    object.put("CancelledBy", "");
-                    object.put("BookingChannel", "app");
-                    object.put("Reasons", "");
-                    object.put("PaymentTypeId", ApplicationConstants.paymenttype);
-                    serverUrl = getResources().getString(R.string.url_server) + getResources().getString(R.string.url_save_bookingdetails);
-                    break;
-                case GETBOOKINGSTATUS:
-                    Log.i("Booking status", "Checking status");
-                    ApplicationConstants.booKingOTP = null;
-                    object.put("BNo", ApplicationConstants.bookingNo);
-                    serverUrl = getResources().getString(R.string.url_server) + getResources().getString(R.string.url_bookingstatus);
-                    break;
-                case CANCELBOOKING:
-                    Log.i("Booking status", "cancelling booking");
-                    object.put("BNo", ApplicationConstants.bookingNo);
-                    object.put("BookingStatus", "Cancelled");
-                    object.put("UpdatedBy", "1");
-                    object.put("UpdatedUserId", "21");
-                    serverUrl = getResources().getString(R.string.url_server) + getResources().getString(R.string.url_update_bookingstatus);
-                    break;
-                case RIDELATER:
-                    Log.i("Booking status", "Ride later calling");
-                    dateFormatter = new SimpleDateFormat("dd/mm/yyyy hh:mm:ss");
-                    dateFormatter.setLenient(false);
-                    today = new Date();
-                    datetime = dateFormatter.format(today);
-                    object.put("flag", "U");
-                    object.put("Id", "");
-                    object.put("CompanyId", "1");
-                    object.put("BNo", "00");
-                    object.put("BookedDate", datetime.substring(0, 11));
-                    object.put("BookedTime", datetime.substring(11));
-                    object.put("DepartueDate", ApplicationConstants.bookingDate);
-                    object.put("DepartureTime", ApplicationConstants.bookingTime);
-                    object.put("BookingType", "Advancebooking");
-                    object.put("Src", selectsource.getText().toString());
-                    object.put("Dest", selectDestination.getText().toString());
-                    object.put("SrcId", "15");
-                    object.put("DestId", "35");
-                    object.put("SrcLatitude", sourceLatitude + "");
-                    object.put("SrcLongitude", sourceLongitude + "");
-                    object.put("DestLatitude", destination.getLatLng().latitude + "");
-                    object.put("DestLongitude", destination.getLatLng().longitude + "");
-                    object.put("VechId", "");
-                    object.put("PackageId", "250");
-                    object.put("Pricing", "300");
-                    object.put("DriverId", "");
-                    object.put("DriverPhoneNo", "");
-                    object.put("CustomerPhoneNo", ApplicationConstants.mobileNo);
-                    object.put("CustomerId", "568");
-                    object.put("BookingStatus", "New");
-                    object.put("NoofVehicles", "1");
-                    object.put("NoofSeats", "1");
-                    object.put("ClosingDate", "");
-                    object.put("ClosingTime", "");
-                    object.put("CancelledOn", "");
-                    object.put("CancelledBy", "");
-                    object.put("BookingChannel", "app");
-                    object.put("Reasons", "");
-                    serverUrl = getResources().getString(R.string.url_server) + getResources().getString(R.string.url_advance_bookingdetails);
-                    break;
-                case GETDIRECTIONS:
-                    String str_origin = "origin=" + sourceLatitude + "," + sourceLongitude;
-
-                    // Destination of route
-                    String str_dest = "destination=" + destination.getLatLng().latitude + "," + destination.getLatLng().longitude;
-
-                    // Sensor enabled
-                    String sensor = "sensor=false";
-
-                    // Building the parameters to the web service
-                    String parameters = str_origin + "&" + str_dest + "&" + sensor;
-
-                    // Output format
-                    String output = "json";
-
-                    // Building the url to the web service
-                    serverUrl = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters;
-                    break;
-                case GETNEARESTVEHICLES:
-                    Log.i("Booking status", "Checking nearest cabs");
-                    object.put("CustomerPhoneNo", ApplicationConstants.mobileNo);
-                    object.put("SrcLatitude", sourceLongitude);
-                    object.put("SrcLongitude", sourceLongitude);
-                    object.put("VehicleGroupId", "34");
-                    serverUrl = getResources().getString(R.string.url_server) + getResources().getString(R.string.url_get_availableVehicles);
-                    break;
-
-            }
-
-            URL url = new URL(serverUrl);
-            // Send POST data request
-
-            URLConnection conn = url.openConnection();
-            conn.setDoInput(true);
-            conn.setUseCaches(false);
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Host", "android.schoolportal.gr");
-            if (ApplicationConstants.tripFlag == GETDIRECTIONS) {
-                conn.connect();
-            } else {
-                conn.setDoOutput(true);
-                conn.connect();
-                OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-                wr.write(object.toString());
-                wr.flush();
-            }
-
-            // Get the server response
-
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-
-            // Read Server Response
-            while ((line = reader.readLine()) != null) {
-                // Append server response in string
-                sb.append(line + "\n");
-            }
-            response = sb.toString();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            // response = response + e.getMessage();
-            //e.printStackTrace();
-        } catch (IOException e) {
-            //  response = response + e.getMessage();
-        } catch (JSONException e) {
-            //  e.printStackTrace();
-        } finally {
-            try {
-
-                reader.close();
-            } catch (Exception ex) {
-            }
-        }
-
-    }*/
 }
 
 

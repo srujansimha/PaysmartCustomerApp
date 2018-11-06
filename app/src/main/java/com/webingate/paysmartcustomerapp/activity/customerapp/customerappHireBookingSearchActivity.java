@@ -1,4 +1,4 @@
-package com.webingate.paysmartcustomerapp.customerapp;
+package com.webingate.paysmartcustomerapp.activity.customerapp;
 
 import android.Manifest;
 import android.animation.ValueAnimator;
@@ -59,7 +59,7 @@ import com.google.maps.android.SphericalUtil;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.webingate.paysmartcustomerapp.R;
-public class Hirevehicle3 extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+public class customerappHireBookingSearchActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     protected LocationManager mLocationManager = null;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -180,7 +180,7 @@ public class Hirevehicle3 extends AppCompatActivity implements NavigationView.On
     /* Initiate Google API Client  */
     private void initGoogleAPIClient() {
         //Without Google API Client Auto Location Dialog will not work
-        mGoogleApiClient = new GoogleApiClient.Builder(Hirevehicle3.this)
+        mGoogleApiClient = new GoogleApiClient.Builder(customerappHireBookingSearchActivity.this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(LocationServices.API)
@@ -193,7 +193,7 @@ public class Hirevehicle3 extends AppCompatActivity implements NavigationView.On
     /* Check Location Permission for Marshmallow Devices */
     private void checkPermissions() {
         if (Build.VERSION.SDK_INT >= 23) {
-            if (ContextCompat.checkSelfPermission(Hirevehicle3.this,
+            if (ContextCompat.checkSelfPermission(customerappHireBookingSearchActivity.this,
                     Manifest.permission.ACCESS_FINE_LOCATION)
                     != PackageManager.PERMISSION_GRANTED)
                 requestLocationPermission();
@@ -206,13 +206,13 @@ public class Hirevehicle3 extends AppCompatActivity implements NavigationView.On
 
     /*  Show Popup to access User Permission  */
     private void requestLocationPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(Hirevehicle3.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            ActivityCompat.requestPermissions(Hirevehicle3.this,
+        if (ActivityCompat.shouldShowRequestPermissionRationale(customerappHireBookingSearchActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+            ActivityCompat.requestPermissions(customerappHireBookingSearchActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_INTENT_ID);
 
         } else {
-            ActivityCompat.requestPermissions(Hirevehicle3.this,
+            ActivityCompat.requestPermissions(customerappHireBookingSearchActivity.this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     ACCESS_FINE_LOCATION_INTENT_ID);
         }
@@ -247,7 +247,7 @@ public class Hirevehicle3 extends AppCompatActivity implements NavigationView.On
                         try {
                             // Show the dialog by calling startResolutionForResult(),
                             // and check the result in onActivityResult().
-                            status.startResolutionForResult(Hirevehicle3.this, REQUEST_CHECK_SETTINGS);
+                            status.startResolutionForResult(customerappHireBookingSearchActivity.this, REQUEST_CHECK_SETTINGS);
                         } catch (IntentSender.SendIntentException e) {
                             e.printStackTrace();
                             // Ignore the error.
@@ -358,7 +358,7 @@ public class Hirevehicle3 extends AppCompatActivity implements NavigationView.On
 
                 } else {
                     updateGPSStatus("Location Permission denied.");
-                    Toast.makeText(Hirevehicle3.this, "Location Permission denied.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(customerappHireBookingSearchActivity.this, "Location Permission denied.", Toast.LENGTH_SHORT).show();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                 }

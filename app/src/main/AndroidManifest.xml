@@ -21,7 +21,7 @@
 
         <meta-data
          android:name="com.google.android.geo.API_KEY"
-         android:value="AIzaSyBdLsoQN4TDHBGdwXvwp35gFo9o9cn8lus" />
+         android:value="AIzaSyCc5LJh1ZMYHCodjSFQMq-2s1obdt4JTDw" />
 
 
         <!--<activity-->
@@ -120,7 +120,16 @@
         <activity
             android:name=".activity.customerapp.customerappTrainBookingSearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappHireBookingSearchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".activity.customerapp.customerappGetaLyftActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".customerapp.GetaLyft"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 </manifest>

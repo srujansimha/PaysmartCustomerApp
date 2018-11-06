@@ -160,7 +160,10 @@ public class customerAppDashboardFragment extends Fragment {
 //                                .commitAllowingStateLoss();
                         break;
                     case 2:
-
+                        Toast.makeText(getContext(), "Clicked : hire a vehicle", Toast.LENGTH_SHORT).show();
+                        ApplicationConstants.marker = R.mipmap.marker_taxi;
+                         intent = new Intent(getActivity(), GetaLyft.class);
+                        startActivity(intent);
 
                         break;
                     case 3:
