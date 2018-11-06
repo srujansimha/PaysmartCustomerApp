@@ -34,6 +34,7 @@
 
     <!--blue-->
     <color name="md_blue_500">#2196f3</color>
+    <color name="md_blue_600">#1e88e5</color>
     <color name="md_blue_800">#1565C0</color>
 
     <!-- light blue-->
