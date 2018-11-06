@@ -124,6 +124,12 @@
             android:name=".activity.customerapp.customerappHireBookingSearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".activity.customerapp.customerappGetaLyftActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".customerapp.GetaLyft"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 </manifest>
