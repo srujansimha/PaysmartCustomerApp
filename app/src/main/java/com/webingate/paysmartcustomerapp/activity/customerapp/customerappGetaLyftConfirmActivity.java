@@ -104,13 +104,13 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class customerappGetaLyftConfirmActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+public class customerappGetaLyftConfirmActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
+//    @BindView(R.id.toolbar)
+//    Toolbar toolbar;
     @BindView(R.id.map_source)
     TextView selectsource;
-    @BindView(R.id.source_gps_location)
-    Button sourceGpsLocation;
+//    @BindView(R.id.source_gps_location)
+//    Button sourceGpsLocation;
     @BindView(R.id.table_row)
     TableRow tableRow;
     @BindView(R.id.map_destination)
@@ -128,7 +128,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
     int bookingId = 0;
     int dest = 0;
     Place destination, source;
-    static GoogleMap mMap;
+    //static GoogleMap mMap;
     static Marker marker, markerDesst;
     private Marker cabs[] = new Marker[5];
     double sourceLatitude = 0.0, sourceLongitude = 0.0, destLatitude = 0.0, destLongitude = 0.0;
@@ -155,9 +155,9 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
     ProgressDialog dialog;
 
     //TODO: this is to test then scroll view navigation
-    List<DirectoryHome9ProductsVO> productsList;
-    customerapp_ProductsAdapter productsAdapter;
-    RecyclerView rvProduct;
+//    List<DirectoryHome9ProductsVO> productsList;
+//    customerapp_ProductsAdapter productsAdapter;
+//    RecyclerView rvProduct;
 
     @Override
     public void onBackPressed() {
@@ -201,9 +201,9 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
         initGoogleAPIClient();//Init Google API Client
         checkPermissions();//Check Permission
         //  configureCameraIdle();//cofigure drag destionatio selection
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        //mapFragment.getMapAsync(this);
 //        taxi.setVisibility(View.GONE);
 //        meteredtaxi.setVisibility(View.GONE);
 //        bus.setVisibility(View.GONE);
@@ -223,42 +223,42 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                 }
             }
         });
-        sourceGpsLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftConfirmActivity.this);
-               /* if (marker != null) {
-                    latlngnew = new LatLng(latitude, longitude);
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(latlngnew);
-                    markerOptions.title("Current Position");
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-                    marker.remove();
-                    marker = mMap.addMarker(markerOptions);
-                    selectsource.setText("Source :" + GetAddress(latitude, longitude));
-                    sourceLatitude = latitude;
-                    sourceLongitude = longitude;
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
-                    if (!selectDestination.getText().toString().matches("")) {
-                        String url = getDirectionsUrl(new LatLng(sourceLatitude, sourceLongitude), destination.getLatLng());
-                        DownloadTask downloadTask = new DownloadTask();
-                        //Start downloading json data from Google Directions API
-                        downloadTask.execute(url);
-                    }
-                }*/
-            }
-        });
+//        sourceGpsLocation.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                    // TODO: Consider calling
+//                    //    ActivityCompat#requestPermissions
+//                    // here to request the missing permissions, and then overriding
+//                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                    //                                          int[] grantResults)
+//                    // to handle the case where the user grants the permission. See the documentation
+//                    // for ActivityCompat#requestPermissions for more details.
+//                    return;
+//                }
+//                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftConfirmActivity.this);
+//               /* if (marker != null) {
+//                    latlngnew = new LatLng(latitude, longitude);
+//                    MarkerOptions markerOptions = new MarkerOptions();
+//                    markerOptions.position(latlngnew);
+//                    markerOptions.title("Current Position");
+//                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+//                    marker.remove();
+//                    marker = mMap.addMarker(markerOptions);
+//                    selectsource.setText("Source :" + GetAddress(latitude, longitude));
+//                    sourceLatitude = latitude;
+//                    sourceLongitude = longitude;
+//                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
+//                    mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
+//                    if (!selectDestination.getText().toString().matches("")) {
+//                        String url = getDirectionsUrl(new LatLng(sourceLatitude, sourceLongitude), destination.getLatLng());
+//                        DownloadTask downloadTask = new DownloadTask();
+//                        //Start downloading json data from Google Directions API
+//                        downloadTask.execute(url);
+//                    }
+//                }*/
+//            }
+//        });
         selectDestination.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -289,50 +289,50 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
             }
         });
         //   AvailableVehicles();
-        productsList = DirectoryHome9Repository.getProductsList();
-        productsAdapter = new customerapp_ProductsAdapter(productsList);
-
-
-        rvProduct = findViewById(R.id.rvProducts);
-
-        RecyclerView.LayoutManager productLayoutManager =  new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-        rvProduct.setLayoutManager(productLayoutManager);
-        rvProduct.setAdapter(productsAdapter);
-        productsAdapter.setOnItemClickListener((view, promotion, position) -> {
-
-            switch(position){
-                case 0:
-                    Toast.makeText(getApplicationContext(), "Clicked : get a lyft", Toast.LENGTH_SHORT).show();
-                    ApplicationConstants.marker = R.mipmap.marker_taxi;
-                    Intent intent = new Intent(this, customerappGetaLyftConfirmActivity.class);
-                    startActivity(intent);
-                    break;
-                case 1:
-                    intent = new Intent(this, customerappFlightBookingSearchActivity.class);
-                    startActivity(intent);
-//                        AppDirectoryHome1Fragment af1 = new AppDirectoryHome1Fragment();
+//        productsList = DirectoryHome9Repository.getProductsList();
+//        productsAdapter = new customerapp_ProductsAdapter(productsList);
 //
-//                        getActivity().getSupportFragmentManager().beginTransaction()
-//                                .replace(R.id.home9Frame, af1)
-//                                .commitAllowingStateLoss();
-                    break;
-                case 2:
-
-
-                    break;
-                case 3:
-                    intent = new Intent(this, customerappTrainBookingSearchActivity.class);
-                    startActivity(intent);
-                    break;
-                case 4:
-                    break;
-                case 5:
-                    break;
-                default:
-                    break;
-            }
-            //Toast.makeText(getContext(), "Clicked : " + promotion.getName(), Toast.LENGTH_SHORT).show();
-        });
+//
+//        rvProduct = findViewById(R.id.rvProducts);
+//
+//        RecyclerView.LayoutManager productLayoutManager =  new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+//        rvProduct.setLayoutManager(productLayoutManager);
+//        rvProduct.setAdapter(productsAdapter);
+//        productsAdapter.setOnItemClickListener((view, promotion, position) -> {
+//
+//            switch(position){
+//                case 0:
+//                    Toast.makeText(getApplicationContext(), "Clicked : get a lyft", Toast.LENGTH_SHORT).show();
+//                    ApplicationConstants.marker = R.mipmap.marker_taxi;
+//                    Intent intent = new Intent(this, customerappGetaLyftConfirmActivity.class);
+//                    startActivity(intent);
+//                    break;
+//                case 1:
+//                    intent = new Intent(this, customerappFlightBookingSearchActivity.class);
+//                    startActivity(intent);
+////                        AppDirectoryHome1Fragment af1 = new AppDirectoryHome1Fragment();
+////
+////                        getActivity().getSupportFragmentManager().beginTransaction()
+////                                .replace(R.id.home9Frame, af1)
+////                                .commitAllowingStateLoss();
+//                    break;
+//                case 2:
+//
+//
+//                    break;
+//                case 3:
+//                    intent = new Intent(this, customerappTrainBookingSearchActivity.class);
+//                    startActivity(intent);
+//                    break;
+//                case 4:
+//                    break;
+//                case 5:
+//                    break;
+//                default:
+//                    break;
+//            }
+//            //Toast.makeText(getContext(), "Clicked : " + promotion.getName(), Toast.LENGTH_SHORT).show();
+//        });
 
 
     }
@@ -484,93 +484,93 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
 
         // Executes in UI thread, after the execution of
         // doInBackground()
-        @Override
-        protected void onPostExecute(String results) {
-            super.onPostExecute(results);
-            Log.i("Directions", "Got directions");
-            if (result != null) {
-                MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
-                        .legs[0].startLocation.lat, result.routes[0]
-                        .legs[0].startLocation.lng))
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-                        .title("Source" + result.routes[0].legs[0].startAddress);
-                if (marker != null)
-                    marker.remove();
-                marker = mMap.addMarker(markerOptions);
-                markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
-                        .legs[0].endLocation.lat, result.routes[0]
-                        .legs[0].endLocation.lng))
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-                        .title("Destination" + result.routes[0].legs[0].endAddress);
-                if (markerDesst != null)
-                    markerDesst.remove();
-                markerDesst = mMap.addMarker(markerOptions);
-                selectsource.setText("Source :" + result.routes[0].legs[0].startAddress);
-                selectDestination.setText("Destination :" + result.routes[0].legs[0].endAddress);
-                List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
-                PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
-                if (line != null)
-                    line.remove();
-                line = mMap.addPolyline(polylineOptions);
-            }
-        }
+//        @Override
+//        protected void onPostExecute(String results) {
+//            super.onPostExecute(results);
+//            Log.i("Directions", "Got directions");
+//            if (result != null) {
+//                MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
+//                        .legs[0].startLocation.lat, result.routes[0]
+//                        .legs[0].startLocation.lng))
+//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+//                        .title("Source" + result.routes[0].legs[0].startAddress);
+//                if (marker != null)
+//                    marker.remove();
+//                marker = mMap.addMarker(markerOptions);
+//                markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
+//                        .legs[0].endLocation.lat, result.routes[0]
+//                        .legs[0].endLocation.lng))
+//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+//                        .title("Destination" + result.routes[0].legs[0].endAddress);
+//                if (markerDesst != null)
+//                    markerDesst.remove();
+//                markerDesst = mMap.addMarker(markerOptions);
+//                selectsource.setText("Source :" + result.routes[0].legs[0].startAddress);
+//                selectDestination.setText("Destination :" + result.routes[0].legs[0].endAddress);
+//                List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
+//                PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
+//                if (line != null)
+//                    line.remove();
+//                line = mMap.addPolyline(polylineOptions);
+//            }
+//        }
     }
 
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        //   mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ContextCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)
-                    == PackageManager.PERMISSION_GRANTED) {
-                requestLocationPermission();
-            }
-        } else {
-            showSettingDialog();
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            //User has previously accepted this permission
-            if (ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                mMap.setMyLocationEnabled(true);
-            }
-        } else {
-            //Not in api-23, no need to prompt
-            mMap.setMyLocationEnabled(true);
-        }
-        // mMap.getUiSettings().setZoomControlsEnabled(true);
-        // mMap.getUiSettings().setZoomGesturesEnabled(true);
-
-        // mMap.setOnCameraIdleListener(onCameraIdleListener);
-        googleMap.getUiSettings().setCompassEnabled(true);
-        googleMap.getUiSettings().setRotateGesturesEnabled(true);
-        latlngnew = new LatLng(0.0, 0.0);
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latlngnew);
-        markerOptions.title("Current Position");
-        markerOptions.icon(BitmapDescriptorFactory.fromResource(ApplicationConstants.marker));
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                destLatitude = latLng.latitude;
-                destLongitude = latLng.longitude;
-                selectDestination.setText("Destination : " + (destLatitude + "").substring(0, 10) + " , " + (destLongitude + "").substring(0, 10));
-                MarkerOptions markerOptions = new MarkerOptions();
-                markerOptions.position(new LatLng(destLatitude, destLongitude));
-                markerOptions.title("Destination");
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-                if (markerDesst != null)
-                    markerDesst.remove();
-                markerDesst = mMap.addMarker(markerOptions);
-                // Getting Directions from source to destination
-                customerappGetaLyftConfirmActivity.DirectionsTask downloadTask2 = new customerappGetaLyftConfirmActivity.DirectionsTask();
-                downloadTask2.execute();
-                dest = 0;
-                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, customerappGetaLyftConfirmActivity.this);
-            }
-        });
-
-    }
+//    public void onMapReady(GoogleMap googleMap) {
+//        mMap = googleMap;
+//        //   mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            if (ContextCompat.checkSelfPermission(this,
+//                    Manifest.permission.ACCESS_FINE_LOCATION)
+//                    == PackageManager.PERMISSION_GRANTED) {
+//                requestLocationPermission();
+//            }
+//        } else {
+//            showSettingDialog();
+//        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+//            //User has previously accepted this permission
+//            if (ActivityCompat.checkSelfPermission(this,
+//                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+//                mMap.setMyLocationEnabled(true);
+//            }
+//        } else {
+//            //Not in api-23, no need to prompt
+//            mMap.setMyLocationEnabled(true);
+//        }
+//        // mMap.getUiSettings().setZoomControlsEnabled(true);
+//        // mMap.getUiSettings().setZoomGesturesEnabled(true);
+//
+//        // mMap.setOnCameraIdleListener(onCameraIdleListener);
+//        googleMap.getUiSettings().setCompassEnabled(true);
+//        googleMap.getUiSettings().setRotateGesturesEnabled(true);
+//        latlngnew = new LatLng(0.0, 0.0);
+//        MarkerOptions markerOptions = new MarkerOptions();
+//        markerOptions.position(latlngnew);
+//        markerOptions.title("Current Position");
+//        markerOptions.icon(BitmapDescriptorFactory.fromResource(ApplicationConstants.marker));
+//        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+//            @Override
+//            public void onMapClick(LatLng latLng) {
+//                destLatitude = latLng.latitude;
+//                destLongitude = latLng.longitude;
+//                selectDestination.setText("Destination : " + (destLatitude + "").substring(0, 10) + " , " + (destLongitude + "").substring(0, 10));
+//                MarkerOptions markerOptions = new MarkerOptions();
+//                markerOptions.position(new LatLng(destLatitude, destLongitude));
+//                markerOptions.title("Destination");
+//                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+//                if (markerDesst != null)
+//                    markerDesst.remove();
+//                markerDesst = mMap.addMarker(markerOptions);
+//                // Getting Directions from source to destination
+//                customerappGetaLyftConfirmActivity.DirectionsTask downloadTask2 = new customerappGetaLyftConfirmActivity.DirectionsTask();
+//                downloadTask2.execute();
+//                dest = 0;
+//                LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, customerappGetaLyftConfirmActivity.this);
+//            }
+//        });
+//
+//    }
 
     /* Initiate Google API Client  */
     private void initGoogleAPIClient() {
@@ -653,7 +653,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                         // requests here.
                         if (ActivityCompat.checkSelfPermission(getApplicationContext(),
                                 Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                            mMap.setMyLocationEnabled(true);
+                            //mMap.setMyLocationEnabled(true);
                         }
                         updateGPSStatus("GPS is Enabled in your device");
                         break;
@@ -697,9 +697,9 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
                         if (marker != null)
                             marker.remove();
-                        marker = mMap.addMarker(markerOptions);
-                        mMap.moveCamera(CameraUpdateFactory.newLatLng(source.getLatLng()));
-                        mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
+                        //marker = mMap.addMarker(markerOptions);
+                        //mMap.moveCamera(CameraUpdateFactory.newLatLng(source.getLatLng()));
+                        //mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
                         // Getting Directions from source to destination
                         if (!selectDestination.getText().toString().matches("")) {
                             customerappGetaLyftConfirmActivity.DirectionsTask downloadTask = new customerappGetaLyftConfirmActivity.DirectionsTask();
@@ -721,7 +721,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
                         if (markerDesst != null)
                             markerDesst.remove();
-                        markerDesst = mMap.addMarker(markerOptions);
+                        //markerDesst = mMap.addMarker(markerOptions);
                         // Getting Directions from source to destination
                         customerappGetaLyftConfirmActivity.DirectionsTask downloadTask = new customerappGetaLyftConfirmActivity.DirectionsTask();
                         downloadTask.execute();
@@ -735,8 +735,8 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                 selectsource.setText("");
                 selectDestination.setText("");
                 LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-                mMap.clear();
-                onMapReady(mMap);
+                //mMap.clear();
+                //onMapReady(mMap);
                 finish();
                 break;
 
@@ -885,15 +885,15 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         if (marker != null)
             marker.remove();
-        marker = mMap.addMarker(markerOptions);
+        //marker = mMap.addMarker(markerOptions);
         selectsource.setText("Source : " + sourceLatitude + " , " + sourceLongitude);
         if (GetAddress(sourceLatitude, sourceLongitude) != null)
             selectsource.setText("Source :" + GetAddress(sourceLatitude, sourceLongitude));
 
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
+        //mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
+        //mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
         //stop location updates
         //  if (mGoogleApiClient != null)
         if (!selectDestination.getText().toString().matches("")) {
@@ -1262,7 +1262,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                                 markerOptions.position(lng);
                                 markerOptions.title(response.getRegistrationNo());
                                 markerOptions.icon(BitmapDescriptorFactory.fromResource(ApplicationConstants.marker));
-                                cabs[i] = mMap.addMarker(markerOptions);
+                                //cabs[i] = mMap.addMarker(markerOptions);
                             }
 
                         }

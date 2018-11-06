@@ -105,12 +105,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class customerappGetaLyftDetailsActivity extends AppCompatActivity implements  GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
+//    @BindView(R.id.toolbar)
+//    Toolbar toolbar;
     @BindView(R.id.map_source)
     TextView selectsource;
-    @BindView(R.id.source_gps_location)
-    Button sourceGpsLocation;
+//    @BindView(R.id.source_gps_location)
+//    Button sourceGpsLocation;
     @BindView(R.id.table_row)
     TableRow tableRow;
     @BindView(R.id.map_destination)
@@ -200,7 +200,7 @@ public class customerappGetaLyftDetailsActivity extends AppCompatActivity implem
         initGoogleAPIClient();//Init Google API Client
         checkPermissions();//Check Permission
         //  configureCameraIdle();//cofigure drag destionatio selection
-        setSupportActionBar(toolbar);
+        //setSupportActionBar(toolbar);
 //        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
 //        mapFragment.getMapAsync(this);
 //        taxi.setVisibility(View.GONE);
@@ -222,42 +222,42 @@ public class customerappGetaLyftDetailsActivity extends AppCompatActivity implem
                 }
             }
         });
-        sourceGpsLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (ActivityCompat.checkSelfPermission(customerappGetaLyftDetailsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftDetailsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftDetailsActivity.this);
-               /* if (marker != null) {
-                    latlngnew = new LatLng(latitude, longitude);
-                    MarkerOptions markerOptions = new MarkerOptions();
-                    markerOptions.position(latlngnew);
-                    markerOptions.title("Current Position");
-                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-                    marker.remove();
-                    marker = mMap.addMarker(markerOptions);
-                    selectsource.setText("Source :" + GetAddress(latitude, longitude));
-                    sourceLatitude = latitude;
-                    sourceLongitude = longitude;
-                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
-                    mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
-                    if (!selectDestination.getText().toString().matches("")) {
-                        String url = getDirectionsUrl(new LatLng(sourceLatitude, sourceLongitude), destination.getLatLng());
-                        DownloadTask downloadTask = new DownloadTask();
-                        //Start downloading json data from Google Directions API
-                        downloadTask.execute(url);
-                    }
-                }*/
-            }
-        });
+//        sourceGpsLocation.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (ActivityCompat.checkSelfPermission(customerappGetaLyftDetailsActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftDetailsActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+//                    // TODO: Consider calling
+//                    //    ActivityCompat#requestPermissions
+//                    // here to request the missing permissions, and then overriding
+//                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                    //                                          int[] grantResults)
+//                    // to handle the case where the user grants the permission. See the documentation
+//                    // for ActivityCompat#requestPermissions for more details.
+//                    return;
+//                }
+//                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftDetailsActivity.this);
+//               /* if (marker != null) {
+//                    latlngnew = new LatLng(latitude, longitude);
+//                    MarkerOptions markerOptions = new MarkerOptions();
+//                    markerOptions.position(latlngnew);
+//                    markerOptions.title("Current Position");
+//                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+//                    marker.remove();
+//                    marker = mMap.addMarker(markerOptions);
+//                    selectsource.setText("Source :" + GetAddress(latitude, longitude));
+//                    sourceLatitude = latitude;
+//                    sourceLongitude = longitude;
+//                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
+//                    mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
+//                    if (!selectDestination.getText().toString().matches("")) {
+//                        String url = getDirectionsUrl(new LatLng(sourceLatitude, sourceLongitude), destination.getLatLng());
+//                        DownloadTask downloadTask = new DownloadTask();
+//                        //Start downloading json data from Google Directions API
+//                        downloadTask.execute(url);
+//                    }
+//                }*/
+//            }
+//        });
         selectDestination.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
