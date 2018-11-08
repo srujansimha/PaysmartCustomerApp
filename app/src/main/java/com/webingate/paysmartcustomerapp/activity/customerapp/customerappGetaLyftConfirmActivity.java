@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -107,14 +108,27 @@ import rx.schedulers.Schedulers;
 public class customerappGetaLyftConfirmActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
 //    @BindView(R.id.toolbar)
 //    Toolbar toolbar;
+public static final String MyPREFERENCES = "MyPrefs";
+    public static final String UserAccountNo = "UserAccountNokey";
+
+
     @BindView(R.id.map_source)
     TextView selectsource;
-//    @BindView(R.id.source_gps_location)
-//    Button sourceGpsLocation;
+    @BindView(R.id.source_gps_location)
+    Button sourceGpsLocation;
     @BindView(R.id.table_row)
     TableRow tableRow;
     @BindView(R.id.map_destination)
     TextView selectDestination;
+
+    @BindView(R.id.pricetextview)
+    TextView price;
+    @BindView(R.id.payment)
+    TextView payment;
+    @BindView(R.id.personal)
+    TextView personal;
+    @BindView(R.id.coupon)
+    TextView coupon;
     //    @BindView(R.id.taxi)
 //    AppCompatButton taxi;
 //    @BindView(R.id.meteredtaxi)
@@ -153,6 +167,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
     boolean isBookingStarted=true;
     Toast toast;
     ProgressDialog dialog;
+    String useracntno;
 
     //TODO: this is to test then scroll view navigation
 //    List<DirectoryHome9ProductsVO> productsList;
@@ -193,6 +208,9 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_getalyftconfirm_activity);
+
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        useracntno = prefs.getString(UserAccountNo, null);
         ButterKnife.bind(this);
         dialog = new ProgressDialog.Builder(customerappGetaLyftConfirmActivity.this)
                 .setTitle("Loading...")
@@ -223,42 +241,42 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                 }
             }
         });
-//        sourceGpsLocation.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                    // TODO: Consider calling
-//                    //    ActivityCompat#requestPermissions
-//                    // here to request the missing permissions, and then overriding
-//                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                    //                                          int[] grantResults)
-//                    // to handle the case where the user grants the permission. See the documentation
-//                    // for ActivityCompat#requestPermissions for more details.
-//                    return;
-//                }
-//                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftConfirmActivity.this);
-//               /* if (marker != null) {
-//                    latlngnew = new LatLng(latitude, longitude);
-//                    MarkerOptions markerOptions = new MarkerOptions();
-//                    markerOptions.position(latlngnew);
-//                    markerOptions.title("Current Position");
-//                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-//                    marker.remove();
-//                    marker = mMap.addMarker(markerOptions);
-//                    selectsource.setText("Source :" + GetAddress(latitude, longitude));
-//                    sourceLatitude = latitude;
-//                    sourceLongitude = longitude;
-//                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
-//                    mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
-//                    if (!selectDestination.getText().toString().matches("")) {
-//                        String url = getDirectionsUrl(new LatLng(sourceLatitude, sourceLongitude), destination.getLatLng());
-//                        DownloadTask downloadTask = new DownloadTask();
-//                        //Start downloading json data from Google Directions API
-//                        downloadTask.execute(url);
-//                    }
-//                }*/
-//            }
-//        });
+        sourceGpsLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftConfirmActivity.this);
+               /* if (marker != null) {
+                    latlngnew = new LatLng(latitude, longitude);
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(latlngnew);
+                    markerOptions.title("Current Position");
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                    marker.remove();
+                    marker = mMap.addMarker(markerOptions);
+                    selectsource.setText("Source :" + GetAddress(latitude, longitude));
+                    sourceLatitude = latitude;
+                    sourceLongitude = longitude;
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
+                    if (!selectDestination.getText().toString().matches("")) {
+                        String url = getDirectionsUrl(new LatLng(sourceLatitude, sourceLongitude), destination.getLatLng());
+                        DownloadTask downloadTask = new DownloadTask();
+                        //Start downloading json data from Google Directions API
+                        downloadTask.execute(url);
+                    }
+                }*/
+            }
+        });
         selectDestination.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -281,11 +299,65 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                 if (selectDestination.getText().toString().matches("")) {
                     DisplayToast("Please Select Destination");
                 } else {
+                    //JsonObject object=new JsonObject();
+//                    object.addProperty("BNo", ApplicationConstants.bookingNo);
+//                    object.addProperty("PackageId", "3");
+//                    CalculatePrice(object);
                     JsonObject object=new JsonObject();
-                    object.addProperty("BNo", ApplicationConstants.bookingNo);
-                    object.addProperty("PackageId", "3");
-                    CalculatePrice(object);
+                    object.addProperty("flag", "i");
+                    object.addProperty("Id", "");
+                    object.addProperty("CompanyId", "2");
+                    object.addProperty("BNo", "");
+//                    object.addProperty("BookedDate", datetime.substring(0, 11));
+//                    object.addProperty("BookedTime", datetime.substring(11));
+//                    object.addProperty("DepartueDate", datetime.substring(0, 11));
+//                    object.addProperty("DepartureTime", datetime.substring(11));
+                    object.addProperty("BookingType", "currentbooking");
+                    object.addProperty("Src", selectsource.getText().toString());
+                    object.addProperty("Dest", selectDestination.getText().toString());
+                    object.addProperty("SrcId", "15");
+                    object.addProperty("DestId", "35");
+                    object.addProperty("SrcLatitude", sourceLatitude + "");
+                    object.addProperty("SrcLongitude", sourceLongitude + "");
+                    object.addProperty("DestLatitude", destLatitude + "");
+                    object.addProperty("DestLongitude", destLongitude + "");
+                    object.addProperty("VechId", "12");
+                    object.addProperty("PackageId", "101");
+                    object.addProperty("Pricing", "300");
+                    object.addProperty("DriverId", "");
+                    object.addProperty("DriverPhoneNo", "");
+                    object.addProperty("CustomerPhoneNo", useracntno);
+                    object.addProperty("CustomerId", "568");
+                    object.addProperty("BookingStatus", "New");
+                    object.addProperty("NoofVehicles", "1");
+                    object.addProperty("NoofSeats", "1");
+                    object.addProperty("ClosingDate", "");
+                    object.addProperty("ClosingTime", "");
+                    object.addProperty("CancelledOn", "");
+                    object.addProperty("CancelledBy", "");
+                    object.addProperty("BookingChannel", "app");
+                    object.addProperty("Reasons", "");
+                   // object.addProperty("PaymentTypeId", "");
+                    SaveBookingDetails(object);
                 }
+            }
+        });
+        personal.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View p){
+                DisplayToast("Please Select Personal");
+            }
+        });
+        payment.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View pp){
+                DisplayToast("Please Select Payment");
+            }
+        });
+        coupon.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View cc){
+                DisplayToast("Please Select Coupon");
             }
         });
         //   AvailableVehicles();

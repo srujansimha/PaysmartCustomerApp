@@ -76,6 +76,7 @@ import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.adapter.customerapp_ProductsAdapter;
+import com.webingate.paysmartcustomerapp.adapter.customerapp_VehicleTypesAdapter;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.CheckingCabsDialogue;
 import com.webingate.paysmartcustomerapp.customerapp.CurrentTrip;
@@ -122,6 +123,9 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class customerappGetaLyftActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
+
+
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.map_source)
@@ -175,7 +179,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 
     //TODO: this is to test then scroll view navigation
     List<DirectoryHome9ProductsVO> productsList;
-    customerapp_ProductsAdapter productsAdapter;
+    customerapp_VehicleTypesAdapter productsAdapter;
     RecyclerView rvProduct;
 
     @Override
@@ -305,7 +309,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 //                    object.addProperty("PackageId", "3");
 //                    CalculatePrice(object);
                     Toast.makeText(getApplicationContext(), "Clicked : get a lyft details", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(customerappGetaLyftActivity.this, customerappGetaLyftDetailsActivity.class);
+                    Intent intent = new Intent(customerappGetaLyftActivity.this, customerappGetaLyftConfirmActivity.class);
 //                    intent.putExtra("source", source.getName() + "," + source.getAddress());
 //                    intent.putExtra("destination", destination.getName() + "," + destination.getAddress());
                     startActivity(intent);
@@ -326,8 +330,8 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
             }
         });
         //   AvailableVehicles();
-        productsList = DirectoryHome9Repository.getProductsList();
-        productsAdapter = new customerapp_ProductsAdapter(productsList);
+        productsList = DirectoryHome9Repository.getVehicleTypes();
+        productsAdapter = new customerapp_VehicleTypesAdapter(productsList);
 
 
         rvProduct = findViewById(R.id.rvProducts);
@@ -1112,7 +1116,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                     @Override
                     public void onNext(List<CalculatePriceResponse> responselist) {
                         CalculatePriceResponse response = responselist.get(0);
-                        Intent intent = new Intent(customerappGetaLyftActivity.this, customerappGetaLyftDetailsActivity.class);
+                        Intent intent = new Intent(customerappGetaLyftActivity.this, customerappGetaLyftConfirmActivity.class);
                         intent.putExtra("source", source.getLatLng());
                         intent.putExtra("destination", destination.getLatLng());
                         //Payments_Dialoguebox payments_dialoguebox = new Payments_Dialoguebox(customerappGetaLyftActivity.this, response.getPrice()+"");
