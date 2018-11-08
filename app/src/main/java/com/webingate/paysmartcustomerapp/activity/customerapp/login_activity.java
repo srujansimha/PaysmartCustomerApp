@@ -70,7 +70,7 @@ public class login_activity extends AppCompatActivity{
     public static final String Paymenttype = "paymenttype";
     public static final String Profilepic = "profilepic";
     public static final String Passwordotp = "passwordotpkey";
-
+    public static final String UserAccountNo = "UserAccountNokey";
     private String response;
 
    ArrayList<GeneralList> countriesList;
@@ -239,7 +239,7 @@ public class login_activity extends AppCompatActivity{
                         }else {
                             SharedPreferences sharedPref = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPref.edit();
-//                            editor.putString(DRIVERID, credentialsResponse.getDid());
+                           editor.putString(UserAccountNo, credentialsResponse.getUserAccountNo());
 //                            editor.putString(VEHICLEID, credentialsResponse.getVehicleId());
 //                            editor.putString(Phone, mobileNo.getText().toString());
 //                            editor.putString(Emailotp, null);

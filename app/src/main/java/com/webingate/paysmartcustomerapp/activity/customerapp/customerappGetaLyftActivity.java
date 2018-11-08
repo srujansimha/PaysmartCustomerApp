@@ -176,7 +176,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     boolean isBookingStarted=true;
     Toast toast;
     ProgressDialog dialog;
-
+    Double lat1,log1,dlat,dlog;
     //TODO: this is to test then scroll view navigation
     List<DirectoryHome9ProductsVO> productsList;
     customerapp_VehicleTypesAdapter productsAdapter;
@@ -250,6 +250,9 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
             @Override
             public void onClick(View v) {
                 if (ActivityCompat.checkSelfPermission(customerappGetaLyftActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                    lat1= location.getLatitude();
+                    log1=location.getLongitude();
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -259,7 +262,10 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
+                Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftActivity.this);
+                lat1= location.getLatitude();
+                log1=location.getLongitude();
                /* if (marker != null) {
                     latlngnew = new LatLng(latitude, longitude);
                     MarkerOptions markerOptions = new MarkerOptions();
@@ -310,8 +316,12 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 //                    CalculatePrice(object);
                     Toast.makeText(getApplicationContext(), "Clicked : get a lyft details", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(customerappGetaLyftActivity.this, customerappGetaLyftConfirmActivity.class);
-//                    intent.putExtra("source", source.getName() + "," + source.getAddress());
-//                    intent.putExtra("destination", destination.getName() + "," + destination.getAddress());
+                    intent.putExtra("source", selectsource.getText().toString());
+                    intent.putExtra("destination", selectDestination.getText().toString());
+                    intent.putExtra("slat",lat1.toString());
+                    intent.putExtra("slog",log1.toString());
+                    intent.putExtra("dlat",dlat.toString());
+                    intent.putExtra("dlog",dlog.toString());
                     startActivity(intent);
                 }
             }
@@ -593,8 +603,11 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
+
                 destLatitude = latLng.latitude;
                 destLongitude = latLng.longitude;
+                dlat=destLatitude;
+                dlog=destLongitude;
                 selectDestination.setText("Destination : " + (destLatitude + "").substring(0, 10) + " , " + (destLongitude + "").substring(0, 10));
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(new LatLng(destLatitude, destLongitude));

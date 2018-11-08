@@ -33,7 +33,8 @@ public class ValidateCredentialsResponse{
 
 	@SerializedName("description")
 	private String description;
-
+	@SerializedName("UserAccountNo")
+	private String UserAccountNo;
 	public String getCode() {
 		return code;
 	}
@@ -114,7 +115,9 @@ public class ValidateCredentialsResponse{
 	public String getLastname(){
 		return lastname;
 	}
-
+	public String getUserAccountNo(){
+		return UserAccountNo;
+	}
 	@Override
  	public String toString(){
 		return 

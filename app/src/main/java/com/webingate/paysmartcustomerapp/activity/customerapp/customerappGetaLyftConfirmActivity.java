@@ -105,7 +105,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class customerappGetaLyftConfirmActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
+public class customerappGetaLyftConfirmActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
 //    @BindView(R.id.toolbar)
 //    Toolbar toolbar;
 public static final String MyPREFERENCES = "MyPrefs";
@@ -142,7 +142,7 @@ public static final String MyPREFERENCES = "MyPrefs";
     int bookingId = 0;
     int dest = 0;
     Place destination, source;
-    //static GoogleMap mMap;
+    static GoogleMap mMap;
     static Marker marker, markerDesst;
     private Marker cabs[] = new Marker[5];
     double sourceLatitude = 0.0, sourceLongitude = 0.0, destLatitude = 0.0, destLongitude = 0.0;
@@ -168,7 +168,7 @@ public static final String MyPREFERENCES = "MyPrefs";
     Toast toast;
     ProgressDialog dialog;
     String useracntno;
-
+    String slat,slog,dlat,dlog;
     //TODO: this is to test then scroll view navigation
 //    List<DirectoryHome9ProductsVO> productsList;
 //    customerapp_ProductsAdapter productsAdapter;
@@ -198,8 +198,8 @@ public static final String MyPREFERENCES = "MyPrefs";
      };*/
     private LocationRequest mLocationRequest;
     ActionBarDrawerToggle toggle;
-    private LatLng latLng, latlngnew;
-    private String response;
+    private LatLng latLng, srclatlngnew,destlatlngnew;
+    private String response,C_src,C_des;
     private Polyline line;
     // private Timer timer;
 
@@ -208,6 +208,18 @@ public static final String MyPREFERENCES = "MyPrefs";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_getalyftconfirm_activity);
+
+        Intent intent = getIntent();
+        C_src=intent.getStringExtra("source");
+        C_des=intent.getStringExtra("destination");
+        slat=intent.getStringExtra("slat");
+        slog=intent.getStringExtra("slog");
+        dlat=intent.getStringExtra("dlat");
+        dlog=intent.getStringExtra("dlog");
+       // selectDestination.setText("Destination : " + (dlat + "").substring(0, 10) + " , " + (dlog + "").substring(0, 10));
+       // selectsource.setText("Destination : " + (slat + "").substring(0, 10) + " , " + (slog + "").substring(0, 10));
+ //      selectsource.setText(C_src);
+  //      selectDestination.setText(C_des);
 
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         useracntno = prefs.getString(UserAccountNo, null);
@@ -221,7 +233,7 @@ public static final String MyPREFERENCES = "MyPrefs";
         //  configureCameraIdle();//cofigure drag destionatio selection
         //setSupportActionBar(toolbar);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        //mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);
 //        taxi.setVisibility(View.GONE);
 //        meteredtaxi.setVisibility(View.GONE);
 //        bus.setVisibility(View.GONE);
@@ -408,6 +420,65 @@ public static final String MyPREFERENCES = "MyPrefs";
 
 
     }
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        //   mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                requestLocationPermission();
+            }
+        } else {
+            showSettingDialog();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //User has previously accepted this permission
+            if (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+            }
+        } else {
+            //Not in api-23, no need to prompt
+            mMap.setMyLocationEnabled(true);
+        }
+        // mMap.getUiSettings().setZoomControlsEnabled(true);
+        // mMap.getUiSettings().setZoomGesturesEnabled(true);
+
+        // mMap.setOnCameraIdleListener(onCameraIdleListener);
+        googleMap.getUiSettings().setCompassEnabled(true);
+        googleMap.getUiSettings().setRotateGesturesEnabled(true);
+
+
+        srclatlngnew = new LatLng(Double.parseDouble(slat), Double.parseDouble(slog));
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(srclatlngnew);
+        markerOptions.title("Current Position");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        if (marker != null)
+            marker.remove();
+        marker = mMap.addMarker(markerOptions);
+
+        destlatlngnew = new LatLng(Double.parseDouble(dlat), Double.parseDouble(dlog));
+         markerOptions = new MarkerOptions();
+        markerOptions.position(destlatlngnew);
+        markerOptions.title("Current Position");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        if (markerDesst != null)
+            markerDesst.remove();
+        markerDesst = mMap.addMarker(markerOptions);
+
+        //move map camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(srclatlngnew));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
+
+        customerappGetaLyftConfirmActivity.DirectionsTask downloadTask2 = new customerappGetaLyftConfirmActivity.DirectionsTask();
+        downloadTask2.execute();
+        dest = 0;
+        //LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, customerappGetaLyftConfirmActivity.this);
+
+
+    }
 
     //toolbar button click
     @Override
@@ -546,8 +617,8 @@ public static final String MyPREFERENCES = "MyPrefs";
                 // Fetching the data from web service
                 Log.i("Directions", "Waiting For directions");
                 result = DirectionsApi.newRequest(getGeoContext())
-                        .mode(TravelMode.DRIVING).origin(new com.google.maps.model.LatLng(sourceLatitude, sourceLongitude))
-                        .destination(new com.google.maps.model.LatLng(destLatitude, destLongitude)).departureTime(now).await();
+                        .mode(TravelMode.DRIVING).origin(new com.google.maps.model.LatLng(srclatlngnew.latitude,srclatlngnew.longitude))
+                        .destination(new com.google.maps.model.LatLng(destlatlngnew.latitude, destlatlngnew.longitude)).departureTime(now).await();
             } catch (Exception e) {
                 Log.d("Background Task", e.toString());
             }
@@ -556,36 +627,36 @@ public static final String MyPREFERENCES = "MyPrefs";
 
         // Executes in UI thread, after the execution of
         // doInBackground()
-//        @Override
-//        protected void onPostExecute(String results) {
-//            super.onPostExecute(results);
-//            Log.i("Directions", "Got directions");
-//            if (result != null) {
-//                MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
-//                        .legs[0].startLocation.lat, result.routes[0]
-//                        .legs[0].startLocation.lng))
-//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-//                        .title("Source" + result.routes[0].legs[0].startAddress);
-//                if (marker != null)
-//                    marker.remove();
-//                marker = mMap.addMarker(markerOptions);
-//                markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
-//                        .legs[0].endLocation.lat, result.routes[0]
-//                        .legs[0].endLocation.lng))
-//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-//                        .title("Destination" + result.routes[0].legs[0].endAddress);
-//                if (markerDesst != null)
-//                    markerDesst.remove();
-//                markerDesst = mMap.addMarker(markerOptions);
-//                selectsource.setText("Source :" + result.routes[0].legs[0].startAddress);
-//                selectDestination.setText("Destination :" + result.routes[0].legs[0].endAddress);
-//                List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
-//                PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
-//                if (line != null)
-//                    line.remove();
-//                line = mMap.addPolyline(polylineOptions);
-//            }
-//        }
+        @Override
+        protected void onPostExecute(String results) {
+            super.onPostExecute(results);
+            Log.i("Directions", "Got directions");
+            if (result != null) {
+                MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
+                        .legs[0].startLocation.lat, result.routes[0]
+                        .legs[0].startLocation.lng))
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+                        .title("Source" + result.routes[0].legs[0].startAddress);
+                if (marker != null)
+                    marker.remove();
+                marker = mMap.addMarker(markerOptions);
+                markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
+                        .legs[0].endLocation.lat, result.routes[0]
+                        .legs[0].endLocation.lng))
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+                        .title("Destination" + result.routes[0].legs[0].endAddress);
+                if (markerDesst != null)
+                    markerDesst.remove();
+                markerDesst = mMap.addMarker(markerOptions);
+                selectsource.setText("Source :" + result.routes[0].legs[0].startAddress);
+                selectDestination.setText("Destination :" + result.routes[0].legs[0].endAddress);
+                List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
+                PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
+                if (line != null)
+                    line.remove();
+                line = mMap.addPolyline(polylineOptions);
+            }
+        }
     }
 
 //    public void onMapReady(GoogleMap googleMap) {
@@ -947,12 +1018,12 @@ public static final String MyPREFERENCES = "MyPrefs";
         sourceLongitude = location.getLongitude();
 
         //  DisplayToast(sourceLatitude + " " + sourceLongitude);
-        latLng = latlngnew;
+        latLng = srclatlngnew;
         //Place current location marker
         //below statement commenting to test for zimbzbwe location
-        latlngnew = new LatLng(sourceLatitude, sourceLongitude);
+        srclatlngnew = new LatLng(sourceLatitude, sourceLongitude);
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latlngnew);
+        markerOptions.position(srclatlngnew);
         markerOptions.title("Source");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         if (marker != null)
