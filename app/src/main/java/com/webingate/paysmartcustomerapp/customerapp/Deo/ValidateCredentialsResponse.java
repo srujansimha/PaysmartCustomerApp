@@ -28,6 +28,9 @@ public class ValidateCredentialsResponse{
 	@SerializedName("lastname")
 	private String lastname;
 
+	@SerializedName("UserAccountNo")
+	private String UserAccountNo;
+
 	@SerializedName("Code")
 	private String code;
 
@@ -114,6 +117,13 @@ public class ValidateCredentialsResponse{
 	public String getLastname(){
 		return lastname;
 	}
+	public void setUserAccountNo(String UserAccountNo){
+		this.UserAccountNo = UserAccountNo;
+	}
+
+	public String getUserAccountNo(){
+		return UserAccountNo;
+	}
 
 	@Override
  	public String toString(){
@@ -126,7 +136,8 @@ public class ValidateCredentialsResponse{
 			",id = '" + id + '\'' + 
 			",authTypeId = '" + authTypeId + '\'' + 
 			",mobilenumber = '" + mobilenumber + '\'' + 
-			",lastname = '" + lastname + '\'' + 
+			",lastname = '" + lastname + '\'' +
+			",UserAccountNo = '" + UserAccountNo + '\''+
 			"}";
 		}
 }

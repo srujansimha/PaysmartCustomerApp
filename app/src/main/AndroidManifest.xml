@@ -135,5 +135,10 @@
         <activity
             android:name=".activity.customerapp.customerappGetaLyftConfirmActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".customerapp.CurrentTrip"
+            android:theme="@style/AppTheme.NoActionBar" />
+
     </application>
 </manifest>
