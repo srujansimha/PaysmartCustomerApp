@@ -71,6 +71,7 @@ public class login_activity extends AppCompatActivity{
     public static final String Profilepic = "profilepic";
     public static final String Passwordotp = "passwordotpkey";
     public static final String UserAccountNo = "UserAccountNokey";
+
     private String response;
 
    ArrayList<GeneralList> countriesList;
@@ -239,13 +240,13 @@ public class login_activity extends AppCompatActivity{
                         }else {
                             SharedPreferences sharedPref = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPref.edit();
-                           editor.putString(UserAccountNo, credentialsResponse.getUserAccountNo());
+                            editor.putString(UserAccountNo, credentialsResponse.getUserAccountNo());
 //                            editor.putString(VEHICLEID, credentialsResponse.getVehicleId());
 //                            editor.putString(Phone, mobileNo.getText().toString());
 //                            editor.putString(Emailotp, null);
 //                            editor.putString(Mobileotp, null);
                             Intent intent = new Intent(login_activity.this, customerDashboardActivity.class);
-                            intent.putExtra("mobilenumber", credentialsResponse.getMobilenumber());
+                            //intent.putExtra("mobilenumber", credentialsResponse.getMobilenumber());
                             //intent.putExtra("Uid",E_uid);
                             startActivity(intent);
                             editor.commit();

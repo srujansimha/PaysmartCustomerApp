@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -34,7 +35,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,6 +84,7 @@ import com.webingate.paysmartcustomerapp.customerapp.CurrentTrip;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.AvailableVehiclesResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CalculatePriceResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerBookingStatusResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.RegisterUserResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.SaveBookingDetailsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.UpdateBookingstatusResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
@@ -94,6 +99,8 @@ import org.joda.time.DateTime;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -110,6 +117,12 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
 //    Toolbar toolbar;
 public static final String MyPREFERENCES = "MyPrefs";
     public static final String UserAccountNo = "UserAccountNokey";
+
+    LinearLayout bsLayout;
+    ArrayList<String> list;
+    ArrayAdapter<String> adapter;
+
+    String[] fruits;
 
 
     @BindView(R.id.map_source)
@@ -223,6 +236,8 @@ public static final String MyPREFERENCES = "MyPrefs";
 
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         useracntno = prefs.getString(UserAccountNo, null);
+
+        fruits = getResources().getStringArray(R.array.fruits);
         ButterKnife.bind(this);
         dialog = new ProgressDialog.Builder(customerappGetaLyftConfirmActivity.this)
                 .setTitle("Loading...")
@@ -354,16 +369,27 @@ public static final String MyPREFERENCES = "MyPrefs";
                 }
             }
         });
+        payment = findViewById(R.id.payment);
+
+        payment.setOnClickListener((View v) -> {
+
+            View view = getLayoutInflater().inflate(R.layout.customerapp_bottomdialog, null);
+
+            BottomSheetDialog dialog = new BottomSheetDialog(this);
+
+            list = new ArrayList<>(Arrays.asList(fruits));
+            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+            ListView listView = view.findViewById(R.id.bsDialogListView);
+
+            listView.setAdapter(adapter);
+
+            dialog.setContentView(view);
+            dialog.show();
+        });
         personal.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View p){
                 DisplayToast("Please Select Personal");
-            }
-        });
-        payment.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View pp){
-                DisplayToast("Please Select Payment");
             }
         });
         coupon.setOnClickListener(new View.OnClickListener(){
@@ -1156,8 +1182,8 @@ public static final String MyPREFERENCES = "MyPrefs";
                 .subscribe(new Subscriber<List<SaveBookingDetailsResponse>>() {
                     @Override
                     public void onCompleted() {
-                        //  DisplayToast("Successfully Registered");
-                        StopDialogue();
+                          DisplayToast("Successfully Registered");
+                        //StopDialogue();
                     }
 
                     @Override
@@ -1166,7 +1192,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                             e.printStackTrace();
                             Log.d("OnError ", e.getMessage());
                             DisplayToast("Error");
-                            StopDialogue();
+                            //StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -1184,6 +1210,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                             BookingStatus();
                         }else {
                             DisplayToast("Booking Failed");
+                            //BookingStatus();
                         }
 
                     }
@@ -1304,6 +1331,7 @@ public static final String MyPREFERENCES = "MyPrefs";
 
                     @Override
                     public void onNext(List<UpdateBookingstatusResponse> responselist) {
+                        UpdateBookingstatusResponse response=responselist.get(0);
                         AlertDialog alertDialog = new AlertDialog.Builder(customerappGetaLyftConfirmActivity.this, R.style.Dialog_Theme).create();
                         alertDialog.setTitle("Alert");
                         alertDialog.setMessage("All Cabs Were Busy Please Try Again");
