@@ -48,6 +48,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+
+import android.location.Criteria;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -72,10 +74,11 @@ import com.google.gson.JsonObject;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.android.PolyUtil;
+import com.google.maps.android.SphericalUtil;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
 import com.webingate.paysmartcustomerapp.R;
-import com.webingate.paysmartcustomerapp.adapter.customerapp_ProductsAdapter;
+import com.webingate.paysmartcustomerapp.adapter.customerapp_VehicleTypesAdapter;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.CheckingCabsDialogue;
 import com.webingate.paysmartcustomerapp.customerapp.CurrentTrip;
@@ -148,7 +151,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     int dest = 0;
     Place destination, source;
     static GoogleMap mMap;
-    static Marker marker, markerDesst;
+    static Marker marker, markerDesst, markerCar1, markerCar2, markerBus, markerAmbulance;
     private Marker cabs[] = new Marker[5];
     double sourceLatitude = 0.0, sourceLongitude = 0.0, destLatitude = 0.0, destLongitude = 0.0;
     private static final int CHECKPRICE = 1;
@@ -175,8 +178,9 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 
     //TODO: this is to test then scroll view navigation
     List<DirectoryHome9ProductsVO> productsList;
-    customerapp_ProductsAdapter productsAdapter;
+    customerapp_VehicleTypesAdapter productsAdapter;
     RecyclerView rvProduct;
+private boolean mLocationPermissionGranted =false;
 
     @Override
     public void onBackPressed() {
@@ -326,8 +330,8 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
             }
         });
         //   AvailableVehicles();
-        productsList = DirectoryHome9Repository.getProductsList();
-        productsAdapter = new customerapp_ProductsAdapter(productsList);
+        productsList = DirectoryHome9Repository.getVehicleTypes();
+        productsAdapter = new customerapp_VehicleTypesAdapter(productsList);
 
 
         rvProduct = findViewById(R.id.rvProducts);
@@ -335,18 +339,19 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         RecyclerView.LayoutManager productLayoutManager =  new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         rvProduct.setLayoutManager(productLayoutManager);
         rvProduct.setAdapter(productsAdapter);
+       // productsAdapter.getItem(0).itemView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         productsAdapter.setOnItemClickListener((view, promotion, position) -> {
 
             switch(position){
                 case 0:
                     Toast.makeText(getApplicationContext(), "Clicked : get a lyft", Toast.LENGTH_SHORT).show();
-                    ApplicationConstants.marker = R.mipmap.marker_taxi;
-                    Intent intent = new Intent(this, customerappGetaLyftActivity.class);
-                    startActivity(intent);
+
+//                    Intent intent = new Intent(this, customerappGetaLyftActivity.class);
+//                    startActivity(intent);
+                    AvailableVehiclesTest(0);
                     break;
                 case 1:
-                    intent = new Intent(this, customerappFlightBookingSearchActivity.class);
-                    startActivity(intent);
+                    AvailableVehiclesTest(1);
 //                        AppDirectoryHome1Fragment af1 = new AppDirectoryHome1Fragment();
 //
 //                        getActivity().getSupportFragmentManager().beginTransaction()
@@ -354,16 +359,17 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 //                                .commitAllowingStateLoss();
                     break;
                 case 2:
-
+                    AvailableVehiclesTest(2);
 
                     break;
                 case 3:
-                    intent = new Intent(this, customerappTrainBookingSearchActivity.class);
-                    startActivity(intent);
+                    AvailableVehiclesTest(3);
                     break;
                 case 4:
+                    AvailableVehiclesTest(4);
                     break;
                 case 5:
+                    AvailableVehiclesTest(5);
                     break;
                 default:
                     break;
@@ -371,6 +377,42 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
             //Toast.makeText(getContext(), "Clicked : " + promotion.getName(), Toast.LENGTH_SHORT).show();
         });
 
+    }
+
+    public  void AvailableVehiclesTest(int vehicleType){
+
+
+        switch (vehicleType){
+            case 0:
+                ApplicationConstants.marker = R.mipmap.marker_car;
+                break;
+            case 1:
+                ApplicationConstants.marker = R.mipmap.marker_taxi;
+                break;
+            case 2:
+                ApplicationConstants.marker = R.mipmap.marker_car;
+                break;
+            case 3:
+                ApplicationConstants.marker = R.mipmap.marker_taxi;
+                break;
+            case 4:
+                ApplicationConstants.marker = R.mipmap.marker_car;
+                break;
+                default:
+                    break;
+        }
+
+        for (int i = 0; i < 5; i++) {
+            AvailableVehiclesResponse response= new AvailableVehiclesResponse();
+            double lat = 17.459 + (0.001 * (i+1)); //response.getLatitude();
+            double lon = 78.423+ (0.001 * (i+1));//response.getLongitude();
+            LatLng lng = new LatLng(lat, lon);
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(lng);
+            markerOptions.title(response.getRegistrationNo());
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(ApplicationConstants.marker));
+            cabs[i] = mMap.addMarker(markerOptions);
+        }
 
     }
 
@@ -394,106 +436,6 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     // this method will provide distance and time between two places
     private String getEndLocationTitle(DirectionsResult results) {
         return "Time :" + results.routes[0].legs[0].duration.humanReadable + " Distance :" + results.routes[0].legs[0].distance.humanReadable;
-    }
-
-    @Override
-    public void PaymentDetails(String paymentType) {
-        DateFormat dateFormatter = new SimpleDateFormat("dd/mm/yyyy hh:mm:ss");
-        dateFormatter.setLenient(false);
-        Date today = new Date();
-        String datetime = dateFormatter.format(today);
-        JsonObject object=new JsonObject();
-        object.addProperty("flag", "i");
-        object.addProperty("Id", "");
-        object.addProperty("CompanyId", "2");
-        object.addProperty("BNo", ApplicationConstants.bookingNo);
-        object.addProperty("BookedDate", datetime.substring(0, 11));
-        object.addProperty("BookedTime", datetime.substring(11));
-        object.addProperty("DepartueDate", datetime.substring(0, 11));
-        object.addProperty("DepartureTime", datetime.substring(11));
-        object.addProperty("BookingType", "currentbooking");
-        object.addProperty("Src", selectsource.getText().toString());
-        object.addProperty("Dest", selectDestination.getText().toString());
-        object.addProperty("SrcId", "15");
-        object.addProperty("DestId", "35");
-        object.addProperty("SrcLatitude", sourceLatitude + "");
-        object.addProperty("SrcLongitude", sourceLongitude + "");
-        object.addProperty("DestLatitude", destLatitude + "");
-        object.addProperty("DestLongitude", destLongitude + "");
-        object.addProperty("VechId", "12");
-        object.addProperty("PackageId", "101");
-        object.addProperty("Pricing", "300");
-        object.addProperty("DriverId", "");
-        object.addProperty("DriverPhoneNo", "");
-        object.addProperty("CustomerPhoneNo", ApplicationConstants.mobileNo);
-        object.addProperty("CustomerId", "568");
-        object.addProperty("BookingStatus", "New");
-        object.addProperty("NoofVehicles", "1");
-        object.addProperty("NoofSeats", "1");
-        object.addProperty("ClosingDate", "");
-        object.addProperty("ClosingTime", "");
-        object.addProperty("CancelledOn", "");
-        object.addProperty("CancelledBy", "");
-        object.addProperty("BookingChannel", "app");
-        object.addProperty("Reasons", "");
-        object.addProperty("PaymentTypeId", paymentType);
-        SaveBookingDetails(object);
-    }
-
-    @Override
-    public void RideLater(String date, String time) {
-        Log.i("Booking status", "Ride later calling");
-        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/mm/yyyy hh:mm:ss");
-        dateFormatter.setLenient(false);
-        Date today = new Date();
-        String datetime = dateFormatter.format(today);
-        JsonObject object=new JsonObject();
-        object.addProperty("flag", "U");
-        object.addProperty("Id", "");
-        object.addProperty("CompanyId", "1");
-        object.addProperty("BNo", "00");
-        object.addProperty("BookedDate", datetime.substring(0, 11));
-        object.addProperty("BookedTime", datetime.substring(11));
-        object.addProperty("DepartueDate", ApplicationConstants.bookingDate);
-        object.addProperty("DepartureTime", ApplicationConstants.bookingTime);
-        object.addProperty("BookingType", "Advancebooking");
-        object.addProperty("Src", selectsource.getText().toString());
-        object.addProperty("Dest", selectDestination.getText().toString());
-        object.addProperty("SrcId", "15");
-        object.addProperty("DestId", "35");
-        object.addProperty("SrcLatitude", sourceLatitude + "");
-        object.addProperty("SrcLongitude", sourceLongitude + "");
-        object.addProperty("DestLatitude", destination.getLatLng().latitude + "");
-        object.addProperty("DestLongitude", destination.getLatLng().longitude + "");
-        object.addProperty("VechId", "");
-        object.addProperty("PackageId", "250");
-        object.addProperty("Pricing", "300");
-        object.addProperty("DriverId", "");
-        object.addProperty("DriverPhoneNo", "");
-        object.addProperty("CustomerPhoneNo", ApplicationConstants.mobileNo);
-        object.addProperty("CustomerId", "568");
-        object.addProperty("BookingStatus", "New");
-        object.addProperty("NoofVehicles", "1");
-        object.addProperty("NoofSeats", "1");
-        object.addProperty("ClosingDate", "");
-        object.addProperty("ClosingTime", "");
-        object.addProperty("CancelledOn", "");
-        object.addProperty("CancelledBy", "");
-        object.addProperty("BookingChannel", "app");
-        object.addProperty("Reasons", "");
-        AdvanceBookingDetails(object);
-    }
-
-    @Override
-    public void DialogueCancelled() {
-        isBookingStarted=false;
-        JsonObject object=new JsonObject();
-        object.addProperty("BNo", ApplicationConstants.bookingNo);
-        object.addProperty("BookingStatus", "Cancelled");
-        object.addProperty("UpdatedBy", "1");
-        object.addProperty("UpdatedUserId", "21");
-        UpdateBookingStatus(object);
-        AvailableVehicles();
     }
 
     // This task will provide directions and path
@@ -609,6 +551,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 
     }
 
+
     /* Initiate Google API Client  */
     private void initGoogleAPIClient() {
         //Without Google API Client Auto Location Dialog will not work
@@ -693,6 +636,12 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                             mMap.setMyLocationEnabled(true);
                         }
                         updateGPSStatus("GPS is Enabled in your device");
+                            try {
+                                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftActivity.this);
+                                AvailableVehiclesTest(0);
+                            }catch (Exception ex){
+                              Log.println(Log.ASSERT,"error",ex.getMessage().toString());
+                            }
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         // Location settings are not satisfied. But could be fixed by showing the user
@@ -744,6 +693,8 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                         }
                         dest = 0;
                         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+
+                        AvailableVehicles();
                     }
                 } else if (dest == 2) {
                     destination = PlaceAutocomplete.getPlace(this, data);
@@ -789,13 +740,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //Unregister receiver on destroy
-        if (gpsLocationReceiver != null)
-            unregisterReceiver(gpsLocationReceiver);
-    }
+
 
     //Run on UI
     private Runnable sendUpdatesToUI = new Runnable() {
@@ -889,7 +834,10 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
-        // mMap.animateCamera(CameraUpdateFactory.zoomTo(18.5f));
+        //LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+         //mMap.animateCamera(CameraUpdateFactory.zoomTo(18.5f));
+        //AvailableVehicles();
+
     }
 
     @Override
@@ -938,6 +886,33 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
             customerappGetaLyftActivity.DirectionsTask downloadTask = new customerappGetaLyftActivity.DirectionsTask();
             downloadTask.execute();
         }
+
+//        latLng = new LatLng(location.getLatitude(), location.getLongitude() - 0.001225);
+//        markerOptions = new MarkerOptions();
+//        markerOptions.position(latLng);
+//        markerOptions.title("Seshu");
+//        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_car));
+//        markerCar2 = mMap.addMarker(markerOptions);
+//
+//        latLng = new LatLng(location.getLatitude() + 0.002225, location.getLongitude());
+//        markerOptions = new MarkerOptions();
+//        markerOptions.position(latLng);
+//        markerOptions.title("Seshu");
+//        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_bus));
+//        markerBus = mMap.addMarker(markerOptions);
+//
+//        latLng = new LatLng(location.getLatitude() + 0.001225, location.getLongitude());
+//        markerOptions = new MarkerOptions();
+//        markerOptions.position(latLng);
+//        markerOptions.title("Ambulance");
+//        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_ambulance));
+//        markerAmbulance = mMap.addMarker(markerOptions);
+//
+//        float rotation = (float) SphericalUtil.computeHeading(latLng, latlngnew);
+//        rotateMarker(markerCar1, latlngnew, rotation);
+        //move map camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
     }
 
 
@@ -1041,6 +1016,17 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         timer.schedule(timerTask, 0, 5000); //execute in every 50000 ms
     }*/
 
+    @Override
+    public void DialogueCancelled() {
+        isBookingStarted=false;
+        JsonObject object=new JsonObject();
+        object.addProperty("BNo", ApplicationConstants.bookingNo);
+        object.addProperty("BookingStatus", "Cancelled");
+        object.addProperty("UpdatedBy", "1");
+        object.addProperty("UpdatedUserId", "21");
+        UpdateBookingStatus(object);
+        AvailableVehicles();
+    }
     public void SaveBookingDetails(JsonObject jsonObject) {
         StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftActivity.this).getrestadapter()
@@ -1254,7 +1240,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
             object.addProperty("CustomerPhoneNo", ApplicationConstants.mobileNo);
             object.addProperty("SrcLatitude", sourceLongitude);
             object.addProperty("SrcLongitude", sourceLongitude);
-            object.addProperty("VehicleGroupId", "34");
+            object.addProperty("VehicleGroupId", "69");
             AvailableVehicles(object);
         }
     }
@@ -1341,7 +1327,101 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    public void PaymentDetails(String paymentType) {
+        DateFormat dateFormatter = new SimpleDateFormat("dd/mm/yyyy hh:mm:ss");
+        dateFormatter.setLenient(false);
+        Date today = new Date();
+        String datetime = dateFormatter.format(today);
+        JsonObject object=new JsonObject();
+        object.addProperty("flag", "i");
+        object.addProperty("Id", "");
+        object.addProperty("CompanyId", "2");
+        object.addProperty("BNo", ApplicationConstants.bookingNo);
+        object.addProperty("BookedDate", datetime.substring(0, 11));
+        object.addProperty("BookedTime", datetime.substring(11));
+        object.addProperty("DepartueDate", datetime.substring(0, 11));
+        object.addProperty("DepartureTime", datetime.substring(11));
+        object.addProperty("BookingType", "currentbooking");
+        object.addProperty("Src", selectsource.getText().toString());
+        object.addProperty("Dest", selectDestination.getText().toString());
+        object.addProperty("SrcId", "15");
+        object.addProperty("DestId", "35");
+        object.addProperty("SrcLatitude", sourceLatitude + "");
+        object.addProperty("SrcLongitude", sourceLongitude + "");
+        object.addProperty("DestLatitude", destLatitude + "");
+        object.addProperty("DestLongitude", destLongitude + "");
+        object.addProperty("VechId", "12");
+        object.addProperty("PackageId", "101");
+        object.addProperty("Pricing", "300");
+        object.addProperty("DriverId", "");
+        object.addProperty("DriverPhoneNo", "");
+        object.addProperty("CustomerPhoneNo", ApplicationConstants.mobileNo);
+        object.addProperty("CustomerId", "568");
+        object.addProperty("BookingStatus", "New");
+        object.addProperty("NoofVehicles", "1");
+        object.addProperty("NoofSeats", "1");
+        object.addProperty("ClosingDate", "");
+        object.addProperty("ClosingTime", "");
+        object.addProperty("CancelledOn", "");
+        object.addProperty("CancelledBy", "");
+        object.addProperty("BookingChannel", "app");
+        object.addProperty("Reasons", "");
+        object.addProperty("PaymentTypeId", paymentType);
+        SaveBookingDetails(object);
+    }
 
+    @Override
+    public void RideLater(String date, String time) {
+        Log.i("Booking status", "Ride later calling");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd/mm/yyyy hh:mm:ss");
+        dateFormatter.setLenient(false);
+        Date today = new Date();
+        String datetime = dateFormatter.format(today);
+        JsonObject object=new JsonObject();
+        object.addProperty("flag", "U");
+        object.addProperty("Id", "");
+        object.addProperty("CompanyId", "1");
+        object.addProperty("BNo", "00");
+        object.addProperty("BookedDate", datetime.substring(0, 11));
+        object.addProperty("BookedTime", datetime.substring(11));
+        object.addProperty("DepartueDate", ApplicationConstants.bookingDate);
+        object.addProperty("DepartureTime", ApplicationConstants.bookingTime);
+        object.addProperty("BookingType", "Advancebooking");
+        object.addProperty("Src", selectsource.getText().toString());
+        object.addProperty("Dest", selectDestination.getText().toString());
+        object.addProperty("SrcId", "15");
+        object.addProperty("DestId", "35");
+        object.addProperty("SrcLatitude", sourceLatitude + "");
+        object.addProperty("SrcLongitude", sourceLongitude + "");
+        object.addProperty("DestLatitude", destination.getLatLng().latitude + "");
+        object.addProperty("DestLongitude", destination.getLatLng().longitude + "");
+        object.addProperty("VechId", "");
+        object.addProperty("PackageId", "250");
+        object.addProperty("Pricing", "300");
+        object.addProperty("DriverId", "");
+        object.addProperty("DriverPhoneNo", "");
+        object.addProperty("CustomerPhoneNo", ApplicationConstants.mobileNo);
+        object.addProperty("CustomerId", "568");
+        object.addProperty("BookingStatus", "New");
+        object.addProperty("NoofVehicles", "1");
+        object.addProperty("NoofSeats", "1");
+        object.addProperty("ClosingDate", "");
+        object.addProperty("ClosingTime", "");
+        object.addProperty("CancelledOn", "");
+        object.addProperty("CancelledBy", "");
+        object.addProperty("BookingChannel", "app");
+        object.addProperty("Reasons", "");
+        AdvanceBookingDetails(object);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //Unregister receiver on destroy
+        if (gpsLocationReceiver != null)
+            unregisterReceiver(gpsLocationReceiver);
+    }
 }
 
 
