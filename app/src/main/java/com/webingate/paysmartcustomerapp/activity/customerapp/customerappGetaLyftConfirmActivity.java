@@ -116,6 +116,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
 //    @BindView(R.id.toolbar)
 //    Toolbar toolbar;
 public static final String MyPREFERENCES = "MyPrefs";
+    public static final String ID = "idKey";
     public static final String UserAccountNo = "UserAccountNokey";
 
     LinearLayout bsLayout;
@@ -180,7 +181,7 @@ public static final String MyPREFERENCES = "MyPrefs";
     boolean isBookingStarted=true;
     Toast toast;
     ProgressDialog dialog;
-    String useracntno;
+    String useracntno,id;
     String slat,slog,dlat,dlog;
     //TODO: this is to test then scroll view navigation
 //    List<DirectoryHome9ProductsVO> productsList;
@@ -221,6 +222,8 @@ public static final String MyPREFERENCES = "MyPrefs";
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_getalyftconfirm_activity);
+//        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+//        id = prefs.getString(ID, null);
 
         Intent intent = getIntent();
         C_src=intent.getStringExtra("source");
@@ -239,6 +242,7 @@ public static final String MyPREFERENCES = "MyPrefs";
   //      selectDestination.setText(C_des);
 
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        id = prefs.getString(ID, null);
         useracntno = prefs.getString(UserAccountNo, null);
 
         fruits = getResources().getStringArray(R.array.fruits);
@@ -1384,7 +1388,7 @@ public static final String MyPREFERENCES = "MyPrefs";
     public void AvailableVehicles() {
         if (!isBookingStarted){
             JsonObject object = new JsonObject();
-            object.addProperty("CustomerPhoneNo", ApplicationConstants.mobileNo);
+            object.addProperty("UserId", "2");
             object.addProperty("SrcLatitude", sourceLongitude);
             object.addProperty("SrcLongitude", sourceLongitude);
             object.addProperty("VehicleGroupId", "34");

@@ -810,7 +810,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
         object.addProperty("Amount", ApplicationConstants.estPrice);
         object.addProperty("PaymentModeId", ApplicationConstants.paymenttype);
         object.addProperty("CustAccountId", "1");
-        object.addProperty("AppUserId", ApplicationConstants.id);
+        object.addProperty("AppUserId", "2");
         MakePayment(object);
     }
     public void MakePayment(JsonObject jsonObject){
