@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -20,6 +21,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -33,7 +35,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -79,6 +84,7 @@ import com.webingate.paysmartcustomerapp.customerapp.CurrentTrip;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.AvailableVehiclesResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CalculatePriceResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerBookingStatusResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.RegisterUserResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.SaveBookingDetailsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.UpdateBookingstatusResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
@@ -93,6 +99,8 @@ import org.joda.time.DateTime;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -104,17 +112,36 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class customerappGetaLyftConfirmActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
+public class customerappGetaLyftConfirmActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
 //    @BindView(R.id.toolbar)
 //    Toolbar toolbar;
+public static final String MyPREFERENCES = "MyPrefs";
+    public static final String UserAccountNo = "UserAccountNokey";
+
+    LinearLayout bsLayout;
+    ArrayList<String> list;
+    ArrayAdapter<String> adapter;
+
+    String[] fruits;
+
+
     @BindView(R.id.map_source)
     TextView selectsource;
-//    @BindView(R.id.source_gps_location)
-//    Button sourceGpsLocation;
+    @BindView(R.id.source_gps_location)
+    Button sourceGpsLocation;
     @BindView(R.id.table_row)
     TableRow tableRow;
     @BindView(R.id.map_destination)
     TextView selectDestination;
+
+    @BindView(R.id.pricetextview)
+    TextView price;
+    @BindView(R.id.payment)
+    TextView payment;
+    @BindView(R.id.personal)
+    TextView personal;
+    @BindView(R.id.coupon)
+    TextView coupon;
     //    @BindView(R.id.taxi)
 //    AppCompatButton taxi;
 //    @BindView(R.id.meteredtaxi)
@@ -128,7 +155,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
     int bookingId = 0;
     int dest = 0;
     Place destination, source;
-    //static GoogleMap mMap;
+    static GoogleMap mMap;
     static Marker marker, markerDesst;
     private Marker cabs[] = new Marker[5];
     double sourceLatitude = 0.0, sourceLongitude = 0.0, destLatitude = 0.0, destLongitude = 0.0;
@@ -153,7 +180,8 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
     boolean isBookingStarted=true;
     Toast toast;
     ProgressDialog dialog;
-
+    String useracntno;
+    String slat,slog,dlat,dlog;
     //TODO: this is to test then scroll view navigation
 //    List<DirectoryHome9ProductsVO> productsList;
 //    customerapp_ProductsAdapter productsAdapter;
@@ -183,8 +211,8 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
      };*/
     private LocationRequest mLocationRequest;
     ActionBarDrawerToggle toggle;
-    private LatLng latLng, latlngnew;
-    private String response;
+    private LatLng latLng, srclatlngnew,destlatlngnew;
+    private String response,C_src,C_des;
     private Polyline line;
     // private Timer timer;
 
@@ -193,6 +221,23 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_getalyftconfirm_activity);
+
+        Intent intent = getIntent();
+        C_src=intent.getStringExtra("source");
+        C_des=intent.getStringExtra("destination");
+        slat=intent.getStringExtra("slat");
+        slog=intent.getStringExtra("slog");
+        dlat=intent.getStringExtra("dlat");
+        dlog=intent.getStringExtra("dlog");
+       // selectDestination.setText("Destination : " + (dlat + "").substring(0, 10) + " , " + (dlog + "").substring(0, 10));
+       // selectsource.setText("Destination : " + (slat + "").substring(0, 10) + " , " + (slog + "").substring(0, 10));
+ //      selectsource.setText(C_src);
+  //      selectDestination.setText(C_des);
+
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        useracntno = prefs.getString(UserAccountNo, null);
+
+        fruits = getResources().getStringArray(R.array.fruits);
         ButterKnife.bind(this);
         dialog = new ProgressDialog.Builder(customerappGetaLyftConfirmActivity.this)
                 .setTitle("Loading...")
@@ -203,7 +248,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
         //  configureCameraIdle();//cofigure drag destionatio selection
         //setSupportActionBar(toolbar);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-        //mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);
 //        taxi.setVisibility(View.GONE);
 //        meteredtaxi.setVisibility(View.GONE);
 //        bus.setVisibility(View.GONE);
@@ -223,42 +268,42 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                 }
             }
         });
-//        sourceGpsLocation.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-//                    // TODO: Consider calling
-//                    //    ActivityCompat#requestPermissions
-//                    // here to request the missing permissions, and then overriding
-//                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-//                    //                                          int[] grantResults)
-//                    // to handle the case where the user grants the permission. See the documentation
-//                    // for ActivityCompat#requestPermissions for more details.
-//                    return;
-//                }
-//                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftConfirmActivity.this);
-//               /* if (marker != null) {
-//                    latlngnew = new LatLng(latitude, longitude);
-//                    MarkerOptions markerOptions = new MarkerOptions();
-//                    markerOptions.position(latlngnew);
-//                    markerOptions.title("Current Position");
-//                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-//                    marker.remove();
-//                    marker = mMap.addMarker(markerOptions);
-//                    selectsource.setText("Source :" + GetAddress(latitude, longitude));
-//                    sourceLatitude = latitude;
-//                    sourceLongitude = longitude;
-//                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
-//                    mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
-//                    if (!selectDestination.getText().toString().matches("")) {
-//                        String url = getDirectionsUrl(new LatLng(sourceLatitude, sourceLongitude), destination.getLatLng());
-//                        DownloadTask downloadTask = new DownloadTask();
-//                        //Start downloading json data from Google Directions API
-//                        downloadTask.execute(url);
-//                    }
-//                }*/
-//            }
-//        });
+        sourceGpsLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftConfirmActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    return;
+                }
+                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftConfirmActivity.this);
+               /* if (marker != null) {
+                    latlngnew = new LatLng(latitude, longitude);
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(latlngnew);
+                    markerOptions.title("Current Position");
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                    marker.remove();
+                    marker = mMap.addMarker(markerOptions);
+                    selectsource.setText("Source :" + GetAddress(latitude, longitude));
+                    sourceLatitude = latitude;
+                    sourceLongitude = longitude;
+                    mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
+                    if (!selectDestination.getText().toString().matches("")) {
+                        String url = getDirectionsUrl(new LatLng(sourceLatitude, sourceLongitude), destination.getLatLng());
+                        DownloadTask downloadTask = new DownloadTask();
+                        //Start downloading json data from Google Directions API
+                        downloadTask.execute(url);
+                    }
+                }*/
+            }
+        });
         selectDestination.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -281,11 +326,76 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                 if (selectDestination.getText().toString().matches("")) {
                     DisplayToast("Please Select Destination");
                 } else {
+                    //JsonObject object=new JsonObject();
+//                    object.addProperty("BNo", ApplicationConstants.bookingNo);
+//                    object.addProperty("PackageId", "3");
+//                    CalculatePrice(object);
                     JsonObject object=new JsonObject();
-                    object.addProperty("BNo", ApplicationConstants.bookingNo);
-                    object.addProperty("PackageId", "3");
-                    CalculatePrice(object);
+                    object.addProperty("flag", "i");
+                    object.addProperty("Id", "");
+                    object.addProperty("CompanyId", "2");
+                    object.addProperty("BNo", "");
+//                    object.addProperty("BookedDate", datetime.substring(0, 11));
+//                    object.addProperty("BookedTime", datetime.substring(11));
+//                    object.addProperty("DepartueDate", datetime.substring(0, 11));
+//                    object.addProperty("DepartureTime", datetime.substring(11));
+                    object.addProperty("BookingType", "currentbooking");
+                    object.addProperty("Src", selectsource.getText().toString());
+                    object.addProperty("Dest", selectDestination.getText().toString());
+                    object.addProperty("SrcId", "15");
+                    object.addProperty("DestId", "35");
+                    object.addProperty("SrcLatitude", sourceLatitude + "");
+                    object.addProperty("SrcLongitude", sourceLongitude + "");
+                    object.addProperty("DestLatitude", destLatitude + "");
+                    object.addProperty("DestLongitude", destLongitude + "");
+                    object.addProperty("VechId", "12");
+                    object.addProperty("PackageId", "101");
+                    object.addProperty("Pricing", "300");
+                    object.addProperty("DriverId", "");
+                    object.addProperty("DriverPhoneNo", "");
+                    object.addProperty("CustomerPhoneNo", useracntno);
+                    object.addProperty("CustomerId", "568");
+                    object.addProperty("BookingStatus", "New");
+                    object.addProperty("NoofVehicles", "1");
+                    object.addProperty("NoofSeats", "1");
+                    object.addProperty("ClosingDate", "");
+                    object.addProperty("ClosingTime", "");
+                    object.addProperty("CancelledOn", "");
+                    object.addProperty("CancelledBy", "");
+                    object.addProperty("BookingChannel", "app");
+                    object.addProperty("Reasons", "");
+                   // object.addProperty("PaymentTypeId", "");
+                    SaveBookingDetails(object);
                 }
+            }
+        });
+        payment = findViewById(R.id.payment);
+
+        payment.setOnClickListener((View v) -> {
+
+            View view = getLayoutInflater().inflate(R.layout.customerapp_bottomdialog, null);
+
+            BottomSheetDialog dialog = new BottomSheetDialog(this);
+
+            list = new ArrayList<>(Arrays.asList(fruits));
+            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
+            ListView listView = view.findViewById(R.id.bsDialogListView);
+
+            listView.setAdapter(adapter);
+
+            dialog.setContentView(view);
+            dialog.show();
+        });
+        personal.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View p){
+                DisplayToast("Please Select Personal");
+            }
+        });
+        coupon.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View cc){
+                DisplayToast("Please Select Coupon");
             }
         });
         //   AvailableVehicles();
@@ -333,6 +443,65 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
 //            }
 //            //Toast.makeText(getContext(), "Clicked : " + promotion.getName(), Toast.LENGTH_SHORT).show();
 //        });
+
+
+    }
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
+        //   mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                requestLocationPermission();
+            }
+        } else {
+            showSettingDialog();
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //User has previously accepted this permission
+            if (ActivityCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                mMap.setMyLocationEnabled(true);
+            }
+        } else {
+            //Not in api-23, no need to prompt
+            mMap.setMyLocationEnabled(true);
+        }
+        // mMap.getUiSettings().setZoomControlsEnabled(true);
+        // mMap.getUiSettings().setZoomGesturesEnabled(true);
+
+        // mMap.setOnCameraIdleListener(onCameraIdleListener);
+        googleMap.getUiSettings().setCompassEnabled(true);
+        googleMap.getUiSettings().setRotateGesturesEnabled(true);
+
+
+        srclatlngnew = new LatLng(Double.parseDouble(slat), Double.parseDouble(slog));
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(srclatlngnew);
+        markerOptions.title("Current Position");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        if (marker != null)
+            marker.remove();
+        marker = mMap.addMarker(markerOptions);
+
+        destlatlngnew = new LatLng(Double.parseDouble(dlat), Double.parseDouble(dlog));
+         markerOptions = new MarkerOptions();
+        markerOptions.position(destlatlngnew);
+        markerOptions.title("Current Position");
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+        if (markerDesst != null)
+            markerDesst.remove();
+        markerDesst = mMap.addMarker(markerOptions);
+
+        //move map camera
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(srclatlngnew));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
+
+        customerappGetaLyftConfirmActivity.DirectionsTask downloadTask2 = new customerappGetaLyftConfirmActivity.DirectionsTask();
+        downloadTask2.execute();
+        dest = 0;
+        //LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, customerappGetaLyftConfirmActivity.this);
 
 
     }
@@ -474,8 +643,8 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                 // Fetching the data from web service
                 Log.i("Directions", "Waiting For directions");
                 result = DirectionsApi.newRequest(getGeoContext())
-                        .mode(TravelMode.DRIVING).origin(new com.google.maps.model.LatLng(sourceLatitude, sourceLongitude))
-                        .destination(new com.google.maps.model.LatLng(destLatitude, destLongitude)).departureTime(now).await();
+                        .mode(TravelMode.DRIVING).origin(new com.google.maps.model.LatLng(srclatlngnew.latitude,srclatlngnew.longitude))
+                        .destination(new com.google.maps.model.LatLng(destlatlngnew.latitude, destlatlngnew.longitude)).departureTime(now).await();
             } catch (Exception e) {
                 Log.d("Background Task", e.toString());
             }
@@ -484,36 +653,36 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
 
         // Executes in UI thread, after the execution of
         // doInBackground()
-//        @Override
-//        protected void onPostExecute(String results) {
-//            super.onPostExecute(results);
-//            Log.i("Directions", "Got directions");
-//            if (result != null) {
-//                MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
-//                        .legs[0].startLocation.lat, result.routes[0]
-//                        .legs[0].startLocation.lng))
-//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-//                        .title("Source" + result.routes[0].legs[0].startAddress);
-//                if (marker != null)
-//                    marker.remove();
-//                marker = mMap.addMarker(markerOptions);
-//                markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
-//                        .legs[0].endLocation.lat, result.routes[0]
-//                        .legs[0].endLocation.lng))
-//                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-//                        .title("Destination" + result.routes[0].legs[0].endAddress);
-//                if (markerDesst != null)
-//                    markerDesst.remove();
-//                markerDesst = mMap.addMarker(markerOptions);
-//                selectsource.setText("Source :" + result.routes[0].legs[0].startAddress);
-//                selectDestination.setText("Destination :" + result.routes[0].legs[0].endAddress);
-//                List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
-//                PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
-//                if (line != null)
-//                    line.remove();
-//                line = mMap.addPolyline(polylineOptions);
-//            }
-//        }
+        @Override
+        protected void onPostExecute(String results) {
+            super.onPostExecute(results);
+            Log.i("Directions", "Got directions");
+            if (result != null) {
+                MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
+                        .legs[0].startLocation.lat, result.routes[0]
+                        .legs[0].startLocation.lng))
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+                        .title("Source" + result.routes[0].legs[0].startAddress);
+                if (marker != null)
+                    marker.remove();
+                marker = mMap.addMarker(markerOptions);
+                markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
+                        .legs[0].endLocation.lat, result.routes[0]
+                        .legs[0].endLocation.lng))
+                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+                        .title("Destination" + result.routes[0].legs[0].endAddress);
+                if (markerDesst != null)
+                    markerDesst.remove();
+                markerDesst = mMap.addMarker(markerOptions);
+                selectsource.setText("Source :" + result.routes[0].legs[0].startAddress);
+                selectDestination.setText("Destination :" + result.routes[0].legs[0].endAddress);
+                List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
+                PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
+                if (line != null)
+                    line.remove();
+                line = mMap.addPolyline(polylineOptions);
+            }
+        }
     }
 
 //    public void onMapReady(GoogleMap googleMap) {
@@ -875,12 +1044,12 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
         sourceLongitude = location.getLongitude();
 
         //  DisplayToast(sourceLatitude + " " + sourceLongitude);
-        latLng = latlngnew;
+        latLng = srclatlngnew;
         //Place current location marker
         //below statement commenting to test for zimbzbwe location
-        latlngnew = new LatLng(sourceLatitude, sourceLongitude);
+        srclatlngnew = new LatLng(sourceLatitude, sourceLongitude);
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latlngnew);
+        markerOptions.position(srclatlngnew);
         markerOptions.title("Source");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
         if (marker != null)
@@ -1013,8 +1182,8 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                 .subscribe(new Subscriber<List<SaveBookingDetailsResponse>>() {
                     @Override
                     public void onCompleted() {
-                        //  DisplayToast("Successfully Registered");
-                        StopDialogue();
+                          DisplayToast("Successfully Registered");
+                        //StopDialogue();
                     }
 
                     @Override
@@ -1023,7 +1192,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                             e.printStackTrace();
                             Log.d("OnError ", e.getMessage());
                             DisplayToast("Error");
-                            StopDialogue();
+                            //StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -1041,6 +1210,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                             BookingStatus();
                         }else {
                             DisplayToast("Booking Failed");
+                            //BookingStatus();
                         }
 
                     }
@@ -1161,6 +1331,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
 
                     @Override
                     public void onNext(List<UpdateBookingstatusResponse> responselist) {
+                        UpdateBookingstatusResponse response=responselist.get(0);
                         AlertDialog alertDialog = new AlertDialog.Builder(customerappGetaLyftConfirmActivity.this, R.style.Dialog_Theme).create();
                         alertDialog.setTitle("Alert");
                         alertDialog.setMessage("All Cabs Were Busy Please Try Again");

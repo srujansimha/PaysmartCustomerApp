@@ -319,4 +319,9 @@
         <item>Synchronisation</item>
     </string-array>
 
+    <array name="fruits">
+        <item>Cash</item>
+        <item>Add Payment Mode</item>
+    </array>
+
 </resources>

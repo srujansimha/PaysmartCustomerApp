@@ -151,7 +151,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     int dest = 0;
     Place destination, source;
     static GoogleMap mMap;
-    static Marker marker, markerDesst, markerCar1, markerCar2, markerBus, markerAmbulance;
+    static Marker marker, markerDesst;
     private Marker cabs[] = new Marker[5];
     double sourceLatitude = 0.0, sourceLongitude = 0.0, destLatitude = 0.0, destLongitude = 0.0;
     private static final int CHECKPRICE = 1;
@@ -175,12 +175,11 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     boolean isBookingStarted=true;
     Toast toast;
     ProgressDialog dialog;
-
+    Double lat1,log1,dlat,dlog;
     //TODO: this is to test then scroll view navigation
     List<DirectoryHome9ProductsVO> productsList;
     customerapp_VehicleTypesAdapter productsAdapter;
     RecyclerView rvProduct;
-private boolean mLocationPermissionGranted =false;
 
     @Override
     public void onBackPressed() {
@@ -250,6 +249,9 @@ private boolean mLocationPermissionGranted =false;
             @Override
             public void onClick(View v) {
                 if (ActivityCompat.checkSelfPermission(customerappGetaLyftActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(customerappGetaLyftActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+                    lat1= location.getLatitude();
+                    log1=location.getLongitude();
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -259,7 +261,10 @@ private boolean mLocationPermissionGranted =false;
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
+                Location location = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftActivity.this);
+                lat1= location.getLatitude();
+                log1=location.getLongitude();
                /* if (marker != null) {
                     latlngnew = new LatLng(latitude, longitude);
                     MarkerOptions markerOptions = new MarkerOptions();
@@ -309,9 +314,13 @@ private boolean mLocationPermissionGranted =false;
 //                    object.addProperty("PackageId", "3");
 //                    CalculatePrice(object);
                     Toast.makeText(getApplicationContext(), "Clicked : get a lyft details", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(customerappGetaLyftActivity.this, customerappGetaLyftDetailsActivity.class);
-//                    intent.putExtra("source", source.getName() + "," + source.getAddress());
-//                    intent.putExtra("destination", destination.getName() + "," + destination.getAddress());
+                    Intent intent = new Intent(customerappGetaLyftActivity.this, customerappGetaLyftConfirmActivity.class);
+                    intent.putExtra("source", selectsource.getText().toString());
+                    intent.putExtra("destination", selectDestination.getText().toString());
+                    intent.putExtra("slat",lat1.toString());
+                    intent.putExtra("slog",log1.toString());
+                    intent.putExtra("dlat",dlat.toString());
+                    intent.putExtra("dlog",dlog.toString());
                     startActivity(intent);
                 }
             }
@@ -339,7 +348,6 @@ private boolean mLocationPermissionGranted =false;
         RecyclerView.LayoutManager productLayoutManager =  new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
         rvProduct.setLayoutManager(productLayoutManager);
         rvProduct.setAdapter(productsAdapter);
-       // productsAdapter.getItem(0).itemView.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         productsAdapter.setOnItemClickListener((view, promotion, position) -> {
 
             switch(position){
@@ -436,8 +444,7 @@ private boolean mLocationPermissionGranted =false;
     // this method will provide distance and time between two places
     private String getEndLocationTitle(DirectionsResult results) {
         return "Time :" + results.routes[0].legs[0].duration.humanReadable + " Distance :" + results.routes[0].legs[0].distance.humanReadable;
-    }
-
+   }
     // This task will provide directions and path
     private class DirectionsTask extends AsyncTask<String, Void, String> {
 
@@ -533,6 +540,8 @@ private boolean mLocationPermissionGranted =false;
             public void onMapClick(LatLng latLng) {
                 destLatitude = latLng.latitude;
                 destLongitude = latLng.longitude;
+                dlat=destLatitude;
+                dlog=destLongitude;
                 selectDestination.setText("Destination : " + (destLatitude + "").substring(0, 10) + " , " + (destLongitude + "").substring(0, 10));
                 MarkerOptions markerOptions = new MarkerOptions();
                 markerOptions.position(new LatLng(destLatitude, destLongitude));
@@ -550,7 +559,6 @@ private boolean mLocationPermissionGranted =false;
         });
 
     }
-
 
     /* Initiate Google API Client  */
     private void initGoogleAPIClient() {
@@ -834,10 +842,7 @@ private boolean mLocationPermissionGranted =false;
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
-        //LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-         //mMap.animateCamera(CameraUpdateFactory.zoomTo(18.5f));
-        //AvailableVehicles();
-
+        // mMap.animateCamera(CameraUpdateFactory.zoomTo(18.5f));
     }
 
     @Override
