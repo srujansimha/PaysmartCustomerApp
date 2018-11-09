@@ -214,7 +214,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
 
                 intent.setData(Uri.parse("tel:" + bookingDetails.getPMobNo()));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                //if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -222,8 +222,8 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                     //                                          int[] grantResults)
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
+                //    return;
+               // }
                 getApplicationContext().startActivity(intent);
             }
         });

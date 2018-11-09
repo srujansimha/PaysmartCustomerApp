@@ -863,7 +863,8 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         }*/
         sourceLatitude = location.getLatitude();
         sourceLongitude = location.getLongitude();
-
+        lat1=sourceLatitude;
+        log1=sourceLongitude;
         //  DisplayToast(sourceLatitude + " " + sourceLongitude);
         latLng = latlngnew;
         //Place current location marker
