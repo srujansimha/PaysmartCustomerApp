@@ -97,7 +97,7 @@ public class Ticket_Source_Destination_Date extends Fragment {
                 .setTitle("Loading...")
                 .setTitleColorRes(R.color.gray)
                 .build();*/
-        stops= (List<CustomerGetstopsResponse>) savedInstanceState.getSerializable("details");
+      //  stops= (List<CustomerGetstopsResponse>) savedInstanceState.getSerializable("details");
         source = (TextView) v.findViewById(R.id.source);
         destination = (TextView) v.findViewById(R.id.destination);
         date = (TextView) v.findViewById(R.id.journeyDate);
@@ -181,7 +181,7 @@ public class Ticket_Source_Destination_Date extends Fragment {
        /* fragmentTransaction.setCustomAnimations(
                 R.anim.rotate_forward,
                 R.anim.rotate_backward);*/
-        fragmentTransaction.replace(R.id.flContent, fragment);
+        fragmentTransaction.replace(R.id.srcdestdatetimeFrame, fragment);
         fragmentTransaction.commit();
     }
     private void goPage(int page) {
@@ -209,7 +209,7 @@ public class Ticket_Source_Destination_Date extends Fragment {
        /* fragmentTransaction.setCustomAnimations(
                 R.anim.rotate_forward,
                 R.anim.rotate_backward);*/
-        fragmentTransaction.replace(R.id.flContent, fragment);
+        fragmentTransaction.replace(R.id.srcdestdatetimeFrame, fragment);
         fragmentTransaction.commit();
     }
 

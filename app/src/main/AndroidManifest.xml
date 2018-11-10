@@ -141,5 +141,10 @@
             android:name=".customerapp.CurrentTrip"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".activity.customerapp.customerappBusBookingMainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+
     </application>
 </manifest>

@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.webingate.paysmartcustomerapp.R;
 
 
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappBusBookingMainActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappFlightBookingSearchActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappGetaLyftActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappTrainBookingSearchActivity;
@@ -26,6 +27,7 @@ import com.webingate.paysmartcustomerapp.adapter.customerapp_ProductsAdapter;
 import com.webingate.paysmartcustomerapp.adapter.customerapp_PromotionsAdapter;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.GetaLyft;
+import com.webingate.paysmartcustomerapp.customerapp.Ticket_Source_Destination_Date;
 import com.webingate.paysmartcustomerapp.object.DirectoryHome9CategoryVO;
 import com.webingate.paysmartcustomerapp.object.DirectoryHome9FlightsVO;
 import com.webingate.paysmartcustomerapp.object.DirectoryHome9PopularVO;
@@ -147,6 +149,7 @@ public class customerAppDashboardFragment extends Fragment {
 
                 switch(position){
                     case 0:
+                        Toast.makeText(getContext(), "Clicked : get a lyft", Toast.LENGTH_SHORT).show();
                         ApplicationConstants.marker = R.mipmap.marker_taxi;
                         Intent intent = new Intent(getActivity(), customerappGetaLyftActivity.class);
                         startActivity(intent);
@@ -174,6 +177,9 @@ public class customerAppDashboardFragment extends Fragment {
                     case 4:
                         break;
                     case 5:
+                        intent = new Intent(getActivity(), customerappBusBookingMainActivity.class);
+                        startActivity(intent);
+
                         break;
                     case 6:
                         break;
