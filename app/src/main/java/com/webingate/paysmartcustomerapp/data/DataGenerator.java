@@ -6,6 +6,7 @@ import android.support.v7.content.res.AppCompatResources;
 
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappFAQMainMenuActivity;
+import com.webingate.paysmartcustomerapp.customerapp.TravelModel;
 import com.webingate.paysmartcustomerapp.model.BookingType;
 import com.webingate.paysmartcustomerapp.model.MusicAlbum;
 import com.webingate.paysmartcustomerapp.model.CardViewImg;
@@ -19,6 +20,8 @@ import com.webingate.paysmartcustomerapp.model.Social;
 import com.webingate.paysmartcustomerapp.utils.MaterialColor;
 import com.webingate.paysmartcustomerapp.utils.Tools;
 
+import org.joda.time.DateTime;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,7 +29,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Random;
-
+import java.util.ArrayList;
 @SuppressWarnings("ResourceType")
 public class DataGenerator {
 
@@ -374,5 +377,28 @@ public class DataGenerator {
         items.add(cruisetickets);
         items.add(meteredtaxi);
         return items;
+    }
+
+    public static ArrayList<TravelModel> getAvailableServices(){
+        ArrayList<TravelModel> servicesList =  new ArrayList<>();
+        //TravelModel travelModel = new TravelModel();
+        //travelModel.setName(c.getString("srcName") + "-" + c.getString("destName"));
+        // travelModel.setSubTitle("Arrival - " + c.getString("ArrivalTime") + "\nDeparture - " + c.getString("DepartureTime"));
+        //travelModel.setPrice("Amount - " + c.getString("Amount") + "$");
+
+        // travelModel.setActive(Integer.parseInt(c.getString("Active")));
+
+        for (int i = 0; i < 5; i++) {
+            TravelModel obj = new TravelModel();
+            obj.setName("travels"+i);
+            obj.setPrice("200"+(i*50));
+            obj.setTime(DateTime.now().toString());
+            obj.setSubTitle("good morning travels"+1);
+            servicesList.add(obj);
+        }
+        //Collections.shuffle(items);
+
+        return servicesList;
+
     }
 }

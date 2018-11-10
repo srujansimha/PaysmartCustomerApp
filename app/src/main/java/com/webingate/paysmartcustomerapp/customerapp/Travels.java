@@ -104,7 +104,7 @@ public class Travels extends Fragment {
         list.setAdapter(adapter);
 
         // Locate the EditText in listview_main.xml
-        editsearch.setVisibility(View.GONE);
+        //editsearch.setVisibility(View.GONE);
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,

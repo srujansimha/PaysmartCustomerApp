@@ -44,6 +44,7 @@ public class ApplicationConstants {
 
     //public static ArrayList<StopsModel> stopsArraylist = new ArrayList<StopsModel>();
     public static ArrayList<TravelModel> travelsArraylist = new ArrayList<TravelModel>();
+
     //public static ArrayList<Payment_Method_model> paymentMethods= new ArrayList<Payment_Method_model>();
 
     public static int FRAGMENT=0;

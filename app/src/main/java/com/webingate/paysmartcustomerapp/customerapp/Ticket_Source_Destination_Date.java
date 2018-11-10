@@ -52,6 +52,11 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.object.DirectoryHome9ProductsVO;
+import com.webingate.paysmartcustomerapp.repository.directory.DirectoryHome9Repository;
+
+import static com.webingate.paysmartcustomerapp.data.DataGenerator.getAvailableServices;
+
 @SuppressLint("NewApi")
 public class Ticket_Source_Destination_Date extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -368,12 +373,12 @@ public class Ticket_Source_Destination_Date extends Fragment {
                         ApplicationConstants.travelsArraylist.clear();
                         for (int i = 0; i < jsonObj.length(); i++) {
                             JSONObject c = jsonObj.getJSONObject(i);
-                            TravelModel travelModel = new TravelModel();
-                            travelModel.setName(c.getString("srcName") + "-" + c.getString("destName"));
-                            travelModel.setSubTitle("Arrival - " + c.getString("ArrivalTime") + "\nDeparture - " + c.getString("DepartureTime"));
-                            travelModel.setPrice("Amount - " + c.getString("Amount") + "$");
-                            // travelModel.setActive(Integer.parseInt(c.getString("Active")));
-                            ApplicationConstants.travelsArraylist.add(travelModel);
+                            List<DirectoryHome9ProductsVO> productsList;
+                            //DirectoryHome9Repository travelModel=new DirectoryHome9Repository();
+                            ApplicationConstants.travelsArraylist = getAvailableServices();
+
+                            //ApplicationConstants.travelsArraylist.add(travelModel);
+                            //ApplicationConstants.travelsArraylist.add(productsList);
                             // Toast.makeText(getContext(), "Stop  " + c.getString("Name"), Toast.LENGTH_LONG).show();
                             //  startActivity(new Intent(LoginActivity.this, HomeActivity1.class));
                             //  finish();

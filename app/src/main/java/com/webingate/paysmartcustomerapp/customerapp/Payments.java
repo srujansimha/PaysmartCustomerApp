@@ -80,6 +80,8 @@ public class Payments extends Fragment {
                 .setTitle("Loading...")
                 .setTitleColorRes(R.color.gray)
                 .build();
+        unbinder = ButterKnife.bind(this, v);
+
         ewallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +98,7 @@ public class Payments extends Fragment {
                 paymentRequest.execute();*/
             }
         });
-        unbinder = ButterKnife.bind(this, v);
+
         return v;
     }
 
