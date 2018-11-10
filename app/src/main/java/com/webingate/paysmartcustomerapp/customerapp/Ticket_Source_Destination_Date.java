@@ -40,8 +40,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,7 +55,7 @@ import com.webingate.paysmartcustomerapp.R;
 @SuppressLint("NewApi")
 public class Ticket_Source_Destination_Date extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
-
+    Calendar dateTime = Calendar.getInstance();
 
     @BindView(R.id.source)
     TextView source;
@@ -131,9 +133,12 @@ public class Ticket_Source_Destination_Date extends Fragment {
                         goPage(ApplicationConstants.FRAGMENT,bundle);
                         break;
                     case R.id.journeyDate:
-                        DialogFragment newFragment = new DatePickerFragment();
+                       // DialogFragment newFragment = new DatePickerFragment();
                         // DatePickerDialog newFragment = new DatePickerDialog(getContext(),R.style.AppTheme,this,2017,5,9);
-                        newFragment.show(getFragmentManager(), "datePicker");
+                        //newFragment.show(this.getFragmentManager(), "datePicker");
+
+                        new DatePickerDialog(v.getContext(), datePickerDialog, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
+
                         break;
                     case R.id.next:
                         if (ApplicationConstants.source.matches("") || ApplicationConstants.destination.matches("") || ApplicationConstants.date.matches("")) {
@@ -218,39 +223,54 @@ public class Ticket_Source_Destination_Date extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
-
-    @SuppressLint("ValidFragment")
-    public  class DatePickerFragment extends DialogFragment implements
-            DatePickerDialog.OnDateSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceSateate) {
-
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            return new DatePickerDialog(getActivity(), R.style.Dialog_Theme, this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, final int year, final int month, final int day) {
-            // Do something with the date chosen
-            Handler mainHandler = new Handler(getContext().getMainLooper());
-
-            Runnable myRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    date.setText("  " + day + "/" + month + "/" + year);
-                    ApplicationConstants.date = day + "/" + month + "/" + year;
-                    // Toast.makeText(getContext(),day+"/"+month+"/"+year,Toast.LENGTH_SHORT).show();
-                } // This is your code
-            };
-            mainHandler.post(myRunnable);
-
-
-        }
+    DatePickerDialog.OnDateSetListener datePickerDialog = (view, year, monthOfYear, dayOfMonth) -> {
+        dateTime.set(Calendar.YEAR, year);
+        dateTime.set(Calendar.MONTH, monthOfYear);
+        dateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        updateDate();
+    };
+    private void openDatePicker(){
+        new DatePickerDialog(this.getContext(), datePickerDialog, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
     }
+
+    private void updateDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String shortTimeStr = sdf.format(dateTime.getTime());
+        ApplicationConstants.date = shortTimeStr;
+    }
+
+//    @SuppressLint("ValidFragment")
+//    public class DatePickerFragment extends DialogFragment implements
+//            DatePickerDialog.OnDateSetListener {
+//
+//        @Override
+//        public Dialog onCreateDialog(Bundle savedInstanceSateate) {
+//
+//            final Calendar c = Calendar.getInstance();
+//            int year = c.get(Calendar.YEAR);
+//            int month = c.get(Calendar.MONTH);
+//            int day = c.get(Calendar.DAY_OF_MONTH);
+//
+//            return new DatePickerDialog(getActivity(), R.style.Dialog_Theme, this, year, month, day);
+//        }
+//
+//        public void onDateSet(DatePicker view, final int year, final int month, final int day) {
+//            // Do something with the date chosen
+//            Handler mainHandler = new Handler(getContext().getMainLooper());
+//
+//            Runnable myRunnable = new Runnable() {
+//                @Override
+//                public void run() {
+//                    date.setText("  " + day + "/" + month + "/" + year);
+//                    ApplicationConstants.date = day + "/" + month + "/" + year;
+//                    // Toast.makeText(getContext(),day+"/"+month+"/"+year,Toast.LENGTH_SHORT).show();
+//                } // This is your code
+//            };
+//            mainHandler.post(myRunnable);
+//
+//
+//        }
+//    }
 
 
     /*public void GetAvailableServices(String srcId,String destId){

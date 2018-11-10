@@ -11,20 +11,24 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
+
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerGetstopsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Ticket_Source_Destination_Date;
-import com.webingate.paysmartcustomerapp.fragment.customerAppFragments.customerAppDashboardFragment;
-import com.webingate.paysmartcustomerapp.utils.Utils;
+
+import java.io.Serializable;
+import java.util.List;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 
 public class customerappBusBookingMainActivity extends AppCompatActivity {
-
+    List<CustomerGetstopsResponse> stops;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +67,41 @@ public class customerappBusBookingMainActivity extends AppCompatActivity {
     }
 
     private void initDataBinding() {
+
+      //  GetStops();
+    }
+    public void GetStops(){
+
+      //  StartDialogue();
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
+                .getstops()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<CustomerGetstopsResponse>>() {
+                    @Override
+                    public void onCompleted() {
+                        //  DisplayToast("Successfully Registered");
+                       // StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            Log.d("OnError ", e.getMessage());
+                          //  DisplayToast("Error");
+                           // StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<CustomerGetstopsResponse> responselist) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("details", (Serializable) responselist);
+                      //  ApplicationConstants.FRAGMENT = ApplicationConstants.TICKET_SOURCE_DESTINATION;
+                      //  goPage(ApplicationConstants.FRAGMENT,bundle);
+                    }
+                });
     }
 
     private void initAction() {
