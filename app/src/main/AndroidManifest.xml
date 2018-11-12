@@ -122,7 +122,6 @@
         <activity
             android:name=".activity.customerapp.customerappHireBookingSearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.customerapp.customerappGetaLyftActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -144,6 +143,11 @@
         <activity
             android:name=".activity.customerapp.customerappBusBookingMainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.customerapp.customerappUserDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
 
 
     </application>

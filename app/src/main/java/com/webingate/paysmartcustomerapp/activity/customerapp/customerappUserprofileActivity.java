@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -20,7 +21,10 @@ import android.widget.Toast;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
+import butterknife.BindView;
+
 public class customerappUserprofileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
 
     Toolbar toolbar;
 
@@ -33,6 +37,15 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.openDrawer(GravityCompat.START);
+
+
+        FloatingActionButton edit = findViewById(R.id.editFAB);
+
+        edit.setOnClickListener(
+                v ->{
+                Intent intent = new Intent (customerappUserprofileActivity.this,customerappUserDetailsActivity.class);
+                startActivity(intent);
+        });
     }
 
     @Override
@@ -122,6 +135,10 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerLayout = navigationView.getHeaderView(0);
+        ImageView userImageView = headerLayout.findViewById(R.id.userImageView);
+        Utils.setCircleImageToImageView(this, userImageView, R.drawable.profile1, 0, 0);
 //        if(Utils.isRTL()) {
 //            navigationView.setTextDirection(View.TEXT_DIRECTION_RTL);
 //        }else {
