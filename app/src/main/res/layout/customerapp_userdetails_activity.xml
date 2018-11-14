@@ -42,29 +42,29 @@
                 android:layout_height="match_parent"
                 android:background="@color/md_white_1000">
 
-                <View
-                    android:id="@+id/topView"
-                    android:layout_width="match_parent"
-                    android:layout_height="588dp"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/profileImageView"
-                    app:layout_constraintVertical_bias="0.488" />
+                <!--<View-->
+                    <!--android:id="@+id/topView"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="588dp"-->
+                    <!--android:layout_marginBottom="8dp"-->
+                    <!--android:layout_marginTop="8dp"-->
+                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+                    <!--app:layout_constraintEnd_toEndOf="parent"-->
+                    <!--app:layout_constraintHorizontal_bias="0.0"-->
+                    <!--app:layout_constraintStart_toStartOf="parent"-->
+                    <!--app:layout_constraintTop_toBottomOf="@+id/profileImageView"-->
+                    <!--app:layout_constraintVertical_bias="0.488" />-->
 
-                <ImageView
-                    android:id="@+id/profileImageView"
-                    android:layout_width="125dp"
-                    android:layout_height="97dp"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="@+id/topView"
-                    app:layout_constraintHorizontal_bias="0.501"
-                    app:layout_constraintStart_toStartOf="@+id/topView"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:srcCompat="@drawable/baseline_image_black_24" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/profileImageView"-->
+                    <!--android:layout_width="125dp"-->
+                    <!--android:layout_height="97dp"-->
+                    <!--android:layout_marginTop="16dp"-->
+                    <!--app:layout_constraintEnd_toEndOf="@+id/topView"-->
+                    <!--app:layout_constraintHorizontal_bias="0.501"-->
+                    <!--app:layout_constraintStart_toStartOf="@+id/topView"-->
+                    <!--app:layout_constraintTop_toTopOf="parent"-->
+                    <!--tools:srcCompat="@drawable/baseline_image_black_24" />-->
 
                 <ImageView
                     android:id="@+id/imageView46"
