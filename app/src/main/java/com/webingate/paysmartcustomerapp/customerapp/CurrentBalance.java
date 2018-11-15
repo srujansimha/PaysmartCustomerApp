@@ -84,20 +84,20 @@ public class CurrentBalance extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.balance, container, false);
-        unbinder = ButterKnife.bind(this, v);
+      //  unbinder = ButterKnife.bind(this, v);
         dialog =  new ProgressDialog.Builder(getActivity())
                 .setTitle("Loading...")
                 .setTitleColorRes(R.color.gray)
                 .build();
         if (ApplicationConstants.walletBalance.matches("")) {
             flag = 1;
-            Getcurrentbalance(ApplicationConstants.mobileNo);
+          //  Getcurrentbalance(ApplicationConstants.mobileNo);
 
             /*GetBalance getBalance = new GetBalance();
             getBalance.execute();*/
 
         } else {
-            balance.setText(ApplicationConstants.walletBalance + " $");
+        //    balance.setText(ApplicationConstants.walletBalance + " $");
         }
         View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
@@ -154,8 +154,8 @@ public class CurrentBalance extends Fragment {
                 alertDialog.show();
             }
         };
-        recharge.setOnClickListener(onClickListener);
-        transfer.setOnClickListener(onClickListener);
+        //recharge.setOnClickListener(onClickListener);
+        //transfer.setOnClickListener(onClickListener);
 
         return v;
     }

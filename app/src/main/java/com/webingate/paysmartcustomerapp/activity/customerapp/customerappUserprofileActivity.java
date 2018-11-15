@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.EWallet;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
 import butterknife.BindView;
@@ -78,6 +79,8 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
         } else if (id == R.id.nav_ewallet) {
             Toast.makeText(this, "Clicked nav_ewallet.", Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(this, customerewalletActivity.class);
+             startActivity(intent);
         } else if (id == R.id.nav_notification) {
             Toast.makeText(this, "Clicked nav_notification.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_alerts) {

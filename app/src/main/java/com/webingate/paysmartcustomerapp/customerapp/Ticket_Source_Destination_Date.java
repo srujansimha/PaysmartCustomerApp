@@ -66,6 +66,8 @@ public class Ticket_Source_Destination_Date extends Fragment {
     TextView source;
     @BindView(R.id.destination)
     TextView destination;
+    @BindView(R.id.returnjourneyDate)
+    TextView rdate;
     @BindView(R.id.journeyDate)
     TextView date;
     @BindView(R.id.next)
@@ -108,6 +110,7 @@ public class Ticket_Source_Destination_Date extends Fragment {
         source = (TextView) v.findViewById(R.id.source);
         destination = (TextView) v.findViewById(R.id.destination);
         date = (TextView) v.findViewById(R.id.journeyDate);
+        rdate=(TextView)v.findViewById(R.id.returnjourneyDate);
         next = (Button) v.findViewById(R.id.next);
         if (!ApplicationConstants.source.matches("")) {
             source.setText("  " + ApplicationConstants.source);
@@ -145,12 +148,36 @@ public class Ticket_Source_Destination_Date extends Fragment {
                         new DatePickerDialog(v.getContext(), datePickerDialog, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
 
                         break;
+                    case R.id.returnjourneyDate:
+                        // DialogFragment newFragment = new DatePickerFragment();
+                        // DatePickerDialog newFragment = new DatePickerDialog(getContext(),R.style.AppTheme,this,2017,5,9);
+                        //newFragment.show(this.getFragmentManager(), "datePicker");
+
+                        new DatePickerDialog(v.getContext(), datePickerDialog, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
+
+                        break;
                     case R.id.next:
                         if (ApplicationConstants.source.matches("") || ApplicationConstants.destination.matches("") || ApplicationConstants.date.matches("")) {
                             Toast.makeText(getContext(), "Please Selcet ", Toast.LENGTH_SHORT).show();
                         } else {
-                            TravelsRequest travelsRequest = new TravelsRequest();
-                            travelsRequest.execute();
+//                            TravelsRequest travelsRequest = new TravelsRequest();
+//                            travelsRequest.execute();
+
+                            // dummy data set up
+                            //JSONArray jsonObj = new JSONArray();
+                            ApplicationConstants.travelsArraylist.clear();
+                            for (int i = 0; i < 5; i++) {
+                                try{
+                               // JSONObject c = jsonObj.getJSONObject(i);
+                                //List<DirectoryHome9ProductsVO> productsList;
+                                ApplicationConstants.travelsArraylist = getAvailableServices();
+                                }
+                                catch (Exception e){
+
+                                }
+                            }
+                            ApplicationConstants.FRAGMENT = ApplicationConstants.TRAVELS;
+                            goPage(ApplicationConstants.FRAGMENT);
                         }
                         break;
                 }
@@ -234,6 +261,7 @@ public class Ticket_Source_Destination_Date extends Fragment {
         dateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         updateDate();
     };
+
     private void openDatePicker(){
         new DatePickerDialog(this.getContext(), datePickerDialog, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
     }
@@ -242,6 +270,7 @@ public class Ticket_Source_Destination_Date extends Fragment {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         String shortTimeStr = sdf.format(dateTime.getTime());
         ApplicationConstants.date = shortTimeStr;
+        date.setText( ApplicationConstants.date);
     }
 
 //    @SuppressLint("ValidFragment")

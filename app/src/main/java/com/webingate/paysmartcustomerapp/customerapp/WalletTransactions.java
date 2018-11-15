@@ -77,7 +77,7 @@ public class WalletTransactions extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GetTransactions getTransactions = new GetTransactions();
-        getTransactions.execute();
+       // getTransactions.execute();
     }
 
     @SuppressLint("NewApi")
@@ -86,7 +86,7 @@ public class WalletTransactions extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.wallet_transactions, container, false);
 
-        unbinder = ButterKnife.bind(this, v);
+//        unbinder = ButterKnife.bind(this, v);
         /*dialog =  new ProgressDialog.Builder(getActivity())
                 .setTitle("Loading...")
                 .setTitleColorRes(R.color.gray)

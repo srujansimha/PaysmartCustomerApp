@@ -142,8 +142,11 @@ public class Travels extends Fragment {
        /* fragmentTransaction.setCustomAnimations(
                 R.anim.rotate_forward,
                 R.anim.rotate_backward);*/
+
         fragmentTransaction.replace(R.id.flContent, fragment);
         fragmentTransaction.commit();
+
+
     }
 
     @Override

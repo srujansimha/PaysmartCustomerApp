@@ -21,6 +21,7 @@ public class ApplicationConstants {
     public static String source="";
     public static String destination="";
     public static String date="";
+    public static String rdate="";
     public static int sourceid=0;
     public static int destinationid=0;
     public static TravelModel travel;

@@ -148,6 +148,12 @@
             android:name=".activity.customerapp.customerappUserDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
+        <activity
+            android:name=".customerapp.EWallet"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerewalletActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
 
     </application>
