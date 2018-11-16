@@ -89,10 +89,20 @@ public interface APIInterface  {
     public Observable<List<CustomerEOTPVerificationResponse>> CustomerEOTPVerification(@Body JsonObject jsonObject);//i
 
     @POST("/api/UserAccount/MOTPVerifications")
-    public Observable<List<MOTPVerificationResponse>> MOTPVerifications(@Body JsonObject jsonObject);//i
+    public Observable<List<MOTPVerificationResponse>> MOTPVerifications(@Body JsonObject jsonObject);
+
+    @POST("/api/UserAccount/EwalletOTPSending")
+    public Observable<List<MOTPVerificationResponse>> EwalletSendOTP(@Body JsonObject jsonObject);//
+
+    @POST("/api/UserAccount/EwalletOTPVerification")
+    public Observable<List<MOTPVerificationResponse>> EwalletMOTPVerifications(@Body JsonObject jsonObject);
+
+    @GET("/api/AppUsers/GetEwalletStatus")
+    public Observable<List<MOTPVerificationResponse>> GetEwalletStatus(@Query("acct") String acct);
 
     @POST("/api/ChangePwd/change")
     public Observable<List<CustomerChangePwdResponse>> ChangePassword(@Body JsonObject jsonObject);
+
 
     @GET("/api/WalletTransDetails/GetWalletTransDetails")
     public Observable<List<GetWalletTransDetailsResponse>> GetWalletTransDetails(@Query("MobileNo") String mobileNo);//i

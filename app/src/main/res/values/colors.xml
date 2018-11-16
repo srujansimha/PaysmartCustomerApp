@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--<color name="colorPrimary">#0d47a1</color>-->
     <!--&lt;!&ndash;<color name="colorPrimaryDark">#ac1900</color>&ndash;&gt;-->
@@ -148,4 +148,67 @@
     <color name="gray">#BDBEC2</color>
     <color name="color_image_foreground">#3f000000</color>
     <color name="overlay_light_30">#4DFFFFFF</color>
+    <!-- light blue-->
+    <color name="md_light_blue_50">#E1F5FE</color>
+    <color name="md_light_blue_100">#B3E5FC</color>
+    <color name="md_light_blue_200">#81D4fA</color>
+    <color name="md_light_blue_300">#4fC3F7</color>
+    <color name="md_light_blue_400">#29B6FC</color>
+    <color name="md_light_blue_600">#039BE5</color>
+    <color name="md_light_blue_700">#0288d1</color>
+    <color name="md_light_blue_800">#0288d1</color>
+    <color name="md_light_blue_900">#01579B</color>
+    <color name="md_light_blue_A100">#80D8FF</color>
+    <color name="md_light_blue_A200">#40C4FF</color>
+    <color name="md_light_blue_A400">#00B0FF</color>
+    <color name="md_light_blue_A700">#0091EA</color>
+
+    <color name="light_blue_50">#E1F5FE</color>
+    <color name="light_blue_100">#B3E5FC</color>
+    <color name="light_blue_200">#81D4FA</color>
+    <color name="light_blue_300">#4FC3F7</color>
+    <color name="light_blue_400">#29B6F6</color>
+    <color name="light_blue_500">#03A9F4</color>
+    <color name="light_blue_600">#039BE5</color>
+    <color name="light_blue_700">#0288D1</color>
+    <color name="light_blue_800">#0277BD</color>
+    <color name="light_blue_900">#01579B</color>
+    <color name="light_blue_A100">#80D8FF</color>
+    <color name="light_blue_A200">#40C4FF</color>
+    <color name="light_blue_A400">#00B0FF</color>
+    <color name="light_blue_A700">#0091EA</color>
+    <!-- indigo -->
+    <color name="indigo_50">#E8EAF6</color>
+    <color name="indigo_100">#C5CAE9</color>
+    <color name="indigo_200">#9FA8DA</color>
+    <color name="indigo_300">#7986CB</color>
+    <color name="indigo_400">#5C6BC0</color>
+    <color name="indigo_500">#3F51B5</color>
+    <color name="indigo_600">#3949AB</color>
+    <color name="indigo_700">#303F9F</color>
+    <color name="indigo_800">#283593</color>
+    <color name="indigo_900">#1A237E</color>
+    <color name="indigo_A100">#8C9EFF</color>
+    <color name="indigo_A200">#536DFE</color>
+    <color name="indigo_A400">#3D5AFE</color>
+    <color name="indigo_A700">#304FFE</color>
+    <color name="overlay_dark_10">#1A000000</color>
+    <color name="overlay_dark_20">#33000000</color>
+    <color name="overlay_dark_30">#4D000000</color>
+    <color name="overlay_dark_40">#66000000</color>
+    <color name="overlay_dark_50">#80000000</color>
+    <color name="overlay_dark_60">#99000000</color>
+    <color name="overlay_dark_70">#B3000000</color>
+    <color name="overlay_dark_80">#CC000000</color>
+    <color name="overlay_dark_90">#E6000000</color>
+
+    <color name="overlay_light_10">#1AFFFFFF</color>
+    <color name="overlay_light_20">#33FFFFFF</color>
+
+    <color name="overlay_light_40">#66FFFFFF</color>
+    <color name="overlay_light_50">#8FFFFFF0</color>
+    <color name="overlay_light_60">#99FFFFFF</color>
+    <color name="overlay_light_70">#B3FFFFFF</color>
+    <color name="overlay_light_80">#CCFFFFFF</color>
+    <color name="overlay_light_90">#E6FFFFFF</color>
 </resources>
