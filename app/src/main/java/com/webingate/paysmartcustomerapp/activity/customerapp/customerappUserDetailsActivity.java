@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +22,11 @@ public class customerappUserDetailsActivity extends AppCompatActivity {
     private TextView phoneTextView;
     private TextView websiteTextView;
     private FloatingActionButton editFAB;
+
+    private int position = 1;
+    private int maxPosition = 5;
+    private Button nextButton, prevButton;
+    private TextView imageNoTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -30,6 +30,7 @@ public class ApplicationConstants {
     public static String walletBalance="";
     //public static ArrayList confirmedTrips=new ArrayList();
     public static String rating,comments;
+    public static String address;
 
     public static int vehicleType=0;
     public static final int HOME=0;

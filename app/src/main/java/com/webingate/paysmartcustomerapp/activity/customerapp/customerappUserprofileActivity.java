@@ -26,6 +26,12 @@ import butterknife.BindView;
 
 public class customerappUserprofileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String ID ="idKey";
+    public static final String Name = "nameKey";
+    public static final String Phone = "phoneKey";
+    public static final String Email = "emailKey";
+    public static final String Password = "passwordkey";
 
     Toolbar toolbar;
 
