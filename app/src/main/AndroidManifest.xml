@@ -143,6 +143,12 @@
         <activity
             android:name=".activity.customerapp.customerappBusBookingMainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.DashboardEWallet"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerEwalletMOTPVerificationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".activity.customerapp.customerappUserDetailsActivity"

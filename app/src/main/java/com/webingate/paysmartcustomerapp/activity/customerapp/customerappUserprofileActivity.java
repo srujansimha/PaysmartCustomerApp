@@ -1,6 +1,8 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -18,11 +20,19 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerEOTPVerificationResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.MOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.EWallet;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
+import java.util.List;
+
 import butterknife.BindView;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class customerappUserprofileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -34,12 +44,16 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
     public static final String Password = "passwordkey";
 
     Toolbar toolbar;
-
+    Toast toast;
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String UserAccountNo = "UserAccountNokey";
+    String useracc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_userprofile_activity);
-
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        useracc= prefs.getString(UserAccountNo, null);
         initUI();
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
@@ -85,8 +99,9 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
         } else if (id == R.id.nav_ewallet) {
             Toast.makeText(this, "Clicked nav_ewallet.", Toast.LENGTH_SHORT).show();
-            Intent intent=new Intent(this, customerewalletActivity.class);
-             startActivity(intent);
+           GetEwalletStatus(useracc);
+//            Intent intent=new Intent(this, customerewalletActivity.class);
+//            startActivity(intent);
         } else if (id == R.id.nav_notification) {
             Toast.makeText(this, "Clicked nav_notification.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_alerts) {
@@ -194,6 +209,61 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         } catch (Exception e) {
             Log.e("TEAMPS", "Error in set display home as up enabled.");
         }
+
+    }
+    public void GetEwalletStatus(String acct){
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
+                .GetEwalletStatus(acct)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<MOTPVerificationResponse>>() {
+                    @Override
+                    public void onCompleted() {
+                        DisplayToast("Successfully Registered");
+                        //StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            //Log.d("OnError ", e.getMessage());
+                            DisplayToast("Error"+e.getMessage());
+                            //StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<MOTPVerificationResponse> responselist) {
+                        MOTPVerificationResponse response = responselist.get(0);
+                        if (response.getCode() != null) {
+                            DisplayToast(response.getDescription());
+                        } else {
+                            if(response.getstatus()!=3){
+                                startActivity( new Intent(customerappUserprofileActivity.this, customerewalletActivity.class));
+                            }
+                            else
+                            {
+                                startActivity( new Intent(customerappUserprofileActivity.this, DashboardEWallet.class));
+                            }
+
+                            //editor.commit();
+                            //startActivity(new Intent(customerEOTPVerificationActivity.this, login_activity.class));
+//                       Intent intent = new Intent(customerEOTPVerificationActivity.this, businessappMOTPVerificationActivity.class);
+//                        intent.putExtra("eotp","");
+                            finish();
+                        }
+                    }
+                });
+    }
+    public void DisplayToast(String text){
+        if(toast!=null){
+            toast.cancel();
+            toast=null;
+
+        }
+        toast= Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT);
+        toast.show();
 
     }
 }
