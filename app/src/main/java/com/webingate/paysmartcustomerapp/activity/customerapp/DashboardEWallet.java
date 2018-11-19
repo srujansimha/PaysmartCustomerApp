@@ -1,31 +1,75 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.Toolbar;
+import android.text.InputFilter;
+import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
 
+import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.GetCurrentBalanceResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.WalletBalanceResponse;
+import com.webingate.paysmartcustomerapp.customerapp.EWallet;
 import com.webingate.paysmartcustomerapp.utils.Tools;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.Unbinder;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 
 public class DashboardEWallet extends AppCompatActivity {
-
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String Phone = "phoneKey";
     private TabLayout tab_layout;
     private NestedScrollView nested_scroll_view;
-
+    @BindView(R.id.send)
+    LinearLayout send;
+    @BindView(R.id.recieve)
+    LinearLayout recieve;
+    @BindView(R.id.balance)
+    TextView balance;
+    AppCompatButton transfer;
+    Unbinder unbinder;
+    private String response;
+    private String amount,text1,mno;
+    private int flag;
+    Toast toast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_wallet);
+        send=findViewById(R.id.send);
+        recieve=findViewById(R.id.recieve);
+        balance=findViewById(R.id.balance);
         initToolbar();
+        initActions();
         initComponent();
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        mno=prefs.getString(Phone, null);
     }
 
     private void initToolbar() {
@@ -42,7 +86,6 @@ public class DashboardEWallet extends AppCompatActivity {
     private void initComponent() {
         nested_scroll_view = (NestedScrollView) findViewById(R.id.nested_scroll_view);
         tab_layout = (TabLayout) findViewById(R.id.tab_layout);
-
         tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.ic_equalizer), 0);
         tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.ic_credit_card), 1);
         tab_layout.addTab(tab_layout.newTab().setIcon(R.drawable.ic_pie_chart_outline), 2);
@@ -77,6 +120,7 @@ public class DashboardEWallet extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_refresh, menu);
         Tools.changeMenuIconColor(menu, getResources().getColor(R.color.light_blue_500));
         return true;
+
     }
 
     @Override
@@ -87,6 +131,171 @@ public class DashboardEWallet extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), item.getTitle(), Toast.LENGTH_SHORT).show();
         }
         return super.onOptionsItemSelected(item);
+    }
+    private void initActions()
+    {
+        final JsonObject object = new JsonObject();
+
+        send.setOnClickListener(view -> {
+            //startActivity( new Intent(this, EWallet.class));
+            object.addProperty("flag", "T");
+            object.addProperty("Mobilenumber", mno);
+
+            object.addProperty("Status", "1");
+            text1 = "Transfer";
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this, R.style.Dialog_Theme);
+            alertDialog.setTitle(text1);
+            alertDialog.setMessage("Please Enter " + text1 + " Amount");
+            final EditText input = new EditText(this);
+               /* LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);*/
+            input.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            input.setInputType(InputType.TYPE_CLASS_NUMBER);
+            InputFilter[] FilterArray = new InputFilter[1];
+            FilterArray[0] = new InputFilter.LengthFilter(4);
+            input.setFilters(FilterArray);
+            alertDialog.setView(input);
+            alertDialog.setPositiveButton("OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (input.getText().toString().matches("")) {
+                                Toast.makeText(DashboardEWallet.this, "Please Enter amount", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                amount = input.getText().toString();
+                                object.addProperty("Amount", amount + "");
+//                                Intent intent=new Intent(DashboardEWallet.this,customerappEwalletSendTransactionslistActivity.class);
+//                                startActivity(intent);
+                               WalletBalance(object);
+
+                                   /* GetBalance getBalance = new GetBalance();
+                                    getBalance.execute();*/
+
+                            }
+                        }
+                    });
+            alertDialog.show();
+        });
+        recieve.setOnClickListener(view -> {
+            //startActivity( new Intent(this, EWallet.class));
+            object.addProperty("flag", "A");
+            object.addProperty("Mobilenumber", mno);
+
+            object.addProperty("Status", "1");
+            text1 = "Recieve";
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(this, R.style.Dialog_Theme);
+            alertDialog.setTitle(text1);
+            alertDialog.setMessage("Please Enter " + text1 + " Amount");
+            final EditText input = new EditText(this);
+               /* LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.MATCH_PARENT);
+                input.setLayoutParams(lp);*/
+            input.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            input.setInputType(InputType.TYPE_CLASS_NUMBER);
+            InputFilter[] FilterArray = new InputFilter[1];
+            FilterArray[0] = new InputFilter.LengthFilter(4);
+            input.setFilters(FilterArray);
+            alertDialog.setView(input);
+            alertDialog.setPositiveButton("OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (input.getText().toString().matches("")) {
+                                Toast.makeText(DashboardEWallet.this, "Please Enter amount", Toast.LENGTH_SHORT).show();
+
+                            } else {
+                                amount = input.getText().toString();
+                                object.addProperty("Amount", amount + "");
+//                                Intent intent=new Intent(DashboardEWallet.this,customerappEwalletSendTransactionslistActivity.class);
+//                                startActivity(intent);
+                                WalletBalance(object);
+
+                                   /* GetBalance getBalance = new GetBalance();
+                                    getBalance.execute();*/
+
+                            }
+                        }
+                    });
+            alertDialog.show();
+        });
+    }
+    public void Getcurrentbalance(String mobileNo){
+
+       // StartDialogue();
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
+                .Getcurrentbalance(mobileNo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<GetCurrentBalanceResponse>>() {
+                    @Override
+                    public void onCompleted() {
+                        //  DisplayToast("Successfully Registered");
+                        //StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            Log.d("OnError ", e.getMessage());
+                            DisplayToast("Error");
+                            //StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<GetCurrentBalanceResponse> responselist) {
+                        GetCurrentBalanceResponse response=responselist.get(0);
+                        ApplicationConstants.walletBalance = response.getAmount();
+                        balance.setText(response.getAmount() + " $");
+
+                    }
+                });
+    }
+    public void WalletBalance(JsonObject object){
+
+        //StartDialogue();
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
+                .WalletBalance(object)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<WalletBalanceResponse>>() {
+                    @Override
+                    public void onCompleted() {
+                        //  DisplayToast("Successfully Registered");
+                       // StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            Log.d("OnError ", e.getMessage());
+                            DisplayToast("Error");
+                            //StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<WalletBalanceResponse> responselist) {
+                        WalletBalanceResponse response=responselist.get(0);
+                        ApplicationConstants.walletBalance = response.getAmount();
+                        balance.setText(response.getAmount() + " $");
+
+                    }
+                });
+    }
+    public void DisplayToast(String text){
+        if(toast!=null){
+            toast.cancel();
+            toast=null;
+
+        }
+        toast=Toast.makeText(this,text,Toast.LENGTH_SHORT);
+        toast.show();
+
     }
 
 }

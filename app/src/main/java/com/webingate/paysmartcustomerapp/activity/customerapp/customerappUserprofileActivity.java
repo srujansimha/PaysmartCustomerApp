@@ -42,11 +42,11 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
     public static final String Phone = "phoneKey";
     public static final String Email = "emailKey";
     public static final String Password = "passwordkey";
+    public static final String UserAccountNo = "UserAccountNokey";
 
     Toolbar toolbar;
     Toast toast;
-    public static final String MyPREFERENCES = "MyPrefs";
-    public static final String UserAccountNo = "UserAccountNokey";
+
     String useracc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,9 +99,8 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
         } else if (id == R.id.nav_ewallet) {
             Toast.makeText(this, "Clicked nav_ewallet.", Toast.LENGTH_SHORT).show();
+            //startActivity( new Intent(customerappUserprofileActivity.this, customerewalletActivity.class));
            GetEwalletStatus(useracc);
-//            Intent intent=new Intent(this, customerewalletActivity.class);
-//            startActivity(intent);
         } else if (id == R.id.nav_notification) {
             Toast.makeText(this, "Clicked nav_notification.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_alerts) {
@@ -235,10 +234,13 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
                     @Override
                     public void onNext(List<MOTPVerificationResponse> responselist) {
+                        if(responselist.size()!=0 ){
                         MOTPVerificationResponse response = responselist.get(0);
+
                         if (response.getCode() != null) {
                             DisplayToast(response.getDescription());
-                        } else {
+                        }
+                        else{
                             if(response.getstatus()!=3){
                                 startActivity( new Intent(customerappUserprofileActivity.this, customerewalletActivity.class));
                             }
@@ -252,6 +254,10 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 //                       Intent intent = new Intent(customerEOTPVerificationActivity.this, businessappMOTPVerificationActivity.class);
 //                        intent.putExtra("eotp","");
                             finish();
+                        }
+                        }
+                         else {
+                            startActivity( new Intent(customerappUserprofileActivity.this, customerewalletActivity.class));
                         }
                     }
                 });
