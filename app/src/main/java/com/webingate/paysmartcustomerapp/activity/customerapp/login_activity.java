@@ -58,7 +58,7 @@ import rx.schedulers.Schedulers;
 public class login_activity extends AppCompatActivity{
 
     public static final String MyPREFERENCES = "MyPrefs";
-   // public static final String Phone = "phoneKey";
+    public static final String Phone = "phoneKey";
     public static final String ID = "idKey";
     public static final String Name = "nameKey";
     public static final String Email = "emailKey";
@@ -241,6 +241,7 @@ public class login_activity extends AppCompatActivity{
                             SharedPreferences sharedPref = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString(UserAccountNo, credentialsResponse.getUserAccountNo());
+                            editor.putString(Phone,credentialsResponse.getMobilenumber());
 //                            editor.putString(VEHICLEID, credentialsResponse.getVehicleId());
 //                            editor.putString(Phone, mobileNo.getText().toString());
 //                            editor.putString(Emailotp, null);
