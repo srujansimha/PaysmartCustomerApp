@@ -42,11 +42,12 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
     public static final String Phone = "phoneKey";
     public static final String Email = "emailKey";
     public static final String Password = "passwordkey";
+    public static final String UserAccountNo = "UserAccountNokey";
 
     Toolbar toolbar;
     Toast toast;
-    public static final String MyPREFERENCES = "MyPrefs";
-    public static final String UserAccountNo = "UserAccountNokey";
+
+
     String useracc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
