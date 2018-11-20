@@ -336,8 +336,8 @@ public class login_activity extends AppCompatActivity{
                         finish();
                     } else {
                         if (emailOTP == null && mobileOTP != null) {
-                            startActivity(new Intent(login_activity.this, customerMOTPVerificationActivity.class));
-                            finish();
+                           // startActivity(new Intent(login_activity.this, customerMOTPVerificationActivity.class));
+                           // finish();
                     } else if(emailOTP != null && mobileOTP == null){
 
                             startActivity(new Intent(login_activity.this,customerEOTPVerificationActivity.class));

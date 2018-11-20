@@ -11,6 +11,9 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -26,12 +29,14 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
 
+import com.webingate.paysmartcustomerapp.adapter.customerapp_transactionsAdapter;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.GetCurrentBalanceResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.WalletBalanceResponse;
 import com.webingate.paysmartcustomerapp.customerapp.EWallet;
 import com.webingate.paysmartcustomerapp.utils.Tools;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -52,26 +57,48 @@ public class DashboardEWallet extends AppCompatActivity {
     LinearLayout recieve;
     @BindView(R.id.balance)
     TextView balance;
+    customerapp_transactionsAdapter adapter;
+    // RecyclerView
+    RecyclerView recyclerView;
+
+
     AppCompatButton transfer;
     Unbinder unbinder;
     private String response;
     private String amount,text1,mno;
     private int flag;
     Toast toast;
+    ArrayList<WalletBalanceResponse> traslist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard_wallet);
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        mno=prefs.getString(Phone, null);
         send=findViewById(R.id.send);
         recieve=findViewById(R.id.recieve);
         balance=findViewById(R.id.balance);
+
+
         initToolbar();
         initActions();
+        initData();
+        initUI();
         initComponent();
-        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        mno=prefs.getString(Phone, null);
-    }
 
+    }
+    private void initUI(){
+        adapter = new customerapp_transactionsAdapter(null);
+        // get recycler view
+        recyclerView = findViewById(R.id.placeList1RecyclerView);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+    }
+    private void initData(){
+
+        Getcurrentbalance(mno);
+    }
     private void initToolbar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_menu);
@@ -281,6 +308,10 @@ public class DashboardEWallet extends AppCompatActivity {
                     @Override
                     public void onNext(List<WalletBalanceResponse> responselist) {
                         WalletBalanceResponse response=responselist.get(0);
+                        traslist= (ArrayList<WalletBalanceResponse>) responselist;
+                        adapter = new customerapp_transactionsAdapter(traslist);
+                        recyclerView.setAdapter(adapter);
+
                         ApplicationConstants.walletBalance = response.getAmount();
                         balance.setText(response.getAmount() + " $");
 
