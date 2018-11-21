@@ -9,7 +9,7 @@
         android:id="@+id/placeHolderCardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="2dp"
         app:cardCornerRadius="6dp"
         app:cardElevation="2dp"
         app:cardUseCompatPadding="true"
@@ -44,11 +44,11 @@
 
             <ImageView
                 android:id="@+id/imageView6"
-                android:layout_width="25dp"
-                android:layout_height="14dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginLeft="18dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginBottom="32dp"
                 android:tint="@color/grey_40"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -62,66 +62,69 @@
 
             <View
                 android:id="@+id/view5"
-                android:layout_width="27dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="32dp"
-                android:layout_marginRight="32dp"
-                app:layout_constraintBottom_toTopOf="@+id/tdd"
-                app:layout_constraintEnd_toStartOf="@+id/tdd"
-                app:layout_constraintHorizontal_bias="0.238"
+                android:layout_width="22dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView5"
-                app:layout_constraintTop_toTopOf="@+id/tdd"
-                app:layout_constraintVertical_bias="0.483" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
 
 
             <TextView
                 android:id="@+id/tdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="12dp"
                 android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:hint="tttt"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
                 android:textColor="@color/indigo_900"
-                app:layout_constraintStart_toStartOf="@+id/imageView6" />
+                app:layout_constraintStart_toStartOf="@+id/imageView6"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <TextView
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
-                android:layout_height="14dp"
-                android:layout_marginLeft="50dp"
-                android:layout_marginBottom="22dp"
+                android:layout_height="17dp"
+                android:layout_marginStart="56dp"
+                android:layout_marginLeft="56dp"
+                android:layout_marginTop="42dp"
                 android:text="10 jan 2018 11:20"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
                 android:textColor="@color/grey_40"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView5"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
 
             <TextView
                 android:id="@+id/textView8"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="170dp"
-                android:layout_marginBottom="1dp"
+                android:layout_height="19dp"
+                android:layout_marginStart="150dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="16dp"
                 android:text="1.639 ETH"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:textColor="@color/light_blue_500"
-                tools:layout_editor_absoluteX="274dp"
-                tools:layout_editor_absoluteY="13dp"
-                app:layout_constraintStart_toStartOf="@+id/tdd"/>
+                app:layout_constraintStart_toStartOf="@+id/tdd"
+                app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/textView9"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="210dp"
-                android:layout_marginBottom="16dp"
-                android:text="4.38 USD"
-                android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"
-                android:textColor="@color/grey_40"
-                app:layout_constraintBottom_toBottomOf="@+id/textView8"
-                app:layout_constraintStart_toStartOf="@+id/textView8" />
+            <!--<TextView-->
+                <!--android:id="@+id/textView9"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="19dp"-->
+                <!--android:layout_marginStart="120dp"-->
+                <!--android:layout_marginLeft="70dp"-->
+                <!--android:layout_marginTop="20dp"-->
+                <!--android:text="4.38 USD"-->
+                <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Caption"-->
+                <!--android:textColor="@color/grey_40"-->
+                <!--app:layout_constraintBottom_toBottomOf="@+id/textView8"-->
+                <!--tools:layout_editor_absoluteX="164dp" />-->
 
 
         </android.support.constraint.ConstraintLayout>

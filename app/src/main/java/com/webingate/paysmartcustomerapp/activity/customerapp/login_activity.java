@@ -286,9 +286,9 @@ public class login_activity extends AppCompatActivity{
                     public void onNext(List<ConfigData> configData) {
 
                         ConfigData response = configData.get(0);
-                        if (response.getCode() != null) {
-                            DisplayToast(response.getDescription());
-                        } else {
+//                        if (response.getCode() != null) {
+//                            DisplayToast(response.getDescription());
+//                        } else {
 
 //                        if(response.getCode().contains("ERR")){
 //                            DisplayToast(response.getDescription());
@@ -302,15 +302,15 @@ public class login_activity extends AppCompatActivity{
 //                            startActivity(new Intent(customerMOTPVerificationActivity.this, login_activity.class));
 //                            finish();
 //                        }
-                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedpreferences.edit();
-                            editor.putString(Mobileotp, null);
+                           // SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                            //SharedPreferences.Editor editor = sharedpreferences.edit();
+                           // editor.putString(Mobileotp, null);
                             Intent intent = new Intent(login_activity.this, login_activity.class);
-                            intent.putExtra("Mobilenumber", response.getMobilenumber());
+                            //intent.putExtra("Mobilenumber", response.getMobilenumber());
                             //intent.putExtra("Uid",E_uid);
                             startActivity(intent);
-                            editor.commit();
-                        }
+                           // editor.commit();
+//                        }
                     }
                 });
     }
