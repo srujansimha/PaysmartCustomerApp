@@ -24,4 +24,11 @@ public class ConfigData{
 
     @SerializedName("listvalue")
     private String listvalue;
+
+    @SerializedName("Code")
+    private String code;
+
+    @SerializedName("Description")
+    private String description;
+
 }
