@@ -3,6 +3,7 @@ package com.webingate.paysmartcustomerapp.customerapp.Utils;
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.AvailableVehiclesResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CalculatePriceResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.ConfigData;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerBookingStatusResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerChangePwdResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerEOTPVerificationResponse;
@@ -143,24 +144,8 @@ public interface APIInterface  {
     @POST("/api/CustomerAccountDetails/CustomerAccount")
     public Observable<List<DefaultResponse>> CustomerAccount(@Body JsonObject jsonObject);//i
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    @POST("api/Common/ConfigData")
+    public Observable<List<ConfigData>> GetConfigData(@Body JsonObject jsonObject);
     /*
 
 
