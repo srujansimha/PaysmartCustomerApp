@@ -37,6 +37,7 @@ import com.rilixtech.CountryCodePicker;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.adapter.uicollection.GeneralItemSpinnerAdapter;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.ConfigData;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.ValidateCredentialsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.WelcomeActivity;
 import com.webingate.paysmartcustomerapp.object.GeneralList;
@@ -58,7 +59,7 @@ import rx.schedulers.Schedulers;
 public class login_activity extends AppCompatActivity{
 
     public static final String MyPREFERENCES = "MyPrefs";
-   // public static final String Phone = "phoneKey";
+    public static final String Phone = "phoneKey";
     public static final String ID = "idKey";
     public static final String Name = "nameKey";
     public static final String Email = "emailKey";
@@ -146,6 +147,7 @@ public class login_activity extends AppCompatActivity{
 
         ccp = (CountryCodePicker) findViewById(R.id.ccp);
         ccp.setCustomMasterCountries("IN,ZW,AF");
+
     }
 
     //region Init Functions
@@ -241,6 +243,7 @@ public class login_activity extends AppCompatActivity{
                             SharedPreferences sharedPref = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString(UserAccountNo, credentialsResponse.getUserAccountNo());
+                            editor.putString(Phone,credentialsResponse.getMobilenumber());
 //                            editor.putString(VEHICLEID, credentialsResponse.getVehicleId());
 //                            editor.putString(Phone, mobileNo.getText().toString());
 //                            editor.putString(Emailotp, null);
@@ -257,9 +260,64 @@ public class login_activity extends AppCompatActivity{
                 });
     }
 
+    public void GetCountriesList(JsonObject jsonObject){
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(login_activity.this).getrestadapter()
+                .GetConfigData(jsonObject)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<ConfigData>>() {
+                    @Override
+                    public void onCompleted() {
+                        DisplayToast("Successfully Registered");
+                        //StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            Log.d("OnError ", e.getMessage());
+                            DisplayToast("Error");
+                            //StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<ConfigData> configData) {
+
+                        ConfigData response = configData.get(0);
+                        if (response.getCode() != null) {
+                            DisplayToast(response.getDescription());
+                        } else {
+
+//                        if(response.getCode().contains("ERR")){
+//                            DisplayToast(response.getDescription());
+//                        }else {
+//                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+//                            SharedPreferences.Editor editor = sharedpreferences.edit();
+//                            editor.putString(Mobileotp, null);
+//                            editor.commit();
+//                            DisplayToast("Registration Successfull");
+//                            ApplicationConstants.verify_email = true;
+//                            startActivity(new Intent(customerMOTPVerificationActivity.this, login_activity.class));
+//                            finish();
+//                        }
+                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString(Mobileotp, null);
+                            Intent intent = new Intent(login_activity.this, login_activity.class);
+                            intent.putExtra("Mobilenumber", response.getMobilenumber());
+                            //intent.putExtra("Uid",E_uid);
+                            startActivity(intent);
+                            editor.commit();
+                        }
+                    }
+                });
+    }
 
 
-        private void checkPermissions() {
+
+    private void checkPermissions() {
 
 
             if (hasPermissions(this, PERMISSIONS).size() > 0) {
@@ -335,8 +393,8 @@ public class login_activity extends AppCompatActivity{
                         finish();
                     } else {
                         if (emailOTP == null && mobileOTP != null) {
-                            startActivity(new Intent(login_activity.this, customerMOTPVerificationActivity.class));
-                            finish();
+                           // startActivity(new Intent(login_activity.this, customerMOTPVerificationActivity.class));
+                           // finish();
                     } else if(emailOTP != null && mobileOTP == null){
 
                             startActivity(new Intent(login_activity.this,customerEOTPVerificationActivity.class));

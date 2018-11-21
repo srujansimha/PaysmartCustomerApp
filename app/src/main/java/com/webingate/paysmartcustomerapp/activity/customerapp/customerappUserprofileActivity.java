@@ -47,7 +47,6 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
     Toolbar toolbar;
     Toast toast;
 
-
     String useracc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,9 +99,8 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
         } else if (id == R.id.nav_ewallet) {
             Toast.makeText(this, "Clicked nav_ewallet.", Toast.LENGTH_SHORT).show();
-           GetEwalletStatus(useracc);
-//            Intent intent=new Intent(this, customerewalletActivity.class);
-//            startActivity(intent);
+            startActivity( new Intent(customerappUserprofileActivity.this, DashboardEWallet.class));
+           //GetEwalletStatus(useracc);
         } else if (id == R.id.nav_notification) {
             Toast.makeText(this, "Clicked nav_notification.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_alerts) {
@@ -164,6 +162,10 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         View headerLayout = navigationView.getHeaderView(0);
         ImageView userImageView = headerLayout.findViewById(R.id.userImageView);
         Utils.setCircleImageToImageView(this, userImageView, R.drawable.profile1, 0, 0);
+
+        ImageView userImageView1 = findViewById(R.id.userImageView1);
+        Utils.setCircleImageToImageView(this, userImageView1, R.drawable.profile1, 0, 0);
+
 //        if(Utils.isRTL()) {
 //            navigationView.setTextDirection(View.TEXT_DIRECTION_RTL);
 //        }else {
@@ -236,23 +238,23 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
                     @Override
                     public void onNext(List<MOTPVerificationResponse> responselist) {
+                        if(responselist.size()!=0 ){
                         MOTPVerificationResponse response = responselist.get(0);
+
                         if (response.getCode() != null) {
                             DisplayToast(response.getDescription());
-                        } else {
-                            if(response.getstatus()!=3){
+                        }
+                        else{
                                 startActivity( new Intent(customerappUserprofileActivity.this, customerewalletActivity.class));
-                            }
-                            else
-                            {
-                                startActivity( new Intent(customerappUserprofileActivity.this, DashboardEWallet.class));
-                            }
-
                             //editor.commit();
                             //startActivity(new Intent(customerEOTPVerificationActivity.this, login_activity.class));
 //                       Intent intent = new Intent(customerEOTPVerificationActivity.this, businessappMOTPVerificationActivity.class);
 //                        intent.putExtra("eotp","");
                             finish();
+                        }
+                        }
+                         else {
+                            startActivity( new Intent(customerappUserprofileActivity.this, customerewalletActivity.class));
                         }
                     }
                 });

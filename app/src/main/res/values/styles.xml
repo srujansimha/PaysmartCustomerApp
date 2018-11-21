@@ -47,8 +47,6 @@
     <style name="PSButton.Default.Borderless" parent="@style/Widget.AppCompat.Button.Borderless.Colored">
         <item name="android:textColor">@color/md_grey_600</item>
     </style>
-
-
     <!-- PS Custom Alert Dialog -->
 
     <!--<style name="AppTheme" parent="BaseTheme" />-->
