@@ -68,7 +68,8 @@ public class DashboardEWallet extends AppCompatActivity {
     private String amount,text1,mno;
     private int flag;
     Toast toast;
-    ArrayList<WalletBalanceResponse> traslist;
+    ArrayList<WalletBalanceResponse> traslist,traslist1;
+    //ArrayList<GetCurrentBalanceResponse> traslist1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -252,10 +253,10 @@ public class DashboardEWallet extends AppCompatActivity {
 
        // StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
-                .Getcurrentbalance(mobileNo)
+                .Getcurrentbalance1(mobileNo)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<GetCurrentBalanceResponse>>() {
+                .subscribe(new Subscriber<List<WalletBalanceResponse>>() {
                     @Override
                     public void onCompleted() {
                         //  DisplayToast("Successfully Registered");
@@ -273,10 +274,13 @@ public class DashboardEWallet extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onNext(List<GetCurrentBalanceResponse> responselist) {
-                        GetCurrentBalanceResponse response=responselist.get(0);
+                    public void onNext(List<WalletBalanceResponse> responselist) {
+                        WalletBalanceResponse response=responselist.get(0);
                         ApplicationConstants.walletBalance = response.getAmount();
                         balance.setText(response.getAmount() + " $");
+                        traslist1= (ArrayList<WalletBalanceResponse>) responselist;
+                        adapter = new customerapp_transactionsAdapter(traslist1);
+                        recyclerView.setAdapter(adapter);
 
                     }
                 });

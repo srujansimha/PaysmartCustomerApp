@@ -49,6 +49,8 @@ public class customerapp_transactionsAdapter extends RecyclerView.Adapter<Recycl
             FlightsViewHolder flightsViewHolder = (FlightsViewHolder) holder;
             Context context = ((FlightsViewHolder) holder).flightsCardView.getContext();
             flightsViewHolder.flightsDescTextView.setText(tlist.getComments());
+            flightsViewHolder.dispalydate.setText(tlist.getDate());
+            flightsViewHolder.dispalamt.setText("$"+tlist.getAmt());
             //flightsViewHolder.flightsDescTextView.setText(tlist.getAmount());
             if (itemClickListener != null) {
                 ((FlightsViewHolder) holder).flightsCardView.setOnClickListener(view -> itemClickListener.onItemClick(view, translist.get(position), position));
@@ -72,9 +74,9 @@ public class customerapp_transactionsAdapter extends RecyclerView.Adapter<Recycl
 
         CardView flightsCardView;
         ImageView flightsImageView;
-        TextView flightsTitleTextView;
+        TextView dispalydate;
         TextView flightsDescTextView;
-        TextView flightsPriceTextView;
+        TextView dispalamt;
         TextView flightsPeriodTextView;
 
 
@@ -82,9 +84,9 @@ public class customerapp_transactionsAdapter extends RecyclerView.Adapter<Recycl
             super(itemView);
             flightsCardView = itemView.findViewById(R.id.placeHolderCardView);
             flightsImageView = itemView.findViewById(R.id.flightsImageView);
-            flightsTitleTextView = itemView.findViewById(R.id.flightsTitleTextView);
+            dispalydate = itemView.findViewById(R.id.textView7);
             flightsDescTextView = itemView.findViewById(R.id.tdd);
-            flightsPriceTextView = itemView.findViewById(R.id.flightsPriceTextView);
+            dispalamt = itemView.findViewById(R.id.textView8);
 
         }
     }

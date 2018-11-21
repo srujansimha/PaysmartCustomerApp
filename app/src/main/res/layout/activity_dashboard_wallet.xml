@@ -249,8 +249,8 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_middle"
-                        android:layout_marginBottom="@dimen/spacing_medium"
+                        android:layout_marginTop="@dimen/spacing_small"
+                        android:layout_marginBottom="@dimen/spacing_small"
                         android:gravity="center"
                         android:text="Latest Five Transactions"
                         android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"

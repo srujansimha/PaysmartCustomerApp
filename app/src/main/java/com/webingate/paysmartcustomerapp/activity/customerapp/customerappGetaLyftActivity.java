@@ -9,7 +9,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -18,7 +17,6 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -36,7 +34,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.HorizontalScrollView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +46,6 @@ import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 
-import android.location.Criteria;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -74,7 +70,6 @@ import com.google.gson.JsonObject;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
 import com.google.maps.android.PolyUtil;
-import com.google.maps.android.SphericalUtil;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
 import com.webingate.paysmartcustomerapp.R;
@@ -88,34 +83,21 @@ import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerBookingStatusRe
 import com.webingate.paysmartcustomerapp.customerapp.Deo.SaveBookingDetailsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.UpdateBookingstatusResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
-import com.webingate.paysmartcustomerapp.customerapp.GetaLyft;
 import com.webingate.paysmartcustomerapp.customerapp.LatLngInterpolator;
 import com.webingate.paysmartcustomerapp.customerapp.Payments_Dialoguebox;
 import com.webingate.paysmartcustomerapp.customerapp.RideLater_Dialoguebox;
 import com.webingate.paysmartcustomerapp.object.DirectoryHome9ProductsVO;
-import com.webingate.paysmartcustomerapp.repository.directory.DirectoryHome9Repository;
+import com.webingate.paysmartcustomerapp.object.GetalyftVehiclelist;
+import com.webingate.paysmartcustomerapp.repository.directory.VehicleTypesList;
 
 import org.joda.time.DateTime;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.BindView;
@@ -177,7 +159,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     ProgressDialog dialog;
     Double lat1,log1,dlat,dlog;
     //TODO: this is to test then scroll view navigation
-    List<DirectoryHome9ProductsVO> productsList;
+    List<GetalyftVehiclelist> productsList;
     customerapp_VehicleTypesAdapter productsAdapter;
     RecyclerView rvProduct;
 
@@ -339,7 +321,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
             }
         });
         //   AvailableVehicles();
-        productsList = DirectoryHome9Repository.getVehicleTypes();
+        productsList = VehicleTypesList.getVehicleTypes();
         productsAdapter = new customerapp_VehicleTypesAdapter(productsList);
 
 
@@ -359,6 +341,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                     AvailableVehiclesTest(0);
                     break;
                 case 1:
+                    Toast.makeText(getApplicationContext(), "Clicked : get a lyft1", Toast.LENGTH_SHORT).show();
                     AvailableVehiclesTest(1);
 //                        AppDirectoryHome1Fragment af1 = new AppDirectoryHome1Fragment();
 //
@@ -367,13 +350,16 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 //                                .commitAllowingStateLoss();
                     break;
                 case 2:
+                    Toast.makeText(getApplicationContext(), "Clicked : get a lyft2", Toast.LENGTH_SHORT).show();
                     AvailableVehiclesTest(2);
 
                     break;
                 case 3:
+                    Toast.makeText(getApplicationContext(), "Clicked : get a lyft3", Toast.LENGTH_SHORT).show();
                     AvailableVehiclesTest(3);
                     break;
                 case 4:
+                    Toast.makeText(getApplicationContext(), "Clicked : get a lyft4", Toast.LENGTH_SHORT).show();
                     AvailableVehiclesTest(4);
                     break;
                 case 5:

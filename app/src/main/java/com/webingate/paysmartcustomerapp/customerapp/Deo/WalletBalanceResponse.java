@@ -7,6 +7,9 @@ public class WalletBalanceResponse{
 	@SerializedName("Amount")
 	private String amount;
 
+	@SerializedName("amnt")
+	private String amnt;
+
 	@SerializedName("StatusId")
 	private String statusId;
 
@@ -29,6 +32,9 @@ public class WalletBalanceResponse{
 
 	public String getAmount(){
 		return amount;
+	}
+	public String getAmt(){
+		return amnt;
 	}
 
 	public void setStatusId(String statusId){
@@ -53,8 +59,9 @@ public class WalletBalanceResponse{
 	@Override
  	public String toString(){
 		return 
-			"WalletBalanceResponse{" + 
+			"WalletBalanceResponse{" +
 			"Amount = '" + amount + '\'' +
+					"amnt = '" + amnt + '\'' +
 			",statusId = '" + statusId + '\'' + 
 			",mobilenumber = '" + mobilenumber + '\'' +
 					",Date = '" + Date + '\'' +
