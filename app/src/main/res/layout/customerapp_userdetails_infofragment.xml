@@ -6,27 +6,21 @@
     android:layout_height="match_parent"
     android:background="@color/md_grey_100">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:popupTheme="@style/AppTheme.PopupOverlay" />
-
-    </android.support.design.widget.AppBarLayout>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <FrameLayout
+            android:id="@+id/contentLayout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/constraintLayout40"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
@@ -37,43 +31,46 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
+
             <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/md_white_1000">
 
-                <!--<View-->
-                    <!--android:id="@+id/topView"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="588dp"-->
-                    <!--android:layout_marginBottom="8dp"-->
-                    <!--android:layout_marginTop="8dp"-->
-                    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-                    <!--app:layout_constraintEnd_toEndOf="parent"-->
-                    <!--app:layout_constraintHorizontal_bias="0.0"-->
-                    <!--app:layout_constraintStart_toStartOf="parent"-->
-                    <!--app:layout_constraintTop_toBottomOf="@+id/profileImageView"-->
-                    <!--app:layout_constraintVertical_bias="0.488" />-->
+                <TextView
+                    android:id="@+id/sortByTextView2"
+                    android:layout_width="0dp"
+                    android:layout_height="28dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginStart="32dp"
+                    android:fontFamily="@font/roboto"
+                    android:text="USER INFORMATION"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/colorTextLight"
+                    android:textSize="@dimen/font_title_size"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="parent"
+                    tools:layout_editor_absoluteY="16dp" />
 
                 <!--<ImageView-->
                     <!--android:id="@+id/profileImageView"-->
-                    <!--android:layout_width="125dp"-->
-                    <!--android:layout_height="97dp"-->
+                    <!--android:layout_width="139dp"-->
+                    <!--android:layout_height="104dp"-->
+                    <!--android:layout_marginLeft="16dp"-->
+                    <!--android:layout_marginStart="16dp"-->
                     <!--android:layout_marginTop="16dp"-->
-                    <!--app:layout_constraintEnd_toEndOf="@+id/topView"-->
-                    <!--app:layout_constraintHorizontal_bias="0.501"-->
-                    <!--app:layout_constraintStart_toStartOf="@+id/topView"-->
+                    <!--app:layout_constraintStart_toStartOf="parent"-->
                     <!--app:layout_constraintTop_toTopOf="parent"-->
                     <!--tools:srcCompat="@drawable/baseline_image_black_24" />-->
 
-                <ImageView
-                    android:id="@+id/imageView46"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    app:layout_constraintEnd_toEndOf="@+id/profileImageView"
-                    app:layout_constraintTop_toTopOf="@+id/profileImageView"
-                    app:srcCompat="@drawable/baseline_pen_circle_24" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/imageView46"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginTop="4dp"-->
+                    <!--app:layout_constraintEnd_toEndOf="@+id/profileImageView"-->
+                    <!--app:layout_constraintTop_toTopOf="@+id/profileImageView"-->
+                    <!--app:srcCompat="@drawable/baseline_pen_circle_24" />-->
 
                 <TextView
                     android:id="@+id/stateTitleTextView"
@@ -87,15 +84,14 @@
                     android:textColor="@color/colorTextLight"
                     android:textSize="@dimen/font_body_s_size"
                     app:layout_constraintStart_toEndOf="@+id/view34"
-                    app:layout_constraintTop_toBottomOf="@+id/cityEditText" />
+                    app:layout_constraintTop_toBottomOf="@+id/s_city" />
 
                 <EditText
-                    android:id="@+id/stateEditText"
+                    android:id="@+id/s_state"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginStart="8dp"
-                    android:layout_marginTop="8dp"
                     android:background="@drawable/layout_border"
                     android:ems="10"
                     android:fontFamily="@font/roboto"
@@ -106,6 +102,7 @@
                     android:textColor="@color/colorTextLight"
                     android:textSize="@dimen/font_body_size"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/view34"
                     app:layout_constraintTop_toBottomOf="@+id/stateTitleTextView" />
 
@@ -117,9 +114,9 @@
                     android:layout_marginEnd="8dp"
                     android:layout_marginTop="8dp"
                     android:tint="@color/md_grey_600"
-                    app:layout_constraintBottom_toBottomOf="@+id/stateEditText"
-                    app:layout_constraintEnd_toEndOf="@+id/stateEditText"
-                    app:layout_constraintTop_toTopOf="@+id/stateEditText"
+                    app:layout_constraintBottom_toBottomOf="@+id/s_state"
+                    app:layout_constraintEnd_toEndOf="@+id/s_state"
+                    app:layout_constraintTop_toTopOf="@+id/s_state"
                     app:layout_constraintVertical_bias="0.0"
                     app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
 
@@ -132,48 +129,16 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cityEditText" />
+                    app:layout_constraintTop_toBottomOf="@+id/s_city" />
 
                 <EditText
-                    android:id="@+id/countryEditText"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/layout_border"
-                    android:ems="10"
-                    android:fontFamily="@font/roboto"
-                    android:hint="Country"
-                    android:inputType="textPersonName"
-                    android:padding="@dimen/space_8"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/colorTextLight"
-                    android:textSize="@dimen/font_body_size"
-                    app:layout_constraintEnd_toStartOf="@+id/view34"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/countryTitleTextView" />
-
-                <TextView
-                    android:id="@+id/countryTitleTextView"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="Country"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/colorTextLight"
-                    android:textSize="@dimen/font_body_s_size"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cityEditText" />
-
-                <EditText
-                    android:id="@+id/postalEditText"
+                    android:id="@+id/s_postal"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:layout_marginEnd="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="8dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/layout_border"
@@ -186,7 +151,7 @@
                     android:textColor="@color/colorTextLight"
                     android:textSize="@dimen/font_body_size"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/s_state"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/postalTitleTextView"
@@ -196,18 +161,19 @@
                     android:id="@+id/postalTitleTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto"
                     android:text="Zip/Postal"
                     android:textAlignment="viewStart"
                     android:textColor="@color/colorTextLight"
                     android:textSize="@dimen/font_body_s_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/countryEditText" />
+                    app:layout_constraintTop_toBottomOf="@+id/s_city" />
 
                 <EditText
-                    android:id="@+id/cityEditText"
+                    android:id="@+id/s_city"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -239,24 +205,24 @@
                     android:textColor="@color/colorTextLight"
                     android:textSize="@dimen/font_body_s_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/addressEditText" />
+                    app:layout_constraintTop_toBottomOf="@+id/s_address" />
 
                 <TextView
                     android:id="@+id/addressTitleTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/roboto"
                     android:text="Address"
                     android:textAlignment="viewStart"
                     android:textColor="@color/colorTextLight"
                     android:textSize="@dimen/font_body_s_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/sortByTextView5" />
+                    app:layout_constraintTop_toBottomOf="@+id/s_mobileno" />
 
                 <EditText
-                    android:id="@+id/addressEditText"
+                    android:id="@+id/s_address"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -277,12 +243,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/addressTitleTextView" />
 
                 <EditText
-                    android:id="@+id/phoneEditText"
+                    android:id="@+id/s_mobileno"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
+                    android:layout_height="33dp"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
                     android:background="@drawable/layout_border"
                     android:ems="10"
                     android:fontFamily="@font/roboto"
@@ -309,7 +275,7 @@
                     android:textColor="@color/colorTextLight"
                     android:textSize="@dimen/font_body_s_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+                    app:layout_constraintTop_toBottomOf="@+id/s_email" />
 
                 <TextView
                     android:id="@+id/emailTitleTextView"
@@ -323,10 +289,10 @@
                     android:textColor="@color/colorTextLight"
                     android:textSize="@dimen/font_body_s_size"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
+                    app:layout_constraintTop_toBottomOf="@+id/s_name" />
 
                 <EditText
-                    android:id="@+id/emailEditText"
+                    android:id="@+id/s_email"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
@@ -347,11 +313,12 @@
                     app:layout_constraintTop_toBottomOf="@+id/emailTitleTextView" />
 
                 <EditText
-                    android:id="@+id/nameEditText"
-                    android:layout_width="0dp"
+                    android:id="@+id/s_name"
+                    android:layout_width="198dp"
                     android:layout_height="33dp"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="4dp"
                     android:background="@drawable/layout_border"
                     android:ems="10"
                     android:fontFamily="@font/roboto"
@@ -362,6 +329,7 @@
                     android:textColor="@color/colorTextLight"
                     android:textSize="@dimen/font_body_size"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/nameTitleTextView"
                     app:layout_constraintTop_toBottomOf="@+id/nameTitleTextView" />
 
@@ -369,7 +337,8 @@
                     android:id="@+id/nameTitleTextView"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="168dp"
+                    android:layout_marginStart="168dp"
                     android:layout_marginTop="16dp"
                     android:fontFamily="@font/roboto"
                     android:text="Name"
@@ -378,52 +347,6 @@
                     android:textSize="@dimen/font_body_s_size"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/sortByTextView2" />
-
-                <TextView
-                    android:id="@+id/sortByTextView2"
-                    android:layout_width="0dp"
-                    android:layout_height="31dp"
-                    android:layout_marginLeft="40dp"
-                    android:layout_marginStart="40dp"
-                    android:layout_marginTop="8dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="USER INFORMATION"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/colorTextLight"
-                    android:textSize="@dimen/font_title_size"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/topView" />
-
-                <TextView
-                    android:id="@+id/sortByTextView5"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="24dp"
-                    android:fontFamily="@font/roboto"
-                    android:text="ADDRESS"
-                    android:textAlignment="viewStart"
-                    android:textColor="@color/colorTextLight"
-                    android:textSize="@dimen/font_title_size"
-                    android:textStyle="bold"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/phoneEditText" />
-
-                <ImageView
-                    android:id="@+id/imageView74"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginTop="8dp"
-                    android:tint="@color/md_grey_600"
-                    app:layout_constraintBottom_toBottomOf="@+id/countryEditText"
-                    app:layout_constraintEnd_toEndOf="@+id/countryEditText"
-                    app:layout_constraintTop_toTopOf="@+id/countryEditText"
-                    app:srcCompat="@drawable/ic_arrow_drop_down_black_24dp" />
-
-
 
 
             </android.support.constraint.ConstraintLayout>

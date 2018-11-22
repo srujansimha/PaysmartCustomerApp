@@ -3,30 +3,33 @@ package com.webingate.paysmartcustomerapp.activity.customerapp;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.fragment.customerAppFragments.customerappUserInfoFragment;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
 public class customerappUserDetailsActivity extends AppCompatActivity {
 
-    private ImageView profileImageView;
-    private TextView emailTextView;
-    private TextView phoneTextView;
-    private TextView websiteTextView;
-    private FloatingActionButton editFAB;
 
+
+//ImageView profileImageView;
     private int position = 1;
-    private int maxPosition = 5;
+    private int maxPosition = 2;
     private Button nextButton, prevButton;
     private TextView imageNoTextView;
+
+    customerappUserInfoFragment userInfoFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,61 +63,106 @@ public class customerappUserDetailsActivity extends AppCompatActivity {
 
     private void initUI() {
         initToolbar();
+        nextButton = findViewById(R.id.nextButton);
+        prevButton = findViewById(R.id.prevButton);
+        imageNoTextView = findViewById(R.id.imageNoTextView);
 
-        profileImageView = findViewById(R.id.profileImageView);
-        int id = R.drawable.profile2;
-        Utils.setCornerRadiusImageToImageView(getApplicationContext(), profileImageView, id, 20, 2,  R.color.md_white_1000);
+        findViewById(R.id.nextButton);
 
-        //ImageView coverUserImageView = findViewById(R.id.coverUserImageView);
-        //Utils.setImageToImageView(getApplicationContext(), coverUserImageView, id);
 
-//        emailTextView = findViewById(R.id.emailTextView);
-//        phoneTextView = findViewById(R.id.phoneTextView);
-//        websiteTextView = findViewById(R.id.websiteTextView);
+        updatePositionTextView();
+        setupFragment(new customerappUserInfoFragment());
+    }
 
-        //editFAB = findViewById(R.id.editFAB);
+    private void updatePositionTextView() {
+        imageNoTextView.setText(position + " of " + maxPosition);
+    }
 
+    private void setupFragment(Fragment fragment) {
+        try {
+            this.getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.contentLayout, fragment)
+                    .commitAllowingStateLoss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initActions() {
-//        emailTextView.setOnClickListener(view -> {
-//            try {
-//                Intent intent = new Intent(Intent.ACTION_VIEW);
-//                Uri data = Uri.parse("mailto:?subject=" + "Hello" + "&body=" + "About Awesome Material App");
-//                intent.setData(data);
-//                intent.putExtra(Intent.EXTRA_EMAIL, emailTextView.getText().toString());
-//                startActivity(intent);
+
+        nextButton.setOnClickListener(v -> {
+
+            if (position < maxPosition) {
+                position++;
+
+
+
+                updatePositionTextView();
+                if(position == 1) {
+                    Toast.makeText(this, "Step 1.", Toast.LENGTH_SHORT).show();
+                    userInfoFragment =      new customerappUserInfoFragment();
+
+                    setupFragment(userInfoFragment);
+
+                }
+//                if(position == 2)
+//                {
+//                    //EditText name = (EditText)findViewById(R.id.s_name);
+//                    name = findViewById(R.id.nameEditText);
+//                    email = findViewById(R.id.s_email);
+//                    mno = findViewById(R.id.s_mobileno);
+//                    address = findViewById(R.id.addressEditText);
+//                    city = findViewById(R.id.cityEditText);
+//                    postal = findViewById(R.id.countryEditText);
+//                    state = findViewById(R.id.stateEditText);
+//                    profileImageView = findViewById(R.id.profileImageView);
 //
-//            } catch (ActivityNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        });
+//                    JsonObject object = new JsonObject();
+//                    object.addProperty("flag", "U");
+//                    object.addProperty("Firstname",name.getText().toString());
+//                    //object.addProperty("lastname","kumar");
+//                    object.addProperty("AuthTypeId", "");
+//                    object.addProperty("Password", "123");
+//                    object.addProperty("Mobilenumber",mno.getText().toString());
+//                    object.addProperty("Email",email.getText().toString());
+//                    object.addProperty("CountryId","101");
+//                    object.addProperty("VehicleGroupId","");
+//                    object.addProperty("UserAccountNo","11091"+mno.getText().toString());
+//                    object.addProperty("usertypeid","110");
+//                    object.addProperty("isDriverOwned","0");
+//                    object.addProperty("DPhoto","");
+//                    object.addProperty("Address",address.getText().toString());
+//                    object.addProperty("Gender","44");
+//                    //RegisterDriver(object);
 //
-//        phoneTextView.setOnClickListener(view -> {
-//            try {
-//
-//                Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" +  phoneTextView.getText().toString()));
-//                startActivity(intent);
-//
-//            } catch (ActivityNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//
-//        websiteTextView.setOnClickListener(view -> {
-//            try {
-//                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(websiteTextView.getText().toString()));
-//                startActivity(myIntent);
-//            } catch (ActivityNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        });
-//
-//        editFAB.setOnClickListener(view -> {
-//
-//            Toast.makeText(getApplicationContext(), "Click Edit FAB", Toast.LENGTH_SHORT).show();
-//
-//        });
+//                    Toast.makeText(this, "Step 2.", Toast.LENGTH_SHORT).show();
+//                    //setupFragment(new businessAppDriverDocsFragment());
+//                }
+            } else {
+                Toast.makeText(this, "No More Step.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        prevButton.setOnClickListener(v -> {
+
+            if (position > 1) {
+                position--;
+
+                updatePositionTextView();
+                if(position == 1) {
+                    Toast.makeText(this, "Step 1.", Toast.LENGTH_SHORT).show();
+                    setupFragment(new customerappUserInfoFragment());
+                }
+//                if(position == 2)
+//                {
+//                    Toast.makeText(this, "Step 2.", Toast.LENGTH_SHORT).show();
+//                    setupFragment(new businessAppDriverDocsFragment());
+//                }
+            } else {
+                Toast.makeText(this, "No More Step.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 
     private void initToolbar() {

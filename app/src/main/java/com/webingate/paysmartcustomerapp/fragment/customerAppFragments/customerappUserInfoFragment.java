@@ -1,5 +1,7 @@
 package com.webingate.paysmartcustomerapp.fragment.customerAppFragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,20 +30,20 @@ public class customerappUserInfoFragment extends Fragment {
     public static final String gender = "GenderKey";
     public static final String Address = "AddressKey";
 
-    ImageView profileImageView;
-    @BindView(R.id.nameEditText)
+    //ImageView profileImageView;
+    @BindView(R.id.s_name)
     EditText name;
     @BindView(R.id.s_email)
     EditText email;
     @BindView(R.id.s_mobileno)
     EditText mbno;
-    @BindView(R.id.addressEditText)
+    @BindView(R.id.s_address)
     EditText address;
-    @BindView(R.id.cityEditText)
+    @BindView(R.id.s_city)
     EditText city;
-    @BindView(R.id.countryEditText)
+    @BindView(R.id.s_postal)
     EditText postal;
-    @BindView(R.id.stateEditText)
+    @BindView(R.id.s_state)
     EditText state;
     Toast toast;
     String email1;
@@ -72,23 +74,23 @@ public class customerappUserInfoFragment extends Fragment {
 //
     private void initUI(View view) {
 
-        profileImageView = view.findViewById(R.id.profileImageView);
-        int id = R.drawable.profile2;
-        Utils.setCornerRadiusImageToImageView(view.getContext(), profileImageView, id, 20, 2, R.color.md_white_1000);
-        setname((EditText) view.findViewById(R.id.nameEditText));
+//        profileImageView = view.findViewById(R.id.profileImageView);
+//        int id = R.drawable.profile2;
+//        Utils.setCornerRadiusImageToImageView(view.getContext(), profileImageView, id, 20, 2, R.color.md_white_1000);
+//        setname((EditText) view.findViewById(R.id.s_name));
 
-        name = view.findViewById(R.id.nameEditText);
+        name = view.findViewById(R.id.s_name);
         email = view.findViewById(R.id.s_email);
         mbno = view.findViewById(R.id.s_mobileno);
-        address = view.findViewById(R.id.addressEditText);
-        city = view.findViewById(R.id.cityEditText);
-        postal = view.findViewById(R.id.countryEditText);
-        state = view.findViewById(R.id.stateEditText);
-        name.setText(ApplicationConstants.username);
-        email.setText(ApplicationConstants.email);
-        mbno.setText(ApplicationConstants.mobileNo);
-        address.setText(ApplicationConstants.address);
-        city.setText(ApplicationConstants.gender);
+        address = view.findViewById(R.id.s_address);
+        city = view.findViewById(R.id.s_city);
+        postal = view.findViewById(R.id.s_postal);
+        state = view.findViewById(R.id.s_state);
+//        name.setText(ApplicationConstants.username);
+//        email.setText(ApplicationConstants.email);
+//        mbno.setText(ApplicationConstants.mobileNo);
+//        address.setText(ApplicationConstants.address);
+//        city.setText(ApplicationConstants.gender);
     }
 
     public EditText getName() {

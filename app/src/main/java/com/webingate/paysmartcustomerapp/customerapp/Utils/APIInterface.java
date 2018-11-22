@@ -1,6 +1,7 @@
 package com.webingate.paysmartcustomerapp.customerapp.Utils;
 
 import com.google.gson.JsonObject;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.ActiveCountries;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.AvailableVehiclesResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CalculatePriceResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.ConfigData;
@@ -142,6 +143,9 @@ public interface APIInterface  {
 
     @GET("/api/CustomerAccountDetails/GetCustomerAccount")
     public Observable<List<GetCustomerAccountResponce>> GetCustomerAccount(@Query("userId") String userId);//i
+
+    @GET("/api/Common/GetCountry")
+    public Observable<List<ActiveCountries>> GetActiveCountry(@Query("active") int active);//i
 
     @POST("/api/CustomerAccountDetails/CustomerAccount")
     public Observable<List<DefaultResponse>> CustomerAccount(@Body JsonObject jsonObject);//i
