@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -107,13 +108,17 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
     private void initActions(){
         changeButton.setOnClickListener((View v) ->{
            Toast.makeText(getApplicationContext(),"Clicked Change Email.",Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("mailto:"+"email_to"));
+            intent.putExtra(Intent.EXTRA_SUBJECT, "email_subject");
+            intent.putExtra(Intent.EXTRA_TEXT, "email_body");
+            startActivity(intent);
 
         });
 
         resendButton.setOnClickListener((View v) ->{
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("UserAccountNo",useracntno);
-            jsonObject.addProperty("change","3");
+            jsonObject.addProperty("change","2");
             ResendOTP(jsonObject);
             Toast.makeText(getApplicationContext(),"OTP is Resent.",Toast.LENGTH_SHORT).show();
         });

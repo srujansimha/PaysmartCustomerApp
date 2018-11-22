@@ -110,7 +110,7 @@ String id,email,useracntno;
         resendButton.setOnClickListener((View v) ->{
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("UserAccountNo",useracntno);
-            jsonObject.addProperty("change","3");
+            jsonObject.addProperty("change","1");
             ResendOTP(jsonObject);
             //Toast.makeText(getApplicationContext(),"OTP is Resent.",Toast.LENGTH_SHORT).show();
         });

@@ -29,6 +29,14 @@ public class customerappUserDetailsActivity extends AppCompatActivity {
     private Button nextButton, prevButton;
     private TextView imageNoTextView;
 
+//    EditText email;
+//    EditText name;
+//    EditText address;
+//    EditText city;
+//    EditText mno;
+//    EditText postal;
+//    EditText state;
+
     customerappUserInfoFragment userInfoFragment;
 
     @Override
@@ -105,18 +113,18 @@ public class customerappUserDetailsActivity extends AppCompatActivity {
                     setupFragment(userInfoFragment);
 
                 }
-//                if(position == 2)
-//                {
-//                    //EditText name = (EditText)findViewById(R.id.s_name);
-//                    name = findViewById(R.id.nameEditText);
+                if(position == 2)
+                {
+                    //EditText name = (EditText)findViewById(R.id.s_name);
+//                    name = findViewById(R.id.s_name);
 //                    email = findViewById(R.id.s_email);
 //                    mno = findViewById(R.id.s_mobileno);
-//                    address = findViewById(R.id.addressEditText);
-//                    city = findViewById(R.id.cityEditText);
-//                    postal = findViewById(R.id.countryEditText);
-//                    state = findViewById(R.id.stateEditText);
+//                    address = findViewById(R.id.s_address);
+//                    city = findViewById(R.id.s_city);
+//                    postal = findViewById(R.id.s_postal);
+//                    state = findViewById(R.id.s_state);
 //                    profileImageView = findViewById(R.id.profileImageView);
-//
+
 //                    JsonObject object = new JsonObject();
 //                    object.addProperty("flag", "U");
 //                    object.addProperty("Firstname",name.getText().toString());
@@ -133,11 +141,11 @@ public class customerappUserDetailsActivity extends AppCompatActivity {
 //                    object.addProperty("DPhoto","");
 //                    object.addProperty("Address",address.getText().toString());
 //                    object.addProperty("Gender","44");
-//                    //RegisterDriver(object);
-//
-//                    Toast.makeText(this, "Step 2.", Toast.LENGTH_SHORT).show();
-//                    //setupFragment(new businessAppDriverDocsFragment());
-//                }
+                    //RegisterDriver(object);
+
+                    Toast.makeText(this, "Step 2.", Toast.LENGTH_SHORT).show();
+                    //setupFragment(new businessAppDriverDocsFragment());
+                }
             } else {
                 Toast.makeText(this, "No More Step.", Toast.LENGTH_SHORT).show();
             }
@@ -153,11 +161,11 @@ public class customerappUserDetailsActivity extends AppCompatActivity {
                     Toast.makeText(this, "Step 1.", Toast.LENGTH_SHORT).show();
                     setupFragment(new customerappUserInfoFragment());
                 }
-//                if(position == 2)
-//                {
-//                    Toast.makeText(this, "Step 2.", Toast.LENGTH_SHORT).show();
-//                    setupFragment(new businessAppDriverDocsFragment());
-//                }
+                if(position == 2)
+                {
+                    Toast.makeText(this, "Step 2.", Toast.LENGTH_SHORT).show();
+                   // setupFragment(new businessAppDriverDocsFragment());
+                }
             } else {
                 Toast.makeText(this, "No More Step.", Toast.LENGTH_SHORT).show();
             }

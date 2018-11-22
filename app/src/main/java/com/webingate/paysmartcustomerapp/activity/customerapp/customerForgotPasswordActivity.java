@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -14,6 +15,7 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.rilixtech.CountryCodePicker;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.ActiveCountries;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerEOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerforgotPwdResponse;
 import com.webingate.paysmartcustomerapp.customerapp.ForgotPasswordActivity;
@@ -53,8 +55,9 @@ public class customerForgotPasswordActivity extends AppCompatActivity {
         initDataBindings();
 
         initActions();
+        initData();
         ccp = (CountryCodePicker) findViewById(R.id.ccp);
-        ccp.setCustomMasterCountries("IN,ZW,AF");
+
 
     }
 
@@ -70,6 +73,11 @@ public class customerForgotPasswordActivity extends AppCompatActivity {
         int id = R.drawable.login_background_3;
         Utils.setImageToImageView(getApplicationContext(), bgImageView, id);
     }
+
+    private void initData(){
+        GetActiveCountries(1);
+    }
+
 
     private void initActions() {
 
@@ -144,6 +152,59 @@ public class customerForgotPasswordActivity extends AppCompatActivity {
                     }
                 });
     }
+
+    public void GetActiveCountries(int active){
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerForgotPasswordActivity.this).getrestadapter()
+                .GetActiveCountry(active)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<ActiveCountries>>() {
+                    @Override
+                    public void onCompleted() {
+                        //DisplayToast("Successfully Registered");
+                        //StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            Log.d("OnError ", e.getMessage());
+                            DisplayToast("Error");
+                            //StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<ActiveCountries> list) {
+
+                        List<ActiveCountries> response= list ;
+                        int countrycount = response.size();
+                        if (countrycount == 0) {
+                            DisplayToast("Please configure countries of operation.");
+                        } else {
+
+                            String countriesList = "";
+                            for(int i=0; i < countrycount ; i++){
+                                if(i == countrycount-1)
+                                    countriesList += response.get(i).getISOCode();
+                                else
+                                    countriesList += response.get(i).getISOCode()+ ",";
+                            }
+
+                            ccp.setCustomMasterCountries(countriesList);
+
+//                            ccp = (CountryCodePicker) findViewById(R.id.ccp);
+//                            ccp.setCustomMasterCountries(response.getISOCode());
+//                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+//                            SharedPreferences.Editor editor = sharedpreferences.edit();
+//                            editor.putString(Isocode, response.getISOCode());
+//                            editor.commit();
+                        }
+                    }
+                });
+    }
+
     public void DisplayToast(String text){
         if(toast!=null){
             toast.cancel();

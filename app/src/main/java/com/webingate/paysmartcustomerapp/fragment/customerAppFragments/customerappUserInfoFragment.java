@@ -30,7 +30,7 @@ public class customerappUserInfoFragment extends Fragment {
     public static final String gender = "GenderKey";
     public static final String Address = "AddressKey";
 
-    //ImageView profileImageView;
+    ImageView profileImageView;
     @BindView(R.id.s_name)
     EditText name;
     @BindView(R.id.s_email)
@@ -74,10 +74,10 @@ public class customerappUserInfoFragment extends Fragment {
 //
     private void initUI(View view) {
 
-//        profileImageView = view.findViewById(R.id.profileImageView);
-//        int id = R.drawable.profile2;
-//        Utils.setCornerRadiusImageToImageView(view.getContext(), profileImageView, id, 20, 2, R.color.md_white_1000);
-//        setname((EditText) view.findViewById(R.id.s_name));
+        profileImageView = view.findViewById(R.id.profileImageView);
+        int id = R.drawable.profile2;
+        Utils.setCornerRadiusImageToImageView(view.getContext(), profileImageView, id, 20, 2, R.color.md_white_1000);
+        setname((EditText) view.findViewById(R.id.s_name));
 
         name = view.findViewById(R.id.s_name);
         email = view.findViewById(R.id.s_email);

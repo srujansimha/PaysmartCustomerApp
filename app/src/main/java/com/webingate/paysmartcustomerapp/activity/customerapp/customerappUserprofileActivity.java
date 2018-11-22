@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -46,6 +47,9 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
     Toolbar toolbar;
     Toast toast;
+
+    @BindView(R.id.editFAB)
+    Button edit;
 
     String useracc;
     @Override
@@ -166,6 +170,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         ImageView userImageView1 = findViewById(R.id.userImageView1);
         Utils.setCircleImageToImageView(this, userImageView1, R.drawable.profile1, 0, 0);
 
+
 //        if(Utils.isRTL()) {
 //            navigationView.setTextDirection(View.TEXT_DIRECTION_RTL);
 //        }else {
@@ -176,6 +181,9 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 //        ImageView userImageView = headerLayout.findViewById(R.id.userImageView);
 //        Utils.setCircleImageToImageView(this, userImageView, R.drawable.profile1, 0, 0);
     }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
          getMenuInflater().inflate(R.menu.menu_edit, menu);
