@@ -20,6 +20,7 @@ import com.webingate.paysmartcustomerapp.customerapp.Deo.GetAvailableServicesRes
 import com.webingate.paysmartcustomerapp.customerapp.Deo.GetBookingHistoryResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.GetCurrentBalanceResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.GetCustomerAccountResponce;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.GetCustomerBookingListResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.GetWalletTransDetailsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.MOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.MakepaymentResponse;
@@ -42,11 +43,18 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 public interface APIInterface  {
+    @GET("/api/Driverlogin/GetdrivertripsBookingno")
+    public Observable<List<GetCustomerBookingListResponse>> Getdrivertripsbookingno(@Query("DriverNo") String driverNo, @Query("bno") String bno);
+    @GET("/api/Driverlogin/Getdrivertrips")
+    public Observable<List<GetCustomerBookingListResponse>> Getdrivertrips(@Query("DriverNo") String driverNo,@Query("status") int status);
+
     @POST("/api/UserAccount/UpdateAppUser")
     public Observable<List<UpdateUserResponse>> UpdateAppUser(@Body JsonObject jsonObject);
 
     @GET("/api/WalletBalance/Getcurrentbalance")
     public Observable<List<GetCurrentBalanceResponse>> Getcurrentbalance(@Query("mobileno") String mobileNo);
+    @GET("/api/WalletBalance/Getcurrentbalance")
+    public Observable<List<WalletBalanceResponse>> Getcurrentbalance1(@Query("mobileno") String mobileNo);
 
     @GET("/api/WalletBalance/Getcurrentbalance")
     public Observable<List<WalletBalanceResponse>> Getcurrentbalance1(@Query("mobileno") String mobileNo);

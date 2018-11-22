@@ -16,6 +16,9 @@ public class DirectoryHome9ProductsVO {
     @SerializedName("selectedicon")
     private String selectedicon;
 
+    @SerializedName("isselected")
+    private String isselected;
+
     public DirectoryHome9ProductsVO(String id, String icon, String name) {
         this.id = id;
         this.icon = icon;
@@ -27,6 +30,14 @@ public class DirectoryHome9ProductsVO {
         this.icon = icon;
         this.name = name;
         this.selectedicon =selectedicon;
+
+    }
+    public DirectoryHome9ProductsVO(String id, String icon, String name, String selectedicon,String isselected ) {
+        this.id = id;
+        this.icon = icon;
+        this.name = name;
+        this.selectedicon =selectedicon;
+        this.isselected=isselected;
     }
 
     public String getId() {
@@ -43,5 +54,8 @@ public class DirectoryHome9ProductsVO {
 
     public String getName() {
         return name;
+    }
+    public String getselected() {
+        return isselected;
     }
 }
