@@ -163,7 +163,11 @@
         <activity
             android:name=".activity.customerapp.customerewalletActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
-
+        <activity
+            android:name=".activity.customerapp.customerappGetaLyftBookingsListsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappBookingDetails"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 </manifest>
