@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 public class ApplicationConstants {
     public static  String estPrice="";
+    public static String userAccountNo="";
     public static int tripFlag=0;
     public static String mobileNo="";
     public static String id="";

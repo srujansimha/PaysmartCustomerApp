@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.GetCustomerBookingListResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
 
@@ -61,9 +62,9 @@ public class customerappCompletedBookingListFragment extends Fragment {
 
 
     private void initData() {
-        mb="7893890990";  //com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.ApplicationConstants.mobileNo;
+        mb=ApplicationConstants.userAccountNo;//com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.ApplicationConstants.mobileNo;
         int tt=2;
-        GetDrivercompleteTrips(mb,tt);
+        GetCustomercompleteTrips(mb,tt);
     }
 
     private void initUI() {
@@ -169,11 +170,11 @@ public class customerappCompletedBookingListFragment extends Fragment {
 
     }
 
-    public void GetDrivercompleteTrips( String driverNo, int status){
+    public void GetCustomercompleteTrips( String driverNo, int status){
 
         //StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(getActivity()).getrestadapter()
-                .Getdrivertrips(driverNo,status)
+                .GetCustomertrips(driverNo,status)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<GetCustomerBookingListResponse>>() {

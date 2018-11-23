@@ -43,6 +43,9 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 public interface APIInterface  {
+    @GET("/api/Driverlogin/GetCustomertrips")
+    public Observable<List<GetCustomerBookingListResponse>> GetCustomertrips(@Query("custNo") String driverNo,@Query("status") int status);
+
     @GET("/api/Driverlogin/GetdrivertripsBookingno")
     public Observable<List<GetCustomerBookingListResponse>> Getdrivertripsbookingno(@Query("DriverNo") String driverNo, @Query("bno") String bno);
     @GET("/api/Driverlogin/Getdrivertrips")

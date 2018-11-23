@@ -72,9 +72,9 @@ public class customerappCurrentBookingListFragment extends Fragment {
 
 
     private void initData() {
-        mb= "7893890990";
+        mb=ApplicationConstants.userAccountNo;
         int tt=1;
-        GetDriverTrips(mb,tt);
+        GetCustomerCurrentTrips(mb,tt);
     }
 
     private void initUI() {
@@ -209,11 +209,11 @@ public class customerappCurrentBookingListFragment extends Fragment {
 
     }
 
-    public void GetDriverTrips( String driverNo, int status){
+    public void GetCustomerCurrentTrips( String driverNo, int status){
 
         //StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(getActivity()).getrestadapter()
-                .Getdrivertrips(driverNo,status)
+                .GetCustomertrips(driverNo,status)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<GetCustomerBookingListResponse>>() {

@@ -253,6 +253,7 @@ public class login_activity extends AppCompatActivity{
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString(UserAccountNo, credentialsResponse.getUserAccountNo());
                             editor.putString(Phone,credentialsResponse.getMobilenumber());
+                            ApplicationConstants.userAccountNo=credentialsResponse.getUserAccountNo();
 //                            editor.putString(VEHICLEID, credentialsResponse.getVehicleId());
 //                            editor.putString(Phone, mobileNo.getText().toString());
 //                            editor.putString(Emailotp, null);
