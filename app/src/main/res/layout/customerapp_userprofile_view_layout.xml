@@ -290,8 +290,7 @@
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout"
             android:layout_width="match_parent"
-            android:layout_height="121dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="116dp"
             android:background="@color/colorPrimary"
             android:gravity="bottom"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"

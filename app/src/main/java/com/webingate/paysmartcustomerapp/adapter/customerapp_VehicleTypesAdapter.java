@@ -21,6 +21,7 @@ public class customerapp_VehicleTypesAdapter extends RecyclerView.Adapter<Recycl
 
     private List<GetalyftVehiclelist> productsList;
     private OnItemClickListener itemClickListener;
+    private int selectedPos;
 
     public interface OnItemClickListener {
         void onItemClick(View view, GetalyftVehiclelist product, int position);
@@ -115,9 +116,7 @@ public class customerapp_VehicleTypesAdapter extends RecyclerView.Adapter<Recycl
                         @Override
                         public void onClick(View v) {
                             Context selViewContext = v.getContext();
-                            for(int i=0 ; i<productsList.size() ; i++){
-                                productsList.get(i).setselected("0");
-                            }
+
                             int productImageId = Utils.getDrawableInt(selViewContext, productsVO.getSelectedIcon());
                             Utils.setImageToImageView(selViewContext, productsViewHolder.productImageView, productImageId);
 
@@ -129,7 +128,12 @@ public class customerapp_VehicleTypesAdapter extends RecyclerView.Adapter<Recycl
             }
 
             if (itemClickListener != null) {
-                ((ProductsViewHolder) holder).productConstraintLayout.setOnClickListener(view -> itemClickListener.onItemClick(view, productsList.get(position), position));
+                selectedPos = position;
+                productsList.get(selectedPos).setselected("0");
+                productsList.get(position).setselected("1");
+                ((ProductsViewHolder) holder).productConstraintLayout.setOnClickListener(
+                        view -> itemClickListener.onItemClick(view, productsList.get(position), position)
+                );
             }
 
         }
@@ -138,6 +142,10 @@ public class customerapp_VehicleTypesAdapter extends RecyclerView.Adapter<Recycl
     @Override
     public int getItemCount() {
         return productsList.size();
+    }
+    
+    public int getSelectedPos(){
+        return selectedPos;
     }
 
     public class ProductsViewHolder extends RecyclerView.ViewHolder {

@@ -1,56 +1,86 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/md_grey_300">
 
-    <include layout="@layout/layout_map" />
+    <include
+        android:id="@+id/include"
+        layout="@layout/layout_map"
+         />
 
-        <TableLayout
-        android:layout_gravity="bottom|end"
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_width="match_parent">
+        android:id="@+id/c1"
+        android:layout_marginBottom="@dimen/actionBarSize"
+        app:layout_constraintBottom_toBottomOf="parent"
+      >
 
-
-            <TableRow>
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rvProducts"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:textColor="@color/black"
-                    app:reverseLayout="true"
-                    android:background="@color/white"
-                    />
-            </TableRow>
-        <TableRow
-            android:layout_height="wrap_content"
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/rc1"
             android:layout_width="match_parent"
-
+            android:layout_height="wrap_content"
             >
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/ridenow"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rvProducts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:textColor="@color/black"
                 android:textStyle="bold"
-                android:textColor="@color/white"
-                android:background="@color/colorPrimary"
-                android:text="@string/ride_now"/>
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/ridelater"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:background="@color/colorPrimary"
-                android:text="@string/ride_later"/>
-        </TableRow>
-    </TableLayout>
+                app:reverseLayout="true" />
+        </android.support.v4.widget.NestedScrollView>
+
+    </android.support.constraint.ConstraintLayout>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/c1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+        <TableLayout
+            android:id="@+id/buttonRow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="true"
+            android:layout_gravity="bottom|end"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
 
 
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                >
 
-</android.support.design.widget.CoordinatorLayout>
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/ridenow"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/ride_now"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/ridelater"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/ride_later"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+            </TableRow>
+        </TableLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+</android.support.constraint.ConstraintLayout>
 
 
 

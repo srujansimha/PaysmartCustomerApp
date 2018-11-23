@@ -52,8 +52,8 @@ public class VehicleTypesList {
             " },\n" +
             "{\n" +
             "  \"id\": \"product12\",\n" +
-            "  \"icon\": \"innova2\",\n" +
-            "  \"selectedicon\": \"mini1\",\n" +
+            "  \"icon\": \"innova\",\n" +
+            "  \"selectedicon\": \"innova1\",\n" +
             "  \"name\": \"Micro\",\n" +
             "   \"isselected\": \"0\"\n" +
             "},\n" +
@@ -84,7 +84,28 @@ public class VehicleTypesList {
             "  \"selectedicon\": \"mini1\",\n" +
             "    \"name\": \"Bus\",\n" +
             "   \"isselected\": \"0\"\n" +
-            "  }\n" +
+            "  },\n" +
+            " {\n" +
+            "  \"id\": \"product1\",\n" +
+            "  \"icon\": \"sedan\",\n" +
+            "  \"selectedicon\": \"mini1\",\n" +
+            "  \"name\": \"Sedan\",\n" +
+            "   \"isselected\": \"0\"\n" +
+            "},\n" +
+            " {\n" +
+            "  \"id\": \"product2\",\n" +
+            "  \"icon\": \"sedan\",\n" +
+            "  \"selectedicon\": \"mini1\",\n" +
+            "  \"name\": \"Sedan\",\n" +
+            "   \"isselected\": \"0\"\n" +
+            "},\n" +
+            " {\n" +
+            "  \"id\": \"product3\",\n" +
+            "  \"icon\": \"sedan\",\n" +
+            "  \"selectedicon\": \"mini1\",\n" +
+            "  \"name\": \"Sedan\",\n" +
+            "   \"isselected\": \"0\"\n" +
+            "}\n" +
             "]";
 
     private static String categoryJson = "[{\n" +

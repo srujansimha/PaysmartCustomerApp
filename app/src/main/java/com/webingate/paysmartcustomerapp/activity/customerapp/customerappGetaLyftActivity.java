@@ -658,7 +658,6 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         });
     }
 
-
     @SuppressLint("MissingPermission")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -733,8 +732,6 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
             //  LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
     }
-
-
 
     //Run on UI
     private Runnable sendUpdatesToUI = new Runnable() {

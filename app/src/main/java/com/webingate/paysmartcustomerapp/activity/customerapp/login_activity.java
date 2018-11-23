@@ -364,7 +364,7 @@ public class login_activity extends AppCompatActivity{
                           }
 
                             ccp.setCustomMasterCountries(countriesList);
-
+                            ccp.setDefaultCountryUsingNameCode(response.get(0).getISOCode());
 //                            ccp = (CountryCodePicker) findViewById(R.id.ccp);
 //                            ccp.setCustomMasterCountries(response.getISOCode());
 //                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);

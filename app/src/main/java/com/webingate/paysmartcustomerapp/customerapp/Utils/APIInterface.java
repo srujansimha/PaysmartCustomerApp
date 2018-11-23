@@ -55,10 +55,6 @@ public interface APIInterface  {
     public Observable<List<GetCurrentBalanceResponse>> Getcurrentbalance(@Query("mobileno") String mobileNo);
     @GET("/api/WalletBalance/Getcurrentbalance")
     public Observable<List<WalletBalanceResponse>> Getcurrentbalance1(@Query("mobileno") String mobileNo);
-
-    @GET("/api/WalletBalance/Getcurrentbalance")
-    public Observable<List<WalletBalanceResponse>> Getcurrentbalance1(@Query("mobileno") String mobileNo);
-
     @POST("/api/WalletBalance/WalletBalance")
     public Observable<List<WalletBalanceResponse>> WalletBalance(@Body JsonObject jsonObject);
 
