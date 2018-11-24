@@ -48,7 +48,7 @@ public class VehicleTypesList {
             "  \"icon\": \"mini\",\n" +
             "  \"selectedicon\": \"mini1\",\n" +
             "   \"name\": \"Mini\",\n" +
-            "   \"isselected\": \"0\"\n" +
+            "   \"isselected\": \"1\"\n" +
             " },\n" +
             "{\n" +
             "  \"id\": \"product12\",\n" +
@@ -72,7 +72,7 @@ public class VehicleTypesList {
             "   \"isselected\": \"0\"\n" +
             "},\n" +
             "  {\n" +
-            "    \"id\": \"product2\",\n" +
+            "    \"id\": \"product20\",\n" +
             "    \"icon\": \"carpool\",\n" +
             "  \"selectedicon\": \"mini1\",\n" +
             "    \"name\": \"Shared pool\",\n" +

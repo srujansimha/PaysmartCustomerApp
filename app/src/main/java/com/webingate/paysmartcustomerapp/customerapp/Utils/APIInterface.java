@@ -2,6 +2,7 @@ package com.webingate.paysmartcustomerapp.customerapp.Utils;
 
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.ActiveCountries;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.AppUsersResponce;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.AvailableVehiclesResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CalculatePriceResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.ConfigData;
@@ -43,6 +44,9 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 public interface APIInterface  {
+    @GET("/api/AppUsers/AppUserDetailsUseracountno")
+    public Observable<List<AppUsersResponce>> getAppUserDetails(@Query("UserAccountNo") String UserAccountNo);
+
     @GET("/api/Driverlogin/GetCustomertrips")
     public Observable<List<GetCustomerBookingListResponse>> GetCustomertrips(@Query("custNo") String driverNo,@Query("status") int status);
 

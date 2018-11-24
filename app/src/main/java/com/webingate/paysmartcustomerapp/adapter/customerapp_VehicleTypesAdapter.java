@@ -53,23 +53,23 @@ public class customerapp_VehicleTypesAdapter extends RecyclerView.Adapter<Recycl
                 Context context = productsViewHolder.productImageView.getContext();
 
                 productsViewHolder.productTextView.setText(productsVO.getName());
-                 if(productsVO.getselected()=="0"){
-                     int productImageId = Utils.getDrawableInt(context, productsVO.getSelectedIcon());
-                     Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
-
-                 }
-                 else{
-                     int productImageId = Utils.getDrawableInt(context, productsVO.getIcon());
-                     Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
-                 }
+//                 if(productsVO.getselected()=="0"){
+//                     int productImageId = Utils.getDrawableInt(context, productsVO.getSelectedIcon());
+//                     Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
+//
+//                 }
+//                 else{
+//                     int productImageId = Utils.getDrawableInt(context, productsVO.getIcon());
+//                     Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
+//                 }
 
                 View.OnClickListener listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Context selViewContext = v.getContext();
-                      for(int i=0 ; i<productsList.size() ; i++){
-                          productsList.get(i).setselected("0");
-                      }
+//                      for(int i=0 ; i<productsList.size() ; i++){
+//                          productsList.get(i).setselected("0");
+//                      }
 //                        if(selViewContext!=null){
 //                            int productImageId = Utils.getDrawableInt(context, productsVO.getIcon());
 //                            Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
@@ -100,15 +100,15 @@ public class customerapp_VehicleTypesAdapter extends RecyclerView.Adapter<Recycl
                     Context context = productsViewHolder.productImageView.getContext();
 
                     productsViewHolder.productTextView.setText(productsVO.getName());
-                    if(productsVO.getselected()=="0"){
-                        int productImageId = Utils.getDrawableInt(context, productsVO.getSelectedIcon());
-                        Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
-
-                    }
-                    else{
-                        int productImageId = Utils.getDrawableInt(context, productsVO.getIcon());
-                        Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
-                    }
+//                    if(productsVO.getselected()=="0"){
+//                        int productImageId = Utils.getDrawableInt(context, productsVO.getSelectedIcon());
+//                        Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
+//
+//                    }
+//                    else{
+//                        int productImageId = Utils.getDrawableInt(context, productsVO.getIcon());
+//                        Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
+//                    }
 //                    int productImageId = Utils.getDrawableInt(context, productsVO.getIcon());
 //                    Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
 
@@ -128,9 +128,15 @@ public class customerapp_VehicleTypesAdapter extends RecyclerView.Adapter<Recycl
             }
 
             if (itemClickListener != null) {
-                selectedPos = position;
-                productsList.get(selectedPos).setselected("0");
-                productsList.get(position).setselected("1");
+                for(int i=0 ; i<productsList.size() ; i++){
+                    if(i==position-1)
+                        productsList.get(i).setselected("1");
+                    else
+                        productsList.get(i).setselected("0");
+                }
+//                selectedPos = position;
+//                productsList.get(selectedPos).setselected("0");
+//                productsList.get(position).setselected("1");
                 ((ProductsViewHolder) holder).productConstraintLayout.setOnClickListener(
                         view -> itemClickListener.onItemClick(view, productsList.get(position), position)
                 );

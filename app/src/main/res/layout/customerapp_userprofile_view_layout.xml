@@ -90,7 +90,7 @@
             <TextView
                 android:id="@+id/textView76"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="16dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
@@ -106,7 +106,7 @@
             <TextView
                 android:id="@+id/phoneTextView"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="15dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
@@ -164,7 +164,6 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:fontFamily="@font/roboto"
-                android:text="http://www.paysmart.com"
                 android:textAlignment="viewStart"
                 android:textColor="@color/md_blue_600"
                 android:textSize="@dimen/font_body_size"
@@ -245,7 +244,7 @@
             <TextView
                 android:id="@+id/textView31"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="23dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
@@ -257,8 +256,10 @@
                 android:textSize="@dimen/font_body_size"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageView26"
-                app:layout_constraintTop_toBottomOf="@+id/textView29" />
+                app:layout_constraintTop_toBottomOf="@+id/textView29"
+                app:layout_constraintVertical_bias="0.152" />
 
             <TextView
                 android:id="@+id/textView167"
