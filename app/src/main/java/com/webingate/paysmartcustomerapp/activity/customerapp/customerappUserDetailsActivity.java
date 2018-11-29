@@ -19,6 +19,8 @@ import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.fragment.customerAppFragments.customerappUserInfoFragment;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
+import butterknife.BindView;
+
 public class customerappUserDetailsActivity extends AppCompatActivity {
 
 
@@ -36,7 +38,8 @@ public class customerappUserDetailsActivity extends AppCompatActivity {
 //    EditText mno;
 //    EditText postal;
 //    EditText state;
-
+@BindView(R.id.Edituserphoto)
+ImageView ephoto;
     customerappUserInfoFragment userInfoFragment;
 
     @Override
@@ -68,6 +71,7 @@ public class customerappUserDetailsActivity extends AppCompatActivity {
     private void initData() {
 
     }
+
 
     private void initUI() {
         initToolbar();
@@ -111,6 +115,8 @@ public class customerappUserDetailsActivity extends AppCompatActivity {
                     userInfoFragment =      new customerappUserInfoFragment();
 
                     setupFragment(userInfoFragment);
+
+                    ephoto=(ImageView) findViewById(R.id.Edituserphoto);
 
                 }
                 if(position == 2)
@@ -180,7 +186,7 @@ public class customerappUserDetailsActivity extends AppCompatActivity {
         toolbar.setNavigationIcon(R.drawable.baseline_menu_black_24);
 
         if(toolbar.getNavigationIcon() != null) {
-            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.md_white_1000), PorterDuff.Mode.SRC_ATOP);
+            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.md_white_1000), PorterDuff.Mode.DST_ATOP);
         }
 
         toolbar.setTitle("User Details");

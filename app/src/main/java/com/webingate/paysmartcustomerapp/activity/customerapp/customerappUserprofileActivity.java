@@ -213,7 +213,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         toolbar.setNavigationIcon(R.drawable.baseline_menu_black_24);
 
         if (toolbar.getNavigationIcon() != null) {
-            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.md_white_1000), PorterDuff.Mode.SRC_ATOP);
+            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.md_white_1000), PorterDuff.Mode.OVERLAY);
         }
 
         toolbar.setTitle("User profile");

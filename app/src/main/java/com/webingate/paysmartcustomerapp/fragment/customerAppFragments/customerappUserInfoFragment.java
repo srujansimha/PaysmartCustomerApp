@@ -1,6 +1,7 @@
 package com.webingate.paysmartcustomerapp.fragment.customerAppFragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.activity.customerapp.CropingMainActivity;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
@@ -45,6 +47,8 @@ public class customerappUserInfoFragment extends Fragment {
     EditText postal;
     @BindView(R.id.s_state)
     EditText state;
+    @BindView(R.id.Edituserphoto)
+    ImageView ephoto;
     Toast toast;
     String email1;
     @Nullable
@@ -59,11 +63,21 @@ public class customerappUserInfoFragment extends Fragment {
 //
 //        initDataBindings();
 //
-//        initActions();
+         initActions();
 //
         return view;
     }
-//
+
+    private void initActions() {
+
+                ephoto.setOnClickListener(View  -> {
+                    Toast.makeText(getActivity(), "Testing", Toast.LENGTH_SHORT).show();
+                    Intent intent =new Intent(getContext(),CropingMainActivity.class);
+                    startActivity(intent);
+                });
+    }
+
+    //
 //    private void initData() {
 //        productsList = DirectoryHome9Repository.getfleetownerList();
 //        categoryList = DirectoryHome9Repository.getCategoryList();
@@ -86,6 +100,7 @@ public class customerappUserInfoFragment extends Fragment {
         city = view.findViewById(R.id.s_city);
         postal = view.findViewById(R.id.s_postal);
         state = view.findViewById(R.id.s_state);
+        ephoto=view.findViewById(R.id.Edituserphoto);
 //        name.setText(ApplicationConstants.username);
 //        email.setText(ApplicationConstants.email);
 //        mbno.setText(ApplicationConstants.mobileNo);
@@ -101,4 +116,9 @@ public class customerappUserInfoFragment extends Fragment {
         this.name = name;
     }
 
+
+ //   public void onClick(View view) {
+//        Intent intent =new Intent(view.getContext(),CropingMainActivity.class);
+//        startActivity(intent);
+//    }
 }

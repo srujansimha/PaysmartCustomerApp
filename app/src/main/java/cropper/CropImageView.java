@@ -34,7 +34,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
-
 import com.webingate.paysmartcustomerapp.R;
 
 import java.lang.ref.WeakReference;
