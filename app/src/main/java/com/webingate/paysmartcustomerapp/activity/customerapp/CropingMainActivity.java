@@ -1,11 +1,13 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 //import com.example.test.R;
 //import com.theartofdev.edmodo.cropper.CropImage;
@@ -13,21 +15,41 @@ import android.widget.Toast;
 //
 //import androidx.appcompat.app.AppCompatActivity;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.utils.Tools;
 
+import butterknife.BindView;
 import cropper.CropImage;
 import cropper.CropImageView;
 
 public class CropingMainActivity extends AppCompatActivity {
 
+  Toolbar toolbar;
+
+
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main1);
+
+    initUI();
   }
 
   /** Start pick image activity with chooser. */
   public void onSelectImageClick(View view) {
     CropImage.activity(null).setGuidelines(CropImageView.Guidelines.ON).start(this);
+  }
+
+  private void initUI(){
+    initToolbar();
+  }
+
+  private void initToolbar() {
+    android.support.v7.widget.Toolbar toolbar = (android.support.v7.widget.Toolbar) findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
+    getSupportActionBar().setTitle("Click For Camera");
+    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    Tools.setSystemBarColor(this);
   }
 
   @Override

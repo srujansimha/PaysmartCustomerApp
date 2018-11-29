@@ -28,7 +28,6 @@ public class customerappUserInfoFragment extends Fragment {
     public static final String Phone = "phoneKey";
     public static final String Email = "emailKey";
     public static final String UserAccountNumber = "UserAccountNo";
-    public static final String usertypeid = "usertypeid";
     public static final String gender = "GenderKey";
     public static final String Address = "AddressKey";
 
@@ -36,7 +35,7 @@ public class customerappUserInfoFragment extends Fragment {
     @BindView(R.id.s_name)
     EditText name;
     @BindView(R.id.s_email)
-    EditText email;
+    EditText emailid;
     @BindView(R.id.s_mobileno)
     EditText mbno;
     @BindView(R.id.s_address)
@@ -94,18 +93,18 @@ public class customerappUserInfoFragment extends Fragment {
         setname((EditText) view.findViewById(R.id.s_name));
 
         name = view.findViewById(R.id.s_name);
-        email = view.findViewById(R.id.s_email);
+        emailid = view.findViewById(R.id.s_email);
         mbno = view.findViewById(R.id.s_mobileno);
         address = view.findViewById(R.id.s_address);
         city = view.findViewById(R.id.s_city);
         postal = view.findViewById(R.id.s_postal);
         state = view.findViewById(R.id.s_state);
         ephoto=view.findViewById(R.id.Edituserphoto);
-//        name.setText(ApplicationConstants.username);
-//        email.setText(ApplicationConstants.email);
-//        mbno.setText(ApplicationConstants.mobileNo);
-//        address.setText(ApplicationConstants.address);
-//        city.setText(ApplicationConstants.gender);
+        name.setText(ApplicationConstants.username);
+        emailid.setText(ApplicationConstants.email);
+        mbno.setText(ApplicationConstants.mobileNo);
+        address.setText(ApplicationConstants.address);
+        city.setText(ApplicationConstants.gender);
     }
 
     public EditText getName() {

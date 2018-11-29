@@ -1,5 +1,7 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.fragment.customerAppFragments.customerappUserInfoFragment;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
@@ -23,6 +26,10 @@ import butterknife.BindView;
 
 public class customerappUserDetailsActivity extends AppCompatActivity {
 
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String Name = "nameKey";
+    public static final String Phone = "phoneKey";
+    public static final String Email = "emailKey";
 
 
 //ImageView profileImageView;
@@ -46,6 +53,10 @@ ImageView ephoto;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_userdetails_activity);
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        ApplicationConstants.username= prefs.getString(Name, null);
+        ApplicationConstants.email= prefs.getString(Email, null);
+        ApplicationConstants.mobileNo= prefs.getString(Phone, null);
 
         initData();
 

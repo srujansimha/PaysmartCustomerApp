@@ -1,6 +1,8 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -8,6 +10,8 @@ import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -19,15 +23,36 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.AppUsersResponce;
 import com.webingate.paysmartcustomerapp.fragment.customerAppFragments.customerAppDashboardFragment;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
+import java.util.List;
+
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 public class customerDashboardActivity extends AppCompatActivity {
+
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String ID ="idKey";
+    public static final String Name = "nameKey";
+    public static final String Phone = "phoneKey";
+    public static final String Email = "emailKey";
+    public static final String Password = "passwordkey";
+    public static final String UserAccountNo = "UserAccountNokey";
+
+    String useracc;
+    Toast toast;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_dashboard_activity);
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        useracc= prefs.getString(UserAccountNo, null);
 
         initData();
 
@@ -86,9 +111,9 @@ public class customerDashboardActivity extends AppCompatActivity {
 //                    break;
                 case R.id.profileMenu:
                     //loadFragment(new AppDirectoryHome4Fragment());
-
-                    Intent intent = new Intent(this, customerappUserprofileActivity.class);
-                    startActivity(intent);
+                    GetAppUserDetails(useracc);
+//                    Intent intent = new Intent(this, customerappUserprofileActivity.class);
+//                    startActivity(intent);
                     break;
                 default:
                     loadFragment(new customerAppDashboardFragment());
@@ -108,6 +133,48 @@ public class customerDashboardActivity extends AppCompatActivity {
     }
 
     private void initAction() {
+    }
+
+    public void GetAppUserDetails(String userAccountNo){
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
+                .getAppUserDetails(userAccountNo)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<AppUsersResponce>>() {
+                    @Override
+                    public void onCompleted() {
+                        DisplayToast("Successfully Registered");
+                        //StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            //Log.d("OnError ", e.getMessage());
+                            DisplayToast("Error"+e.getMessage());
+                            //StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<AppUsersResponce> responselist) {
+                        AppUsersResponce response = responselist.get(0);
+                        if(response.getCode()!=null){
+                            DisplayToast(response.getDescription());
+                        }else {
+                            DrawerLayout drawer = findViewById(R.id.drawer_layout);
+                            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedpreferences.edit();
+                            editor.putString(Phone, response.getmnumber());
+                            editor.putString(Email, response.getemail());
+                            editor.putString(Name, response.getUsername());
+                            editor.commit();
+                            startActivity(new Intent(customerDashboardActivity.this, customerappUserprofileActivity.class));
+                            finish();
+                        }
+                    }
+                });
     }
 
     private void initToolbar() {
@@ -147,5 +214,15 @@ public class customerDashboardActivity extends AppCompatActivity {
         this.getSupportFragmentManager().beginTransaction()
                 .replace(R.id.home9Frame, fragment)
                 .commitAllowingStateLoss();
+    }
+    public void DisplayToast(String text){
+        if(toast!=null){
+            toast.cancel();
+            toast=null;
+
+        }
+        toast= Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT);
+        toast.show();
+
     }
 }

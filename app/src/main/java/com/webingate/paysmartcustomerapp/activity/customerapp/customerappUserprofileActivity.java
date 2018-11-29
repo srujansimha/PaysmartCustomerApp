@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.AppUsersResponce;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerEOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.MOTPVerificationResponse;
@@ -67,13 +68,24 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
     TextView joindate;
     @BindView(R.id.ucon)
     TextView ucontact;
-    String useracc;
+    String useracc,usrname,emailid,mobno;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_userprofile_activity);
+        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(UserAccountNo, Email);
+        editor.commit();
+
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         useracc= prefs.getString(UserAccountNo, null);
+        usrname = prefs.getString(Name, null);
+        emailid = prefs.getString(Email, null);
+        mobno = prefs.getString(Phone, null);
+
+
+
         initUI();
         initData();
         FloatingActionButton edit = findViewById(R.id.editFAB);
@@ -86,7 +98,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
     }
 
     private void initData() {
-        GetAppUserDetails(useracc);
+
     }
 
     @Override
@@ -185,7 +197,14 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
         ImageView userImageView1 = findViewById(R.id.userImageView1);
         Utils.setCircleImageToImageView(this, userImageView1, R.drawable.profile1, 0, 0);
-
+        TextView tt = findViewById(R.id.emailTextView);
+        TextView pht = findViewById(R.id.phoneTextView);
+        TextView username = findViewById(R.id.UsernameTextView);
+        TextView fname = findViewById(R.id.FirstnameTextView);
+        tt.setText(emailid);
+        pht.setText(mobno);
+        username.setText(usrname);
+        fname.setText(usrname);
 
 //        if(Utils.isRTL()) {
 //            navigationView.setTextDirection(View.TEXT_DIRECTION_RTL);
@@ -282,54 +301,6 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
                             startActivity( new Intent(customerappUserprofileActivity.this, customerewalletActivity.class));
                         }
                     }
-                });
-    }
-    public void GetAppUserDetails(String userAccountNo){
-        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
-                .getAppUserDetails(userAccountNo)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<List<AppUsersResponce>>() {
-                    @Override
-                    public void onCompleted() {
-                        DisplayToast("Successfully Registered");
-                        //StopDialogue();
-                    }
-                    @Override
-                    public void onError(Throwable e) {
-                        try {
-                            //Log.d("OnError ", e.getMessage());
-                            DisplayToast("Error"+e.getMessage());
-                            //StopDialogue();
-                        } catch (Exception ex) {
-                            ex.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onNext(List<AppUsersResponce> responselist) {
-
-                        AppUsersResponce response = responselist.get(0);
-                        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
-                        ucontact=(TextView)findViewById(R.id.ucon);
-                        email=(TextView)findViewById(R.id.emailTextView);
-                        uname=(TextView)findViewById(R.id.UsernameTextView);
-                        hphone=(TextView)findViewById(R.id.textView228);
-                        pphone=(TextView)findViewById(R.id.phoneTextView);
-                        joindate=(TextView)findViewById(R.id.textView31);
-                        fname=(TextView)findViewById(R.id.FirstnameTextView);
-
-                        ucontact.setText(response.getmnumber());
-                        email.setText(response.getemail());
-                        uname.setText(response.getUsername());
-                        hphone.setText(response.getmnumber());
-                        pphone.setText(response.getmnumber());
-                        joindate.setText(response.getCreatedOn());
-                        fname.setText(response.getUsername());
-
-                         drawer.openDrawer(GravityCompat.START);
-                        }
                 });
     }
     public void DisplayToast(String text){

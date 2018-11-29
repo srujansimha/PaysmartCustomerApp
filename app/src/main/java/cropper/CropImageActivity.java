@@ -29,13 +29,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.utils.Tools;
 
 import java.io.File;
 import java.io.IOException;
+
+import butterknife.BindView;
 
 /**
  * Built-in activity for image cropping.<br>
@@ -47,6 +52,9 @@ public class CropImageActivity extends AppCompatActivity implements CropImageVie
      * The crop image view library widget used in the activity
      */
     private CropImageView mCropImageView;
+
+@BindView(R.id.ConfirmBooking)
+    Button submit;
 
     /**
      * Persist URI image to crop URI if specific permissions are required
@@ -347,6 +355,14 @@ public class CropImageActivity extends AppCompatActivity implements CropImageVie
             }
         }
     }
+
+//    private void initToolbar() {
+//        android.support.v7.widget.Toolbar toolbar =  findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setTitle("Click For Camera");
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        Tools.setSystemBarColor(this);
+//    }
     //endregion
 }
 
