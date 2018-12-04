@@ -1,7 +1,7 @@
 package com.webingate.paysmartcustomerapp.customerapp.Utils;
-
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.ActiveCountries;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.AddCardResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.AppUsersResponce;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.AvailableVehiclesResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CalculatePriceResponse;
@@ -44,6 +44,12 @@ import retrofit2.http.Query;
 import rx.Observable;
 
 public interface APIInterface  {
+    @GET("/api/AppUsers/CustomersCardsList")
+    public Observable<List<AddCardResponse>> GetCardList(@Query("UserId") int UserId);//
+
+    @POST("/api/AppUsers/SaveCards")
+    public Observable<List<AddCardResponse>> SaveAddCard(@Body JsonObject jsonObject);//
+
     @GET("/api/AppUsers/AppUserDetailsUseracountno")
     public Observable<List<AppUsersResponce>> getAppUserDetails(@Query("UserAccountNo") String UserAccountNo);
 
