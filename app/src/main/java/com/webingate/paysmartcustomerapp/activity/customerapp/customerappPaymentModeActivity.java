@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.webingate.paysmartcustomerapp.R;
@@ -25,6 +26,7 @@ import com.webingate.paysmartcustomerapp.model.People;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -37,12 +39,14 @@ public class customerappPaymentModeActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     customerappCardListAdapter madpter;
     Toast toast;
+    @BindView(R.id.clistcount)
+    TextView clist;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_paymentmode_activity);
         addcards=(LinearLayout)findViewById(R.id.addcards);
-
+        clist=(TextView)findViewById(R.id.clistcount);
         recyclerView = findViewById(R.id.placeList1RecyclerView);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -160,6 +164,7 @@ public class customerappPaymentModeActivity extends AppCompatActivity {
                     @Override
                     public void onNext(List<AddCardResponse> responselist) {
                         response = (ArrayList<AddCardResponse>)responselist;
+                        clist.setText((responselist.size()) +" Linked card(s)");
                         madpter = new customerappCardListAdapter(response);
                         recyclerView.setAdapter(madpter);
                         madpter.setOnItemClickListener((view, obj, position) ->
@@ -169,6 +174,7 @@ public class customerappPaymentModeActivity extends AppCompatActivity {
                                     intent.putExtra("carno",obj.getCardNumber());
                                     intent.putExtra("Name",obj.getCustomer());
                                     intent.putExtra("fl","U");
+                                    intent.putExtra("Id",obj.getId());
                                     startActivity(intent);
                                 }
                         );

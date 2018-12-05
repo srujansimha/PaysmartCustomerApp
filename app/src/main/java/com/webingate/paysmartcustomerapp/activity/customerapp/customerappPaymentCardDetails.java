@@ -38,9 +38,9 @@ public class customerappPaymentCardDetails extends AppCompatActivity {
     private TextInputEditText et_cvv;
     private TextInputEditText et_name;
     private Button Addcard;
-    String cardno,cardname,update;
+    String cardno,cardname,update,cno,cname,cexp,ccv;
     Toast toast;
-    String cno,cname,cexp,ccv;
+    int id;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,9 +51,10 @@ public class customerappPaymentCardDetails extends AppCompatActivity {
         card_cvv = (TextView) findViewById(R.id.card_cvv);
         card_name = (TextView) findViewById(R.id.card_name);
         Intent intent = getIntent();
-         cardno=intent.getStringExtra("carno");
-         cardname=intent.getStringExtra("Name");
+        cardno=intent.getStringExtra("carno");
+        cardname=intent.getStringExtra("Name");
         update=intent.getStringExtra("fl");
+        id=intent.getIntExtra("Id",0);
         et_card_number = (TextInputEditText) findViewById(R.id.et_card_number);
         et_expire = (TextInputEditText) findViewById(R.id.et_expire);
         et_cvv = (TextInputEditText) findViewById(R.id.et_cvv);
@@ -171,6 +172,7 @@ public class customerappPaymentCardDetails extends AppCompatActivity {
             object.addProperty("Customer",(cname!=null?cname:cardname));
             object.addProperty("EffectiveFrom","");
             object.addProperty("EffectiveTo","");
+            object.addProperty("Id",(id!=0?id:"").toString());
             object.addProperty("insupdflag",(update!=null?'U':'I'));
             addCard(object);
         });

@@ -86,6 +86,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
 
 
+
         initUI();
         initData();
         FloatingActionButton edit = findViewById(R.id.editFAB);
@@ -140,6 +141,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         } else if (id == R.id.nav_preferences) {
             Toast.makeText(this, "Clicked nav_preferences.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_coupons) {
+            startActivity(new Intent(this,ImageCroppedTesting.class));
         Toast.makeText(this, "Clicked nav_coupons.", Toast.LENGTH_SHORT).show();
 
     } else if (id == R.id.nav_sos) {
@@ -182,12 +184,19 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
     private void initUI() {
         initToolbar();
 
+        TextView tt = findViewById(R.id.emailTextView);
+        TextView pht = findViewById(R.id.phoneTextView);
+        TextView username = findViewById(R.id.UsernameTextView);
+        TextView fname = findViewById(R.id.FirstnameTextView);
+        tt.setText(emailid);
+        pht.setText(mobno);
+        username.setText(usrname);
+        fname.setText(usrname);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -197,14 +206,9 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
         ImageView userImageView1 = findViewById(R.id.userImageView1);
         Utils.setCircleImageToImageView(this, userImageView1, R.drawable.profile1, 0, 0);
-        TextView tt = findViewById(R.id.emailTextView);
-        TextView pht = findViewById(R.id.phoneTextView);
-        TextView username = findViewById(R.id.UsernameTextView);
-        TextView fname = findViewById(R.id.FirstnameTextView);
-        tt.setText(emailid);
-        pht.setText(mobno);
-        username.setText(usrname);
-        fname.setText(usrname);
+
+
+
 
 //        if(Utils.isRTL()) {
 //            navigationView.setTextDirection(View.TEXT_DIRECTION_RTL);
@@ -313,4 +317,5 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         toast.show();
 
     }
+
 }

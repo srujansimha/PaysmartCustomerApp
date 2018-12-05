@@ -254,6 +254,7 @@ public class login_activity extends AppCompatActivity{
                             editor.putString(UserAccountNo, credentialsResponse.getUserAccountNo());
                             editor.putString(Phone,credentialsResponse.getMobilenumber());
                             ApplicationConstants.userAccountNo=credentialsResponse.getUserAccountNo();
+                            ApplicationConstants.userid=Integer.parseInt(credentialsResponse.getId());
 //                            editor.putString(VEHICLEID, credentialsResponse.getVehicleId());
 //                            editor.putString(Phone, mobileNo.getText().toString());
 //                            editor.putString(Emailotp, null);

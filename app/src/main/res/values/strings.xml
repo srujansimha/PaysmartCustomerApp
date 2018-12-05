@@ -165,5 +165,8 @@
     <string name="standard_title">Loading</string>
     <string name="standard_message">Please Wait</string>
     <string name="Return_journey_date">Return Journey Date(Optional)</string>
+    <string name="intro">Capture a picture to crop!</string>
+    <string name="picture">Picture</string>
+    <string name="capture">Launch Camera</string>
 
 </resources>
