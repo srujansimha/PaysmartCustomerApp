@@ -136,21 +136,14 @@ public class login_activity extends AppCompatActivity{
         if (Build.VERSION.SDK_INT >= 21) {
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
         }
-
         setContentView(R.layout.customerapp_login_activity);
         ButterKnife.bind(this);
         ccp = (CountryCodePicker) findViewById(R.id.ccp);
-
         initUI();
-
         initDataBindings();
-
         initActions();
         //GetCountriesList();
         initData();
-
-
-
     }
 
     //region Init Functions
@@ -159,7 +152,6 @@ public class login_activity extends AppCompatActivity{
         signUpTextView = findViewById(R.id.signuptTextView);
         mno = findViewById(R.id.s_mobileno);
         pwd = findViewById(R.id.s_password);
-
         loginButton = findViewById(R.id.loginButton);
 //        facebookCardView = findViewById(R.id.facebookCardView);
 //        twitterCardView = findViewById(R.id.twitterCardView);
@@ -255,6 +247,7 @@ public class login_activity extends AppCompatActivity{
                             editor.putString(Phone,credentialsResponse.getMobilenumber());
                             ApplicationConstants.userAccountNo=credentialsResponse.getUserAccountNo();
                             ApplicationConstants.userid=Integer.parseInt(credentialsResponse.getId());
+                            ApplicationConstants.photo=credentialsResponse.getUserPhoto();
 //                            editor.putString(VEHICLEID, credentialsResponse.getVehicleId());
 //                            editor.putString(Phone, mobileNo.getText().toString());
 //                            editor.putString(Emailotp, null);

@@ -3,6 +3,8 @@ package com.webingate.paysmartcustomerapp.activity.customerapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -53,8 +56,8 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
     @BindView(R.id.editFAB)
     Button edit;
-    @BindView(R.id.textView228)
-    TextView hphone;
+//    @BindView(R.id.textView228)
+//    TextView hphone;
     @BindView(R.id.phoneTextView)
     TextView pphone;
     @BindView(R.id.emailTextView)
@@ -66,9 +69,15 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
     @BindView(R.id.textView31)
     TextView joindate;
-    @BindView(R.id.ucon)
-    TextView ucontact;
+
+    @BindView(R.id.phoneno)
+    TextView phoneno;
+
+    @BindView(R.id.puphone)
+    TextView puphone;
+
     String useracc,usrname,emailid,mobno;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,10 +92,10 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         usrname = prefs.getString(Name, null);
         emailid = prefs.getString(Email, null);
         mobno = prefs.getString(Phone, null);
-
-
-
-
+        puphone=findViewById(R.id.puphone);
+        phoneno=findViewById(R.id.phoneno);
+        //puphone.setText("7883890asdf");
+       // phoneno.setText("asdf");
         initUI();
         initData();
         FloatingActionButton edit = findViewById(R.id.editFAB);
@@ -99,7 +108,8 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
     }
 
     private void initData() {
-
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
+        drawer.openDrawer(GravityCompat.START);
     }
 
     @Override
@@ -141,7 +151,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         } else if (id == R.id.nav_preferences) {
             Toast.makeText(this, "Clicked nav_preferences.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_coupons) {
-            startActivity(new Intent(this,ImageCroppedTesting.class));
+//            startActivity(new Intent(this,ImageCroppedTesting.class));
         Toast.makeText(this, "Clicked nav_coupons.", Toast.LENGTH_SHORT).show();
 
     } else if (id == R.id.nav_sos) {
@@ -185,13 +195,18 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         initToolbar();
 
         TextView tt = findViewById(R.id.emailTextView);
-        TextView pht = findViewById(R.id.phoneTextView);
+        TextView pht =(TextView) findViewById(R.id.phoneTextView);
         TextView username = findViewById(R.id.UsernameTextView);
         TextView fname = findViewById(R.id.FirstnameTextView);
+//        TextView phoneno=(TextView)findViewById(R.id.phoneno);
+        TextView puphone=findViewById(R.id.puphone);
+        // Main User Profile Screen
         tt.setText(emailid);
         pht.setText(mobno);
         username.setText(usrname);
         fname.setText(usrname);
+//        phoneno.setText("7893890990");
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -202,11 +217,22 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
         View headerLayout = navigationView.getHeaderView(0);
         ImageView userImageView = headerLayout.findViewById(R.id.userImageView);
-        Utils.setCircleImageToImageView(this, userImageView, R.drawable.profile1, 0, 0);
+       // Utils.setCircleImageToImageView(this, userImageView, R.drawable.profile1, 0, 0);
 
         ImageView userImageView1 = findViewById(R.id.userImageView1);
-        Utils.setCircleImageToImageView(this, userImageView1, R.drawable.profile1, 0, 0);
+        //Utils.setCircleImageToImageView(this, userImageView1, R.drawable.profile1, 0, 0);
 
+        if(ApplicationConstants.photo==null){
+            Utils.setCircleImageToImageView(getApplicationContext(), userImageView, R.drawable.profile1, 0, 0);
+            Utils.setCircleImageToImageView(getApplicationContext(), userImageView, R.drawable.profile1, 0, 0);
+        }
+        else
+        {
+            byte[] decodedString= Base64.decode( ApplicationConstants.photo.substring( ApplicationConstants.photo.indexOf(",")+1), Base64.DEFAULT);
+            Bitmap image1 = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            userImageView1.setImageBitmap(image1);
+            userImageView.setImageBitmap(Utils.getCircularBitmapWithBorder(image1,0,0));
+        }
 
 
 

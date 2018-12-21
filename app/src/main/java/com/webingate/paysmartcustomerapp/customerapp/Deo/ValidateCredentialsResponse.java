@@ -33,6 +33,8 @@ public class ValidateCredentialsResponse{
 
 	@SerializedName("Code")
 	private String code;
+	@SerializedName("UserPhoto")
+	private String UserPhoto;
 
 	@SerializedName("description")
 	private String description;
@@ -93,6 +95,9 @@ public class ValidateCredentialsResponse{
 	public String getId(){
 		return id;
 	}
+	public String getUserPhoto(){
+		return UserPhoto;
+	}
 
 	public void setAuthTypeId(String authTypeId){
 		this.authTypeId = authTypeId;
@@ -138,6 +143,7 @@ public class ValidateCredentialsResponse{
 			",mobilenumber = '" + mobilenumber + '\'' + 
 			",lastname = '" + lastname + '\'' +
 			",UserAccountNo = '" + UserAccountNo + '\''+
+			",UserPhoto = '" + UserPhoto + '\''+
 			"}";
 		}
 }

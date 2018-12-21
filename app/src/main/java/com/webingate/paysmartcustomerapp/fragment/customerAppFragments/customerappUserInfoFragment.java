@@ -3,9 +3,12 @@ package com.webingate.paysmartcustomerapp.fragment.customerAppFragments;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,10 +91,20 @@ public class customerappUserInfoFragment extends Fragment {
     private void initUI(View view) {
 
         profileImageView = view.findViewById(R.id.profileImageView);
-        int id = R.drawable.baseline_image_black_24;
-        Utils.setCornerRadiusImageToImageView(view.getContext(), profileImageView, id, 20, 2, R.color.md_white_1000);
-        setname((EditText) view.findViewById(R.id.s_name));
 
+        if(ApplicationConstants.photo!=null){
+            byte[] decodedString= Base64.decode(ApplicationConstants.photo.substring(ApplicationConstants.photo.indexOf(",")+1), Base64.DEFAULT);
+            Bitmap image1 = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            profileImageView.setImageBitmap(image1);
+        }
+        else
+        {
+            int id = R.drawable.baseline_image_black_24;
+            Utils.setCornerRadiusImageToImageView(view.getContext(), profileImageView, id, 20, 2, R.color.md_white_1000);
+
+        }
+
+        setname((EditText) view.findViewById(R.id.s_name));
         name = view.findViewById(R.id.s_name);
         emailid = view.findViewById(R.id.s_email);
         mbno = view.findViewById(R.id.s_mobileno);

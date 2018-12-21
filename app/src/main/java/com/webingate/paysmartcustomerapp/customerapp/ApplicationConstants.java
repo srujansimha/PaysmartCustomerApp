@@ -18,6 +18,7 @@ public class ApplicationConstants {
     public static String username="";
     public static String password="";
     public static String email="";
+    public static String photo="";
     public static boolean verify_email=true;
     public static boolean isResetPasswordfirstWondow=true;
     public static String source="";

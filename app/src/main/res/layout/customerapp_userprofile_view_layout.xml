@@ -64,7 +64,7 @@
             <TextView
                 android:id="@+id/emailTextView"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="16dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
@@ -316,14 +316,14 @@
                 tools:srcCompat="@drawable/baseline_image_black_24" />
 
             <TextView
-                android:id="@+id/textView228"
+                android:id="@+id/puphone"
                 android:layout_width="200dp"
-                android:layout_height="52dp"
+                android:layout_height="40dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:fontFamily="@font/roboto_medium"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
-                android:text="+246 100-100-11234"
+                android:text="7893890990"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textColor="@color/md_white_1000"
@@ -331,7 +331,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.033"
                 app:layout_constraintStart_toEndOf="@+id/userImageView"
-                tools:layout_editor_absoluteY="16dp" />
+                tools:layout_editor_absoluteY="43dp" />
 
         </android.support.constraint.ConstraintLayout>
 

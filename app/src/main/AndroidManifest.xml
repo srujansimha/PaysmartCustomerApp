@@ -138,9 +138,6 @@
             android:name=".activity.customerapp.customerappUserDetailsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.customerapp.ImageCroppedTesting"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".customerapp.EWallet"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
