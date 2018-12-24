@@ -321,7 +321,7 @@
 
     <array name="fruits">
         <item>Cash</item>
-        <item>Add Payment Mode</item>
+        <item>+ Add Payment Mode</item>
     </array>
 
 </resources>

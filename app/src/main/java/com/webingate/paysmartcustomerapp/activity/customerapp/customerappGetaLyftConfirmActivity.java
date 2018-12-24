@@ -3,6 +3,7 @@ package com.webingate.paysmartcustomerapp.activity.customerapp;
 import android.Manifest;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,6 +22,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -33,8 +35,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -143,6 +147,8 @@ public static final String MyPREFERENCES = "MyPrefs";
     TextView personal;
     @BindView(R.id.coupon)
     TextView coupon;
+    @BindView(R.id.name)
+     TextView paymenttype;
     //    @BindView(R.id.taxi)
 //    AppCompatButton taxi;
 //    @BindView(R.id.meteredtaxi)
@@ -236,6 +242,7 @@ public static final String MyPREFERENCES = "MyPrefs";
         sourceLongitude = Double.parseDouble(slog);
         destLatitude = Double.parseDouble(dlat);
         destLongitude = Double.parseDouble(dlog);
+
        // selectDestination.setText("Destination : " + (dlat + "").substring(0, 10) + " , " + (dlog + "").substring(0, 10));
        // selectsource.setText("Destination : " + (slat + "").substring(0, 10) + " , " + (slog + "").substring(0, 10));
  //      selectsource.setText(C_src);
@@ -381,19 +388,37 @@ public static final String MyPREFERENCES = "MyPrefs";
 
         payment.setOnClickListener((View v) -> {
 
-            View view = getLayoutInflater().inflate(R.layout.customerapp_bottomdialog, null);
+                    View view = getLayoutInflater().inflate(R.layout.customerapp_bottomdialog, null);
 
-            BottomSheetDialog dialog = new BottomSheetDialog(this);
+                    BottomSheetDialog dialog = new BottomSheetDialog(this);
 
-            list = new ArrayList<>(Arrays.asList(fruits));
-            adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, list);
-            ListView listView = view.findViewById(R.id.bsDialogListView);
+                    list = new ArrayList <>(Arrays.asList(fruits));
+                    adapter = new ArrayAdapter <>(this, android.R.layout.simple_list_item_1, list);
+                    ListView listView = view.findViewById(R.id.bsDialogListView);
+                    listView.setAdapter(adapter);
+                    dialog.setContentView(view);
+                    dialog.show();
+                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-            listView.setAdapter(adapter);
+                        public void onItemClick(AdapterView <?> adapter, View v, int position, long id) {
+                            if(position==1)
+                            {
+                                DisplayToast("Please Paymentmode");
+                                startActivity(new Intent(customerappGetaLyftConfirmActivity.this,customerappPaymentModeDetails.class));
 
-            dialog.setContentView(view);
-            dialog.show();
-        });
+                            }
+                            else
+                            {
+                                DisplayToast("selected Cash mode");
+                                dialog.cancel();
+                                TextView tname = (TextView) findViewById(R.id.name);
+                                tname.setText("Cash");
+                                //startActivity(new Intent(customerappGetaLyftConfirmActivity.this,customerappGetaLyftConfirmActivity.class));
+                            }
+                        }
+                    });
+                });
+
         personal.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View p){
@@ -451,8 +476,12 @@ public static final String MyPREFERENCES = "MyPrefs";
 //            }
 //            //Toast.makeText(getContext(), "Clicked : " + promotion.getName(), Toast.LENGTH_SHORT).show();
 //        });
+    }
 
 
+    public void setDialog(View v) {
+        DisplayToast("Selected Sheet Dialog");
+        Intent intent = new Intent(customerappGetaLyftConfirmActivity.this,customerappPaymentModeActivity.class);
     }
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;

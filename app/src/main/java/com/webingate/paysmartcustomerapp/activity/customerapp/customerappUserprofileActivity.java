@@ -135,6 +135,8 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
           //  Toast.makeText(this, "Clicked nav_paymentmode.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, customerappPaymentModeActivity.class);
             startActivity(intent);
+
+
         } else if (id == R.id.nav_bookings) {
             //Toast.makeText(this, "Clicked nav_bookings.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, customerappBookingsMainActivity.class);

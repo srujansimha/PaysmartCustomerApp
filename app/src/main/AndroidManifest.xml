@@ -147,6 +147,17 @@
             android:name=".activity.customerapp.customerappGetaLyftBookingsListsActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+        android:name=".activity.customerapp.customerappPaymentModeDetails"
+        android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.customerapp.customerappAddPaymentModeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappAddPaymentBankingActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name=".activity.customerapp.customerappBookingDetails"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.customerapp.CropingMainActivity" />

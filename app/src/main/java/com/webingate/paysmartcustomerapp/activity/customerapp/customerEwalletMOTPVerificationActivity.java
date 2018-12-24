@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerResendOTPResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.MOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
@@ -125,7 +126,7 @@ public class customerEwalletMOTPVerificationActivity extends AppCompatActivity {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("Mobilenumber",mobileno);
                 jsonObject.addProperty("MVerificationCode", motp.getText().toString());
-                jsonObject.addProperty("UserAccountNo",useracntno);
+                jsonObject.addProperty("UserAccountNo", ApplicationConstants.userAccountNo);
                 MOTPVerifications(jsonObject);
             }
         });

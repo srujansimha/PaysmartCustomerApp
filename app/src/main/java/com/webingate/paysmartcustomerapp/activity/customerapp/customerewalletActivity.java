@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerEOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerResendOTPResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.MOTPVerificationResponse;
@@ -126,7 +127,7 @@ String id,email,useracntno;
             else
             {
                 JsonObject jsonObject = new JsonObject();
-                jsonObject.addProperty("UserAccountNo",useracntno);
+                jsonObject.addProperty("UserAccountNo", ApplicationConstants.userAccountNo);
                 jsonObject.addProperty("Mobilenumber",etop.getText().toString());
                 MtopVerification(jsonObject);
             }
