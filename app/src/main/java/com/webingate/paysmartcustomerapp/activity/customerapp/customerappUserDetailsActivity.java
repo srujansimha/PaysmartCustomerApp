@@ -1,6 +1,7 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import com.webingate.paysmartcustomerapp.fragment.customerAppFragments.customera
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
 import butterknife.BindView;
+import cropper.CropImage;
 
 public class customerappUserDetailsActivity extends AppCompatActivity {
 
@@ -224,4 +226,26 @@ ImageView ephoto;
 
     }
     //endregion
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == -1) {
+
+                Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG)
+                        .show();
+
+                Toast.makeText(this, "Cropping successful, URI: " + result.getUri(), Toast.LENGTH_LONG)
+                        .show();
+                ephoto=(ImageView) findViewById(R.id.Edituserphoto);
+                ephoto.setImageURI(result.getUri());
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+
+
+        }
+    }
 }

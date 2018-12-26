@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,8 @@ import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
 import butterknife.BindView;
-
+import cropper.CropImage;
+import cropper.CropImageView;
 
 
 public class customerappUserInfoFragment extends Fragment {
@@ -74,12 +76,40 @@ public class customerappUserInfoFragment extends Fragment {
 
                 ephoto.setOnClickListener(View  -> {
                     Toast.makeText(getActivity(), "Testing", Toast.LENGTH_SHORT).show();
-                    Intent intent =new Intent(getContext(),CropingMainActivity.class);
-                    startActivity(intent);
+                    //Intent intent =new Intent(getContext(),CropingMainActivity.class);
+                    //startActivity(intent);
+
+                    CropImage.activity()
+                            .setGuidelines(CropImageView.Guidelines.ON)
+                            .setActivityTitle("My Crop")
+                            .setCropMenuCropButtonTitle("Done")
+                            .setRequestedSize(400, 800)
+                            .setCropMenuCropButtonIcon(R.drawable.badge_menu)
+                            .start(this.getActivity());
                 });
     }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == -1) {
 
-    //
+                Toast.makeText(getActivity(), "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG)
+                        .show();
+
+                Toast.makeText(getActivity(), "Cropping successful, URI: " + result.getUri(), Toast.LENGTH_LONG)
+                        .show();
+
+                profileImageView.setImageURI(result.getUri());
+
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Toast.makeText(getActivity(), "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+            }
+
+
+        }
+    }
+   //
 //    private void initData() {
 //        productsList = DirectoryHome9Repository.getfleetownerList();
 //        categoryList = DirectoryHome9Repository.getCategoryList();

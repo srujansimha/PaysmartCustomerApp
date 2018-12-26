@@ -160,8 +160,9 @@
         <activity
             android:name=".activity.customerapp.customerappBookingDetails"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.customerapp.CropingMainActivity" />
-        <activity android:name="cropper.CropImageActivity" />
+
+        <activity android:name=".activity.customerapp.CropingMainActivity" android:theme="@style/Theme.AppCompat.Light"/>
+        <activity android:name="cropper.CropImageActivity" android:theme="@style/Theme.AppCompat.Light"/>
 
 
     </application>
