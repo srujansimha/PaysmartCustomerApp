@@ -230,6 +230,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         }
         else
         {
+            //Utils.setCircleImageToImageView(getApplicationContext(), userImageView1, R.drawable.profile1, 0, 0);
             byte[] decodedString= Base64.decode( ApplicationConstants.photo.substring( ApplicationConstants.photo.indexOf(",")+1), Base64.DEFAULT);
             Bitmap image1 = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
             userImageView1.setImageBitmap(image1);
