@@ -20,6 +20,7 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
+import com.webingate.paysmartcustomerapp.fragment.customerAppFragments.customerappPaymentmodeFragment;
 import com.webingate.paysmartcustomerapp.fragment.customerAppFragments.customerappUserInfoFragment;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
@@ -163,7 +164,7 @@ ImageView ephoto;
                     //RegisterDriver(object);
 
                     Toast.makeText(this, "Step 2.", Toast.LENGTH_SHORT).show();
-                    //setupFragment(new businessAppDriverDocsFragment());
+
                 }
             } else {
                 Toast.makeText(this, "No More Step.", Toast.LENGTH_SHORT).show();
@@ -178,7 +179,11 @@ ImageView ephoto;
                 updatePositionTextView();
                 if(position == 1) {
                     Toast.makeText(this, "Step 1.", Toast.LENGTH_SHORT).show();
-                    setupFragment(new customerappUserInfoFragment());
+                    userInfoFragment =      new customerappUserInfoFragment();
+
+                    setupFragment(userInfoFragment);
+
+                    ephoto=(ImageView) findViewById(R.id.Edituserphoto);
                 }
                 if(position == 2)
                 {
