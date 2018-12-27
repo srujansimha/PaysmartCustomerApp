@@ -3,12 +3,17 @@ package com.webingate.paysmartcustomerapp.activity.customerapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -20,11 +25,25 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.RegisterUserResponse;
 import com.webingate.paysmartcustomerapp.fragment.customerAppFragments.customerappUserInfoFragment;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.List;
+
 import butterknife.BindView;
 import cropper.CropImage;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
+import static android.app.PendingIntent.getActivity;
+import static java.security.AccessController.getContext;
 
 public class customerappUserDetailsActivity extends AppCompatActivity {
 
@@ -32,7 +51,7 @@ public class customerappUserDetailsActivity extends AppCompatActivity {
     public static final String Name = "nameKey";
     public static final String Phone = "phoneKey";
     public static final String Email = "emailKey";
-
+    Toast toast;
 
 //ImageView profileImageView;
     private int position = 1;
@@ -40,13 +59,14 @@ public class customerappUserDetailsActivity extends AppCompatActivity {
     private Button nextButton, prevButton;
     private TextView imageNoTextView;
 
-//    EditText email;
-//    EditText name;
-//    EditText address;
-//    EditText city;
-//    EditText mno;
-//    EditText postal;
-//    EditText state;
+    EditText email;
+    EditText name;
+    EditText address;
+    EditText city;
+    EditText mno;
+    EditText postal;
+    EditText state;
+    ImageView profileImageView;
 @BindView(R.id.Edituserphoto)
 ImageView ephoto;
     customerappUserInfoFragment userInfoFragment;
@@ -135,35 +155,32 @@ ImageView ephoto;
                 if(position == 2)
                 {
                     //EditText name = (EditText)findViewById(R.id.s_name);
-//                    name = findViewById(R.id.s_name);
-//                    email = findViewById(R.id.s_email);
-//                    mno = findViewById(R.id.s_mobileno);
-//                    address = findViewById(R.id.s_address);
-//                    city = findViewById(R.id.s_city);
-//                    postal = findViewById(R.id.s_postal);
-//                    state = findViewById(R.id.s_state);
-//                    profileImageView = findViewById(R.id.profileImageView);
+                    name = findViewById(R.id.s_name);
+                    email = findViewById(R.id.s_email);
+                    mno = findViewById(R.id.s_mobileno);
+                    address = findViewById(R.id.s_address);
+                    city = findViewById(R.id.s_city);
+                    postal = findViewById(R.id.s_postal);
+                    state = findViewById(R.id.s_state);
+                    profileImageView = findViewById(R.id.profileImageView);
 
-//                    JsonObject object = new JsonObject();
-//                    object.addProperty("flag", "U");
-//                    object.addProperty("Firstname",name.getText().toString());
-//                    //object.addProperty("lastname","kumar");
-//                    object.addProperty("AuthTypeId", "");
-//                    object.addProperty("Password", "123");
-//                    object.addProperty("Mobilenumber",mno.getText().toString());
-//                    object.addProperty("Email",email.getText().toString());
-//                    object.addProperty("CountryId","101");
-//                    object.addProperty("VehicleGroupId","");
-//                    object.addProperty("UserAccountNo","11091"+mno.getText().toString());
-//                    object.addProperty("usertypeid","110");
-//                    object.addProperty("isDriverOwned","0");
-//                    object.addProperty("DPhoto","");
-//                    object.addProperty("Address",address.getText().toString());
-//                    object.addProperty("Gender","44");
-                    //RegisterDriver(object);
+                    JsonObject object = new JsonObject();
+                    object.addProperty("flag", "U");
+                    object.addProperty("Firstname",name.getText().toString());
+                    //object.addProperty("lastname","kumar");
+
+                    object.addProperty("Mobilenumber",mno.getText().toString());
+                    object.addProperty("Email",email.getText().toString());
+                    //object.addProperty("CountryId","101");
+                    object.addProperty("UserAccountNo", ApplicationConstants.userAccountNo);
+                    object.addProperty("usertypeid", ApplicationConstants.userid);
+                    object.addProperty("UserPhoto","data:" + ApplicationConstants.pic_format + ";base64," +  ApplicationConstants.pic_data);
+                    object.addProperty("Address",address.getText().toString());
+                    object.addProperty("Gender","44");
+                        RegisterCustomer(object);
 
                     Toast.makeText(this, "Step 2.", Toast.LENGTH_SHORT).show();
-                    //setupFragment(new businessAppDriverDocsFragment());
+                    setupFragment(new customerappPaymentmodeFragment());
                 }
             } else {
                 Toast.makeText(this, "No More Step.", Toast.LENGTH_SHORT).show();
@@ -229,17 +246,49 @@ ImageView ephoto;
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            Bitmap bitmap=null;
             if (resultCode == -1) {
+                try {
+                    Uri uri = result.getUri();
+                    Uri uri1=data.getData();
+                    bitmap = BitmapFactory.decodeFile(uri.getPath());
+                    ApplicationConstants.pic_format = "image/jpeg";
 
-                Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG)
-                        .show();
+                    //getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    InputStream inputStream = getContentResolver().openInputStream(uri);
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(
+                            inputStream));
+                    StringBuilder stringBuilder = new StringBuilder();
+                    String line;
+                    while ((line = reader.readLine()) != null) {
+                        stringBuilder.append(line);
+                    }
+                    inputStream.close();
+                    String encodedImage = Base64.encodeToString(stringBuilder.toString().getBytes(), Base64.DEFAULT);
+//                    ApplicationConstants.pic_data = encodedImage;
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                    byte[] imageBytes = baos.toByteArray();
+                    ApplicationConstants.pic_data = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                finally {
+                    Toast.makeText(this, "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG)
+                            .show();
 
-                Toast.makeText(this, "Cropping successful, URI: " + result.getUri(), Toast.LENGTH_LONG)
-                        .show();
-                ephoto=(ImageView) findViewById(R.id.Edituserphoto);
-                ephoto.setImageURI(result.getUri());
+                    Toast.makeText(this, "Cropping successful, URI: " + result.getUri(), Toast.LENGTH_LONG)
+                            .show();
+//                ephoto=(ImageView) findViewById(R.id.Edituserphoto);
+//                ephoto.setImageURI(result.getUri());
+                    ephoto=(ImageView) findViewById(R.id.profileImageView);
+                    //ephoto.setImageURI(result.getUri());
+                    ephoto.setImageBitmap(bitmap);
+                }
+
 
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Toast.makeText(this, "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
@@ -247,5 +296,51 @@ ImageView ephoto;
 
 
         }
+    }
+    public void RegisterCustomer(JsonObject jsonObject){
+
+        //StartDialogue();
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappUserDetailsActivity.this).getrestadapter()
+                .RegisterUser(jsonObject)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<RegisterUserResponse>>() {
+                    @Override
+                    public void onCompleted() {
+                        DisplayToast("Successfully onCompleted");
+                        //StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            DisplayToast("Successfully onError");
+                            //DisplayToast("Unable to Register");
+                            //StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onNext(List<RegisterUserResponse> responseList) {
+//                        DisplayToast("Successfully onNext");
+                        RegisterUserResponse response=responseList.get(0);
+                        if(response.getCode()!=null){
+                            DisplayToast(response.getDescription());
+                        }
+                        else{
+                            ApplicationConstants.photo=response.getUserPhoto();
+                        }
+                    }
+                });
+    }
+    public void DisplayToast(String text){
+        if(toast!=null){
+            toast.cancel();
+            toast=null;
+
+        }
+        toast= Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT);
+        toast.show();
+
     }
 }

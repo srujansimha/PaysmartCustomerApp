@@ -31,6 +31,10 @@ public class ApplicationConstants {
     public static String bookingDate="";
     public static String bookingTime="";
     public static String walletBalance="";
+    public static String pic_format;
+    public static String pic_data;
+
+
     //public static ArrayList confirmedTrips=new ArrayList();
     public static String rating,comments;
     public static String address;

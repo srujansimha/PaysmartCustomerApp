@@ -88,27 +88,27 @@ public class customerappUserInfoFragment extends Fragment {
                             .start(this.getActivity());
                 });
     }
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
-            CropImage.ActivityResult result = CropImage.getActivityResult(data);
-            if (resultCode == -1) {
-
-                Toast.makeText(getActivity(), "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG)
-                        .show();
-
-                Toast.makeText(getActivity(), "Cropping successful, URI: " + result.getUri(), Toast.LENGTH_LONG)
-                        .show();
-
-                profileImageView.setImageURI(result.getUri());
-
-            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
-                Toast.makeText(getActivity(), "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
-            }
-
-
-        }
-    }
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+//            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+//            if (resultCode == -1) {
+//
+//                Toast.makeText(getActivity(), "Cropping successful, Sample: " + result.getSampleSize(), Toast.LENGTH_LONG)
+//                        .show();
+//
+//                Toast.makeText(getActivity(), "Cropping successful, URI: " + result.getUri(), Toast.LENGTH_LONG)
+//                        .show();
+//
+//                profileImageView.setImageURI(result.getUri());
+//
+//            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+//                Toast.makeText(getActivity(), "Cropping failed: " + result.getError(), Toast.LENGTH_LONG).show();
+//            }
+//
+//
+//        }
+//    }
    //
 //    private void initData() {
 //        productsList = DirectoryHome9Repository.getfleetownerList();
