@@ -211,12 +211,12 @@ public class DirectoryHome9Repository {
             " {\n" +
             "  \"id\": \"product14\",\n" +
             "  \"icon\": \"home9_train\",\n" +
-            "  \"name\": \"Train\"\n" +
+            "  \"name\": \"Towing Vehicle\"\n" +
             "},\n" +
             "  {\n" +
             "    \"id\": \"product2\",\n" +
             "    \"icon\": \"home9_hotel\",\n" +
-            "    \"name\": \"Hotels\"\n" +
+            "    \"name\": \"Ambulance\"\n" +
             "  },\n" +
             "  {\n" +
             "    \"id\": \"product7\",\n" +
@@ -240,13 +240,13 @@ public class DirectoryHome9Repository {
             "  },\n" +
 //            "  {\n" +
 //            "    \"id\": \"product6\",\n" +
-//            "    \"icon\": \"home9_train\",\n" +
-//            "    \"name\": \"Trains\"\n" +
+//            "    \"icon\": \"home9_Ambulance\",\n" +
+//            "    \"name\": \"Ambulance\"\n" +
 //            "  },\n" +
 //            "  {\n" +
 //            "    \"id\": \"product8\",\n" +
-//            "    \"icon\": \"home9_airport\",\n" +
-//            "    \"name\": \"Airport Transport\"\n" +
+//            "    \"icon\": \"home9_rental\",\n" +
+//            "    \"name\": \"Towing Vehicle\"\n" +
 //            "  },\n" +
 //            "  {\n" +
 //            "    \"id\": \"product9\",\n" +

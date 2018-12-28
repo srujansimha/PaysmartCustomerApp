@@ -154,7 +154,25 @@
             android:name=".activity.customerapp.customerappAddPaymentModeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.customerapp.customerappAddPaymentBankingActivity"
+        android:name=".activity.customerapp.customerappAddPaymentBankingActivity"
+        android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappHireVehicleActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappHireVehicleConfirmActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappTowingVehicleActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappTowingVehicleConfirmActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappAmbulanceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappAmbulanceConfirmActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity

@@ -17,9 +17,12 @@ import android.widget.Toast;
 import com.webingate.paysmartcustomerapp.R;
 
 
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappAmbulanceActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappBusBookingMainActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappFlightBookingSearchActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappGetaLyftActivity;
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappHireVehicleActivity;
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappTowingVehicleActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappTrainBookingSearchActivity;
 import com.webingate.paysmartcustomerapp.adapter.customerapp_FlightsAdapter;
 import com.webingate.paysmartcustomerapp.adapter.customerapp_PopularAdapter;
@@ -166,15 +169,19 @@ public class customerAppDashboardFragment extends Fragment {
                     case 2:
                         Toast.makeText(getContext(), "Clicked : hire a vehicle", Toast.LENGTH_SHORT).show();
                         ApplicationConstants.marker = R.mipmap.marker_taxi;
-                         intent = new Intent(getActivity(), GetaLyft.class);
+                         intent = new Intent(getActivity(), customerappHireVehicleActivity.class);
                         startActivity(intent);
 
                         break;
                     case 3:
-                        intent = new Intent(getActivity(), customerappTrainBookingSearchActivity.class);
+                        Toast.makeText(getContext(), "Clicked : Towing vehicle", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(getActivity(), customerappTowingVehicleActivity.class);
                         startActivity(intent);
                         break;
                     case 4:
+                        Toast.makeText(getContext(), "Clicked : Ambulance", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(getActivity(), customerappAmbulanceActivity.class);
+                        startActivity(intent);
                         break;
                     case 5:
                         intent = new Intent(getActivity(), customerappBusBookingMainActivity.class);
