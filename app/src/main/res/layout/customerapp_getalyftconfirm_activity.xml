@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:background="@color/white">
+        android:background="@color/white"
+        >
 
 
         <!--<TableRow>-->
@@ -23,7 +24,7 @@
         <!--/>-->
         <!--</TableRow>-->
 
-        <TableRow>
+        <TableRow >
 
             <TextView
                 android:id="@+id/pricetextview"
@@ -35,18 +36,21 @@
                 android:fontFamily="@font/roboto_medium"
                 android:text="$100"
                 android:textAlignment="center"
-                android:textColor="@color/md_grey_600"
+                android:textColor="@color/md_grey_800"
                 android:textSize="@dimen/font_h7_size" />
 
         </TableRow>
-
+        <View
+            android:layout_height="1px"
+            android:background="@color/md_grey_400" />
         <TableRow>
 
             <TextView
                 android:id="@+id/personal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_medium"
                 android:inputType="textNoSuggestions"
                 android:text="Personal"
@@ -61,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
                 android:fontFamily="@font/roboto_medium"
                 android:inputType="textNoSuggestions"
                 android:text="Setup Payment"
@@ -72,6 +77,9 @@
 
         </TableRow>
 
+        <View
+            android:layout_height="1px"
+            android:background="@color/md_grey_400" />
 
         <TextView
             android:id="@+id/name"
@@ -82,8 +90,10 @@
             android:textAlignment="center"
             android:textColor="@color/colorbackground" />
 
-
-        <TableRow>
+        <View
+            android:layout_height="1px"
+            android:background="@color/md_grey_400" />
+        <TableRow >
 
             <TextView
                 android:id="@+id/coupon"
