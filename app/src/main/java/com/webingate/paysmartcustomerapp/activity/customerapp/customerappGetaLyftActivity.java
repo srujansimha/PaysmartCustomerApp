@@ -375,8 +375,6 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     }
 
     public  void AvailableVehiclesTest(int vehicleType){
-
-
         switch (vehicleType){
             case 0:
                 ApplicationConstants.marker = R.mipmap.marker_car;
@@ -396,7 +394,6 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                 default:
                     break;
         }
-
         for (int i = 0; i < 5; i++) {
             AvailableVehiclesResponse response= new AvailableVehiclesResponse();
             double lat = 17.459 + (0.001 * (i+1)); //response.getLatitude();
@@ -408,7 +405,6 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
             markerOptions.icon(BitmapDescriptorFactory.fromResource(ApplicationConstants.marker));
             cabs[i] = mMap.addMarker(markerOptions);
         }
-
     }
 
     //toolbar button click
