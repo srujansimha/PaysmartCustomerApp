@@ -165,9 +165,16 @@ public class customerappAddPaymentModeActivity extends AppCompatActivity {
                         madpter.setOnItemClickListener((view, obj, position) ->
                                 {
                                     DisplayToast("Clicked Confirm");
-                                    Intent intent=new Intent(customerappAddPaymentModeActivity.this,customerappPaymentModeDetails.class);
+                                   // Intent intent=new Intent(customerappAddPaymentModeActivity.this,customerappPaymentModeDetails.class);
+                                    Intent intent = new Intent(customerappAddPaymentModeActivity.this, customerappGetaLyftConfirmActivity.class);
+                                    intent.putExtra("source", ApplicationConstants.csource);
+                                    intent.putExtra("destination", ApplicationConstants.cdestination);
+                                    intent.putExtra("slat",ApplicationConstants.cslat);
+                                    intent.putExtra("slog",ApplicationConstants.cslog);
+                                    intent.putExtra("dlat",ApplicationConstants.cdlat);
+                                    intent.putExtra("dlog",ApplicationConstants.cdlog);
+                                    intent.putExtra("cardselected","Debit/Credit Card");
                                     startActivity(intent);
-
                                 }
                         );
                     }

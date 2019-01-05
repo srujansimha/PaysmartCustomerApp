@@ -219,7 +219,7 @@ public static final String MyPREFERENCES = "MyPrefs";
     private LocationRequest mLocationRequest;
     ActionBarDrawerToggle toggle;
     private LatLng latLng, srclatlngnew,destlatlngnew;
-    private String response,C_src,C_des;
+    private String response,C_src,C_des,selectedcard;
     private Polyline line;
     // private Timer timer;
 
@@ -232,17 +232,29 @@ public static final String MyPREFERENCES = "MyPrefs";
 //        id = prefs.getString(ID, null);
 
         Intent intent = getIntent();
+
         C_src=intent.getStringExtra("source");
         C_des=intent.getStringExtra("destination");
         slat=intent.getStringExtra("slat");
         slog=intent.getStringExtra("slog");
         dlat=intent.getStringExtra("dlat");
         dlog=intent.getStringExtra("dlog");
+        selectedcard=intent.getStringExtra("cardselected");
+        ApplicationConstants.csource=C_src;
+        ApplicationConstants.cdestination=C_des;
+        ApplicationConstants.cslat=slat;
+        ApplicationConstants.cslog=slog;
+        ApplicationConstants.cdlat=dlat;
+        ApplicationConstants.cdlog=dlog;
         sourceLatitude = Double.parseDouble(slat);
         sourceLongitude = Double.parseDouble(slog);
         destLatitude = Double.parseDouble(dlat);
         destLongitude = Double.parseDouble(dlog);
-
+        if(selectedcard!="")
+        {
+            TextView tname = (TextView) findViewById(R.id.name);
+            tname.setText(selectedcard);
+        }
        // selectDestination.setText("Destination : " + (dlat + "").substring(0, 10) + " , " + (dlog + "").substring(0, 10));
        // selectsource.setText("Destination : " + (slat + "").substring(0, 10) + " , " + (slog + "").substring(0, 10));
  //      selectsource.setText(C_src);
@@ -404,8 +416,8 @@ public static final String MyPREFERENCES = "MyPrefs";
                             if(position==1)
                             {
                                 DisplayToast("Please Paymentmode");
-                                startActivity(new Intent(customerappGetaLyftConfirmActivity.this,customerappPaymentModeDetails.class));
 
+                                startActivity(new Intent(customerappGetaLyftConfirmActivity.this,customerappPaymentModeDetails.class));
                             }
                             else
                             {

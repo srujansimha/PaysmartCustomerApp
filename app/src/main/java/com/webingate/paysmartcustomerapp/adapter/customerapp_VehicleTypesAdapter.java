@@ -53,16 +53,15 @@ public class customerapp_VehicleTypesAdapter extends RecyclerView.Adapter<Recycl
                 Context context = productsViewHolder.productImageView.getContext();
 
                 productsViewHolder.productTextView.setText(productsVO.getName());
-//                 if(productsVO.getselected()=="0"){
-//                     int productImageId = Utils.getDrawableInt(context, productsVO.getSelectedIcon());
-//                     Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
-//
-//                 }
-//                 else{
-//                     int productImageId = Utils.getDrawableInt(context, productsVO.getIcon());
-//                     Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
-//                 }
+                 if(productsVO.getselected()=="0"){
+                     int productImageId = Utils.getDrawableInt(context, productsVO.getSelectedIcon());
+                     Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
 
+                 }
+                 else{
+                     int productImageId = Utils.getDrawableInt(context, productsVO.getIcon());
+                     Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
+                 }
                 View.OnClickListener listener = new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -100,17 +99,17 @@ public class customerapp_VehicleTypesAdapter extends RecyclerView.Adapter<Recycl
                     Context context = productsViewHolder.productImageView.getContext();
 
                     productsViewHolder.productTextView.setText(productsVO.getName());
-//                    if(productsVO.getselected()=="0"){
-//                        int productImageId = Utils.getDrawableInt(context, productsVO.getSelectedIcon());
-//                        Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
-//
-//                    }
-//                    else{
-//                        int productImageId = Utils.getDrawableInt(context, productsVO.getIcon());
-//                        Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
-//                    }
-//                    int productImageId = Utils.getDrawableInt(context, productsVO.getIcon());
-//                    Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
+                    if(productsVO.getselected()=="0"){
+                        int productImageId = Utils.getDrawableInt(context, productsVO.getSelectedIcon());
+                        Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
+
+                    }
+                    else{
+                        int productImageId = Utils.getDrawableInt(context, productsVO.getIcon());
+                        Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
+                    }
+                    int productImageId = Utils.getDrawableInt(context, productsVO.getIcon());
+                    Utils.setImageToImageView(context, productsViewHolder.productImageView, productImageId);
 
                     View.OnClickListener listener = new View.OnClickListener() {
                         @Override

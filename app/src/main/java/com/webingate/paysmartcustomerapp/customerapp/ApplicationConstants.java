@@ -74,7 +74,12 @@ public class ApplicationConstants {
     public static String gender="";
     public static String paymenttype="";
     public static String profilepic="";
-
+    public static String csource;
+    public static String cdestination;
+    public static String cslat;
+    public static String cslog;
+    public static String cdlat;
+    public static String cdlog;
     //Registration Details
     /*public static String Username="";
     public static String Email="";

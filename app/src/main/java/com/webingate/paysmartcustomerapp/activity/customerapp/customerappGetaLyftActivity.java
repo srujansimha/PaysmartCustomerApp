@@ -303,6 +303,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                     intent.putExtra("slog",log1.toString());
                     intent.putExtra("dlat",dlat.toString());
                     intent.putExtra("dlog",dlog.toString());
+                    intent.putExtra("cardselected","");
                     startActivity(intent);
                 }
             }
