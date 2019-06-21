@@ -301,8 +301,10 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                     intent.putExtra("destination", selectDestination.getText().toString());
                     intent.putExtra("slat",lat1.toString());
                     intent.putExtra("slog",log1.toString());
-                    intent.putExtra("dlat",dlat.toString());
-                    intent.putExtra("dlog",dlog.toString());
+                    String destlat = dlat.toString();
+                    String destlog = dlog.toString();
+                    intent.putExtra("dlat",destlat);
+                    intent.putExtra("dlog",destlog);
                     intent.putExtra("cardselected","");
                     startActivity(intent);
                 }
@@ -429,7 +431,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         return "Time :" + results.routes[0].legs[0].duration.humanReadable + " Distance :" + results.routes[0].legs[0].distance.humanReadable;
    }
     // This task will provide directions and path
-    private class DirectionsTask extends AsyncTask<String, Void, String> {
+        private class DirectionsTask extends AsyncTask<String, Void, String> {
 
         // Downloading data in non-ui thread
         @Override
@@ -462,7 +464,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                         .legs[0].startLocation.lat, result.routes[0]
                         .legs[0].startLocation.lng))
                         .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-                        .title("Source" + result.routes[0].legs[0].startAddress);
+                       .title("Source" + result.routes[0].legs[0].startAddress);
                 if (marker != null)
                     marker.remove();
                 marker = mMap.addMarker(markerOptions);

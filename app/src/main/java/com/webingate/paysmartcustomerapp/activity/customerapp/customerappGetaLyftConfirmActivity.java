@@ -1231,7 +1231,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                 .subscribe(new Subscriber<List<SaveBookingDetailsResponse>>() {
                     @Override
                     public void onCompleted() {
-                          DisplayToast("Successfully Registered");
+                          //DisplayToast("Successfully Registered");
                         //StopDialogue();
                     }
 
@@ -1240,7 +1240,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                         try {
                             e.printStackTrace();
                             Log.d("OnError ", e.getMessage());
-                            DisplayToast("Error");
+                            //DisplayToast("Error");
                             //StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
