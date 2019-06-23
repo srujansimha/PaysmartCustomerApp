@@ -66,6 +66,7 @@ import com.google.maps.android.PolyUtil;
 import com.google.maps.android.SphericalUtil;
 import com.google.maps.model.DirectionsResult;
 import com.google.maps.model.TravelMode;
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappGetaLyftConfirmActivity;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerBookingStatusResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerRateTheRideResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.MakepaymentResponse;
@@ -214,7 +215,8 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
 
                 intent.setData(Uri.parse("tel:" + bookingDetails.getPMobNo()));
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+
+                //if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     // TODO: Consider calling
                     //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
@@ -222,9 +224,9 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                     //                                          int[] grantResults)
                     // to handle the case where the user grants the permission. See the documentation
                     // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                getApplicationContext().startActivity(intent);
+                //    return;
+               // }
+                startActivity(intent);
             }
         });
         VehiclePosition();
@@ -810,7 +812,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
         object.addProperty("Amount", ApplicationConstants.estPrice);
         object.addProperty("PaymentModeId", ApplicationConstants.paymenttype);
         object.addProperty("CustAccountId", "1");
-        object.addProperty("AppUserId", ApplicationConstants.id);
+        object.addProperty("AppUserId", "2");
         MakePayment(object);
     }
     public void MakePayment(JsonObject jsonObject){

@@ -40,8 +40,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,15 +52,22 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.object.DirectoryHome9ProductsVO;
+import com.webingate.paysmartcustomerapp.repository.directory.DirectoryHome9Repository;
+
+import static com.webingate.paysmartcustomerapp.data.DataGenerator.getAvailableServices;
+
 @SuppressLint("NewApi")
 public class Ticket_Source_Destination_Date extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
-
+    Calendar dateTime = Calendar.getInstance();
 
     @BindView(R.id.source)
     TextView source;
     @BindView(R.id.destination)
     TextView destination;
+    @BindView(R.id.returnjourneyDate)
+    TextView rdate;
     @BindView(R.id.journeyDate)
     TextView date;
     @BindView(R.id.next)
@@ -97,10 +106,11 @@ public class Ticket_Source_Destination_Date extends Fragment {
                 .setTitle("Loading...")
                 .setTitleColorRes(R.color.gray)
                 .build();*/
-        stops= (List<CustomerGetstopsResponse>) savedInstanceState.getSerializable("details");
+      //  stops= (List<CustomerGetstopsResponse>) savedInstanceState.getSerializable("details");
         source = (TextView) v.findViewById(R.id.source);
         destination = (TextView) v.findViewById(R.id.destination);
         date = (TextView) v.findViewById(R.id.journeyDate);
+        rdate=(TextView)v.findViewById(R.id.returnjourneyDate);
         next = (Button) v.findViewById(R.id.next);
         if (!ApplicationConstants.source.matches("")) {
             source.setText("  " + ApplicationConstants.source);
@@ -131,16 +141,43 @@ public class Ticket_Source_Destination_Date extends Fragment {
                         goPage(ApplicationConstants.FRAGMENT,bundle);
                         break;
                     case R.id.journeyDate:
-                        DialogFragment newFragment = new DatePickerFragment();
+                       // DialogFragment newFragment = new DatePickerFragment();
                         // DatePickerDialog newFragment = new DatePickerDialog(getContext(),R.style.AppTheme,this,2017,5,9);
-                        newFragment.show(getFragmentManager(), "datePicker");
+                        //newFragment.show(this.getFragmentManager(), "datePicker");
+
+                        new DatePickerDialog(v.getContext(), datePickerDialog, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
+
+                        break;
+                    case R.id.returnjourneyDate:
+                        // DialogFragment newFragment = new DatePickerFragment();
+                        // DatePickerDialog newFragment = new DatePickerDialog(getContext(),R.style.AppTheme,this,2017,5,9);
+                        //newFragment.show(this.getFragmentManager(), "datePicker");
+
+                        new DatePickerDialog(v.getContext(), datePickerDialog, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
+
                         break;
                     case R.id.next:
                         if (ApplicationConstants.source.matches("") || ApplicationConstants.destination.matches("") || ApplicationConstants.date.matches("")) {
                             Toast.makeText(getContext(), "Please Selcet ", Toast.LENGTH_SHORT).show();
                         } else {
-                            TravelsRequest travelsRequest = new TravelsRequest();
-                            travelsRequest.execute();
+//                            TravelsRequest travelsRequest = new TravelsRequest();
+//                            travelsRequest.execute();
+
+                            // dummy data set up
+                            //JSONArray jsonObj = new JSONArray();
+                            ApplicationConstants.travelsArraylist.clear();
+                            for (int i = 0; i < 5; i++) {
+                                try{
+                               // JSONObject c = jsonObj.getJSONObject(i);
+                                //List<DirectoryHome9ProductsVO> productsList;
+                                ApplicationConstants.travelsArraylist = getAvailableServices();
+                                }
+                                catch (Exception e){
+
+                                }
+                            }
+                            ApplicationConstants.FRAGMENT = ApplicationConstants.TRAVELS;
+                            goPage(ApplicationConstants.FRAGMENT);
                         }
                         break;
                 }
@@ -181,7 +218,7 @@ public class Ticket_Source_Destination_Date extends Fragment {
        /* fragmentTransaction.setCustomAnimations(
                 R.anim.rotate_forward,
                 R.anim.rotate_backward);*/
-        fragmentTransaction.replace(R.id.flContent, fragment);
+        fragmentTransaction.replace(R.id.srcdestdatetimeFrame, fragment);
         fragmentTransaction.commit();
     }
     private void goPage(int page) {
@@ -209,7 +246,7 @@ public class Ticket_Source_Destination_Date extends Fragment {
        /* fragmentTransaction.setCustomAnimations(
                 R.anim.rotate_forward,
                 R.anim.rotate_backward);*/
-        fragmentTransaction.replace(R.id.flContent, fragment);
+        fragmentTransaction.replace(R.id.srcdestdatetimeFrame, fragment);
         fragmentTransaction.commit();
     }
 
@@ -218,39 +255,56 @@ public class Ticket_Source_Destination_Date extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+    DatePickerDialog.OnDateSetListener datePickerDialog = (view, year, monthOfYear, dayOfMonth) -> {
+        dateTime.set(Calendar.YEAR, year);
+        dateTime.set(Calendar.MONTH, monthOfYear);
+        dateTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        updateDate();
+    };
 
-    @SuppressLint("ValidFragment")
-    public  class DatePickerFragment extends DialogFragment implements
-            DatePickerDialog.OnDateSetListener {
-
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceSateate) {
-
-            final Calendar c = Calendar.getInstance();
-            int year = c.get(Calendar.YEAR);
-            int month = c.get(Calendar.MONTH);
-            int day = c.get(Calendar.DAY_OF_MONTH);
-
-            return new DatePickerDialog(getActivity(), R.style.Dialog_Theme, this, year, month, day);
-        }
-
-        public void onDateSet(DatePicker view, final int year, final int month, final int day) {
-            // Do something with the date chosen
-            Handler mainHandler = new Handler(getContext().getMainLooper());
-
-            Runnable myRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    date.setText("  " + day + "/" + month + "/" + year);
-                    ApplicationConstants.date = day + "/" + month + "/" + year;
-                    // Toast.makeText(getContext(),day+"/"+month+"/"+year,Toast.LENGTH_SHORT).show();
-                } // This is your code
-            };
-            mainHandler.post(myRunnable);
-
-
-        }
+    private void openDatePicker(){
+        new DatePickerDialog(this.getContext(), datePickerDialog, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
     }
+
+    private void updateDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String shortTimeStr = sdf.format(dateTime.getTime());
+        ApplicationConstants.date = shortTimeStr;
+        date.setText( ApplicationConstants.date);
+    }
+
+//    @SuppressLint("ValidFragment")
+//    public class DatePickerFragment extends DialogFragment implements
+//            DatePickerDialog.OnDateSetListener {
+//
+//        @Override
+//        public Dialog onCreateDialog(Bundle savedInstanceSateate) {
+//
+//            final Calendar c = Calendar.getInstance();
+//            int year = c.get(Calendar.YEAR);
+//            int month = c.get(Calendar.MONTH);
+//            int day = c.get(Calendar.DAY_OF_MONTH);
+//
+//            return new DatePickerDialog(getActivity(), R.style.Dialog_Theme, this, year, month, day);
+//        }
+//
+//        public void onDateSet(DatePicker view, final int year, final int month, final int day) {
+//            // Do something with the date chosen
+//            Handler mainHandler = new Handler(getContext().getMainLooper());
+//
+//            Runnable myRunnable = new Runnable() {
+//                @Override
+//                public void run() {
+//                    date.setText("  " + day + "/" + month + "/" + year);
+//                    ApplicationConstants.date = day + "/" + month + "/" + year;
+//                    // Toast.makeText(getContext(),day+"/"+month+"/"+year,Toast.LENGTH_SHORT).show();
+//                } // This is your code
+//            };
+//            mainHandler.post(myRunnable);
+//
+//
+//        }
+//    }
 
 
     /*public void GetAvailableServices(String srcId,String destId){
@@ -348,12 +402,12 @@ public class Ticket_Source_Destination_Date extends Fragment {
                         ApplicationConstants.travelsArraylist.clear();
                         for (int i = 0; i < jsonObj.length(); i++) {
                             JSONObject c = jsonObj.getJSONObject(i);
-                            TravelModel travelModel = new TravelModel();
-                            travelModel.setName(c.getString("srcName") + "-" + c.getString("destName"));
-                            travelModel.setSubTitle("Arrival - " + c.getString("ArrivalTime") + "\nDeparture - " + c.getString("DepartureTime"));
-                            travelModel.setPrice("Amount - " + c.getString("Amount") + "$");
-                            // travelModel.setActive(Integer.parseInt(c.getString("Active")));
-                            ApplicationConstants.travelsArraylist.add(travelModel);
+                            List<DirectoryHome9ProductsVO> productsList;
+                            //DirectoryHome9Repository travelModel=new DirectoryHome9Repository();
+                            ApplicationConstants.travelsArraylist = getAvailableServices();
+
+                            //ApplicationConstants.travelsArraylist.add(travelModel);
+                            //ApplicationConstants.travelsArraylist.add(productsList);
                             // Toast.makeText(getContext(), "Stop  " + c.getString("Name"), Toast.LENGTH_LONG).show();
                             //  startActivity(new Intent(LoginActivity.this, HomeActivity1.class));
                             //  finish();

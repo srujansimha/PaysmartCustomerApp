@@ -32,10 +32,53 @@ public class DirectoryHome9Repository {
         }.getType());
     }
 
+    public static ArrayList<DirectoryHome9ProductsVO> getVehicleTypes() {
+        return new Gson().fromJson(vehicleTypesJson, new TypeToken<ArrayList<DirectoryHome9ProductsVO>>() {
+        }.getType());
+    }
+
     public static ArrayList<DirectoryHome9PromotionsVO> getPromotionsList() {
         return new Gson().fromJson(promotionsJson, new TypeToken<ArrayList<DirectoryHome9PromotionsVO>>() {
         }.getType());
     }
+
+    private static String vehicleTypesJson = "[{\n" +
+            "  \"id\": \"product11\",\n" +
+            "  \"icon\": \"mini\",\n" +
+            "  \"selectedicon\": \"mini1\",\n" +
+            "   \"name\": \"Mini\"\n" +
+            " },\n" +
+            "{\n" +
+            "  \"id\": \"product12\",\n" +
+            "  \"icon\": \"innova2\",\n" +
+            "  \"selectedicon\": \"mini1\",\n" +
+            "  \"name\": \"Micro\"\n" +
+            "},\n" +
+            " {\n" +
+            "  \"id\": \"product13\",\n" +
+            "  \"icon\": \"innova1\",\n" +
+            "  \"selectedicon\": \"mini1\",\n" +
+            "  \"name\": \"SUV\"\n" +
+            "},\n" +
+            " {\n" +
+            "  \"id\": \"product14\",\n" +
+            "  \"icon\": \"sedan\",\n" +
+            "  \"selectedicon\": \"mini1\",\n" +
+            "  \"name\": \"Sedan\"\n" +
+            "},\n" +
+            "  {\n" +
+            "    \"id\": \"product2\",\n" +
+            "    \"icon\": \"carpool\",\n" +
+            "  \"selectedicon\": \"mini1\",\n" +
+            "    \"name\": \"Shared pool\"\n" +
+            "  },\n" +
+            "  {\n" +
+            "    \"id\": \"product7\",\n" +
+            "    \"icon\": \"home9_bus\",\n" +
+            "  \"selectedicon\": \"mini1\",\n" +
+            "    \"name\": \"Bus\"\n" +
+            "  }\n" +
+            "]";
 
     private static String categoryJson = "[{\n" +
             "  \"id\": \"category1\",\n" +
@@ -168,12 +211,12 @@ public class DirectoryHome9Repository {
             " {\n" +
             "  \"id\": \"product14\",\n" +
             "  \"icon\": \"home9_train\",\n" +
-            "  \"name\": \"Train\"\n" +
+            "  \"name\": \"Towing Vehicle\"\n" +
             "},\n" +
             "  {\n" +
             "    \"id\": \"product2\",\n" +
             "    \"icon\": \"home9_hotel\",\n" +
-            "    \"name\": \"Hotels\"\n" +
+            "    \"name\": \"Ambulance\"\n" +
             "  },\n" +
             "  {\n" +
             "    \"id\": \"product7\",\n" +
@@ -197,13 +240,13 @@ public class DirectoryHome9Repository {
             "  },\n" +
 //            "  {\n" +
 //            "    \"id\": \"product6\",\n" +
-//            "    \"icon\": \"home9_train\",\n" +
-//            "    \"name\": \"Trains\"\n" +
+//            "    \"icon\": \"home9_Ambulance\",\n" +
+//            "    \"name\": \"Ambulance\"\n" +
 //            "  },\n" +
 //            "  {\n" +
 //            "    \"id\": \"product8\",\n" +
-//            "    \"icon\": \"home9_airport\",\n" +
-//            "    \"name\": \"Airport Transport\"\n" +
+//            "    \"icon\": \"home9_rental\",\n" +
+//            "    \"name\": \"Towing Vehicle\"\n" +
 //            "  },\n" +
 //            "  {\n" +
 //            "    \"id\": \"product9\",\n" +

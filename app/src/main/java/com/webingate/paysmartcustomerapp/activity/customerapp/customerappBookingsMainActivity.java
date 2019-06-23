@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.webingate.paysmartcustomerapp.R;
@@ -19,6 +20,8 @@ import com.webingate.paysmartcustomerapp.utils.Tools;
 import com.webingate.paysmartcustomerapp.widget.LineItemDecoration;
 
 import java.util.List;
+
+import static com.webingate.paysmartcustomerapp.fragment.customerAppFragments.customerappUserInfoFragment.UserAccountNumber;
 
 public class customerappBookingsMainActivity extends AppCompatActivity {
     private customerapp_AdapterBookingType mAdapter;
@@ -66,9 +69,22 @@ public class customerappBookingsMainActivity extends AppCompatActivity {
 
     }
     private void GoToBookingsList(int pos){
-        Intent intent;
-        intent = new Intent(this, customerappGetaLyftBookingsListActivity.class);
-        startActivity(intent);
+
+        switch (pos){
+            case 0:
+                Toast.makeText(getApplicationContext(), "Clicked option 0.", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this,customerappGetaLyftBookingsListsActivity.class));
+                break;
+            case 1:
+                Toast.makeText(getApplicationContext(), "Clicked option 1.", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Toast.makeText(getApplicationContext(), "default.", Toast.LENGTH_SHORT).show();
+                break;
+        }
+//        Intent intent;
+//        intent = new Intent(this, customerappGetaLyftBookingsListActivity.class);
+//        startActivity(intent);
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

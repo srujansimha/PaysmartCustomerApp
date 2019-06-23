@@ -1,36 +1,113 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.AppUsersResponce;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerEOTPVerificationResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.MOTPVerificationResponse;
+import com.webingate.paysmartcustomerapp.customerapp.EWallet;
 import com.webingate.paysmartcustomerapp.utils.Utils;
+
+import java.util.List;
+
+import butterknife.BindView;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class customerappUserprofileActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String ID ="idKey";
+    public static final String Name = "nameKey";
+    public static final String Phone = "phoneKey";
+    public static final String Email = "emailKey";
+    public static final String Password = "passwordkey";
+    public static final String UserAccountNo = "UserAccountNokey";
+
     Toolbar toolbar;
+    Toast toast;
+
+    @BindView(R.id.editFAB)
+    Button edit;
+//    @BindView(R.id.textView228)
+//    TextView hphone;
+    @BindView(R.id.phoneTextView)
+    TextView pphone;
+    @BindView(R.id.emailTextView)
+    TextView email;
+    @BindView(R.id.UsernameTextView)
+    TextView uname;
+    @BindView(R.id.FirstnameTextView)
+    TextView fname;
+
+    @BindView(R.id.textView31)
+    TextView joindate;
+
+    @BindView(R.id.phoneno)
+    TextView phoneno;
+
+    @BindView(R.id.puphone)
+    TextView puphone;
+
+    String useracc,usrname,emailid,mobno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_userprofile_activity);
+        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString(UserAccountNo, Email);
+        editor.commit();
 
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        useracc= prefs.getString(UserAccountNo, null);
+        usrname = prefs.getString(Name, null);
+        emailid = prefs.getString(Email, null);
+        mobno = prefs.getString(Phone, null);
+        puphone=findViewById(R.id.puphone);
+        phoneno=findViewById(R.id.phoneno);
+        //puphone.setText("7883890asdf");
+       // phoneno.setText("asdf");
         initUI();
+        initData();
+        FloatingActionButton edit = findViewById(R.id.editFAB);
 
+        edit.setOnClickListener(
+                v ->{
+                Intent intent = new Intent (customerappUserprofileActivity.this,customerappUserDetailsActivity.class);
+                startActivity(intent);
+        });
+    }
+
+    private void initData() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.openDrawer(GravityCompat.START);
     }
@@ -58,6 +135,8 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
           //  Toast.makeText(this, "Clicked nav_paymentmode.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, customerappPaymentModeActivity.class);
             startActivity(intent);
+
+
         } else if (id == R.id.nav_bookings) {
             //Toast.makeText(this, "Clicked nav_bookings.", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, customerappBookingsMainActivity.class);
@@ -65,6 +144,8 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
         } else if (id == R.id.nav_ewallet) {
             Toast.makeText(this, "Clicked nav_ewallet.", Toast.LENGTH_SHORT).show();
+            //startActivity( new Intent(customerappUserprofileActivity.this, DashboardEWallet.class));
+           GetEwalletStatus(useracc);
         } else if (id == R.id.nav_notification) {
             Toast.makeText(this, "Clicked nav_notification.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_alerts) {
@@ -72,6 +153,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         } else if (id == R.id.nav_preferences) {
             Toast.makeText(this, "Clicked nav_preferences.", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.nav_coupons) {
+//            startActivity(new Intent(this,ImageCroppedTesting.class));
         Toast.makeText(this, "Clicked nav_coupons.", Toast.LENGTH_SHORT).show();
 
     } else if (id == R.id.nav_sos) {
@@ -114,24 +196,63 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
     private void initUI() {
         initToolbar();
 
+        TextView tt = findViewById(R.id.emailTextView);
+        TextView pht =(TextView) findViewById(R.id.phoneTextView);
+        TextView username = findViewById(R.id.UsernameTextView);
+        TextView fname = findViewById(R.id.FirstnameTextView);
+//        TextView phoneno=(TextView)findViewById(R.id.phoneno);
+        TextView puphone=findViewById(R.id.puphone);
+        // Main User Profile Screen
+        tt.setText(emailid);
+        pht.setText(mobno);
+        username.setText(usrname);
+        fname.setText(usrname);
+//        phoneno.setText("7893890990");
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View headerLayout = navigationView.getHeaderView(0);
+        ImageView userImageView = headerLayout.findViewById(R.id.userImageView);
+       // Utils.setCircleImageToImageView(this, userImageView, R.drawable.profile1, 0, 0);
+
+        ImageView userImageView1 = findViewById(R.id.userImageView1);
+        //Utils.setCircleImageToImageView(this, userImageView1, R.drawable.profile1, 0, 0);
+
+        if(ApplicationConstants.photo==null){
+            Utils.setCircleImageToImageView(getApplicationContext(), userImageView, R.drawable.profile1, 0, 0);
+            Utils.setCircleImageToImageView(getApplicationContext(), userImageView, R.drawable.profile1, 0, 0);
+        }
+        else
+        {
+            //Utils.setCircleImageToImageView(getApplicationContext(), userImageView1, R.drawable.profile1, 0, 0);
+            byte[] decodedString= Base64.decode( ApplicationConstants.photo.substring( ApplicationConstants.photo.indexOf(",")+1), Base64.DEFAULT);
+            Bitmap image1 = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            userImageView1.setImageBitmap(image1);
+            userImageView.setImageBitmap(Utils.getCircularBitmapWithBorder(image1,0,0));
+        }
+
+
+
 //        if(Utils.isRTL()) {
 //            navigationView.setTextDirection(View.TEXT_DIRECTION_RTL);
 //        }else {
 //            navigationView.setTextDirection(View.TEXT_DIRECTION_LTR);
 //        }
 
-        View headerLayout = navigationView.getHeaderView(0);
-        ImageView userImageView = headerLayout.findViewById(R.id.userImageView);
-        Utils.setCircleImageToImageView(this, userImageView, R.drawable.profile1, 0, 0);
+//        View headerLayout = navigationView.getHeaderView(0);
+//        ImageView userImageView = headerLayout.findViewById(R.id.userImageView);
+//        Utils.setCircleImageToImageView(this, userImageView, R.drawable.profile1, 0, 0);
+
     }
+
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
          getMenuInflater().inflate(R.menu.menu_edit, menu);
@@ -144,7 +265,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         toolbar.setNavigationIcon(R.drawable.baseline_menu_black_24);
 
         if (toolbar.getNavigationIcon() != null) {
-            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.md_white_1000), PorterDuff.Mode.SRC_ATOP);
+            toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.md_white_1000), PorterDuff.Mode.OVERLAY);
         }
 
         toolbar.setTitle("User profile");
@@ -170,4 +291,60 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         }
 
     }
+    public void GetEwalletStatus(String acct){
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
+                .GetEwalletStatus(acct)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<MOTPVerificationResponse>>() {
+                    @Override
+                    public void onCompleted() {
+                        DisplayToast("Successfully Registered");
+                        //StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            //Log.d("OnError ", e.getMessage());
+                            DisplayToast("Error"+e.getMessage());
+                            //StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<MOTPVerificationResponse> responselist) {
+                        if(responselist.size()!=0 ){
+                        MOTPVerificationResponse response = responselist.get(0);
+
+                        if (response.getCode() != null) {
+                            DisplayToast(response.getDescription());
+                        }
+                        else{
+                                startActivity( new Intent(customerappUserprofileActivity.this, customerewalletActivity.class));
+                            //editor.commit();
+                            //startActivity(new Intent(customerEOTPVerificationActivity.this, login_activity.class));
+//                       Intent intent = new Intent(customerEOTPVerificationActivity.this, businessappMOTPVerificationActivity.class);
+//                        intent.putExtra("eotp","");
+                            finish();
+                        }
+                        }
+                         else {
+                            startActivity( new Intent(customerappUserprofileActivity.this, customerewalletActivity.class));
+                        }
+                    }
+                });
+    }
+    public void DisplayToast(String text){
+        if(toast!=null){
+            toast.cancel();
+            toast=null;
+
+        }
+        toast= Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT);
+        toast.show();
+
+    }
+
 }

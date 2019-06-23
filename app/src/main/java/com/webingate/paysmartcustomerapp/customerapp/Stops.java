@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,14 +13,21 @@ import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Spinner;
 
+import com.webingate.paysmartcustomerapp.adapter.uicollection.GeneralItemSpinnerAdapter;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerGetstopsResponse;
 
+import java.io.Serializable;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 import com.webingate.paysmartcustomerapp.R;
 public class Stops extends Fragment implements SearchView.OnQueryTextListener {
     // Declare Variables
@@ -34,6 +42,7 @@ public class Stops extends Fragment implements SearchView.OnQueryTextListener {
     @BindView(R.id.layout)
     LinearLayout layout;
     Unbinder unbinder;
+    Spinner spinner;
     List<CustomerGetstopsResponse> stopslist;
     public static Stops newInstance(int SectionNumber) {
         Stops home = new Stops();
@@ -51,24 +60,27 @@ public class Stops extends Fragment implements SearchView.OnQueryTextListener {
     }
 
 
+
     @SuppressLint("NewApi")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.stops, container, false);
-        stopslist= (List<CustomerGetstopsResponse>) savedInstanceState.getSerializable("details");
+
+      //  stopslist= (List<CustomerGetstopsResponse>) savedInstanceState.getSerializable("details");
+
         unbinder = ButterKnife.bind(this, v);
         super.onCreate(savedInstanceState);
 
         // Generate sample data
-
+        initDataBinding();
 
         // Locate the ListView in listview_main.xml
         list = (ListView) v.findViewById(R.id.listview);
 
 
         // Pass results to ListViewAdapter Class
-        adapter = new ListViewAdapter(getContext(),stopslist);
+        //adapter = new ListViewAdapter(getContext(),stopslist);
 
         // Binds the Adapter to the ListView
         list.setAdapter(adapter);
@@ -81,7 +93,7 @@ public class Stops extends Fragment implements SearchView.OnQueryTextListener {
                 if (ApplicationConstants.source.matches("")) {
                     ApplicationConstants.source =stopslist.get(position).getName();
                     ApplicationConstants.sourceid = Integer.parseInt(stopslist.get(position).getId());
-                    ApplicationConstants.FRAGMENT = ApplicationConstants.TICKET_SOURCE_DESTINATION;
+                    ApplicationConstants.FRAGMENT =ApplicationConstants.TICKET_SOURCE_DESTINATION;
                     goPage(ApplicationConstants.FRAGMENT);
                 } else {
                     ApplicationConstants.destination = stopslist.get(position).getName();
@@ -96,6 +108,49 @@ public class Stops extends Fragment implements SearchView.OnQueryTextListener {
         editsearch.setOnQueryTextListener(this);
 
         return v;
+    }
+
+    private void initDataBinding() {
+
+          GetStops();
+    }
+
+    public void GetStops(){
+
+        //  StartDialogue();
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(getActivity()).getrestadapter()
+                .getstops()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<CustomerGetstopsResponse>>() {
+                    @Override
+                    public void onCompleted() {
+                        //  DisplayToast("Successfully Registered");
+                        // StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            Log.d("OnError ", e.getMessage());
+                            //  DisplayToast("Error");
+                            // StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<CustomerGetstopsResponse> responselist) {
+                       // Bundle bundle = new Bundle();
+                       // bundle.putSerializable("details", (Serializable) responselist);
+                        stopslist = responselist;
+                        adapter = new ListViewAdapter(getContext(),stopslist);
+                        list.setAdapter(adapter);
+
+                        //  ApplicationConstants.FRAGMENT = ApplicationConstants.TICKET_SOURCE_DESTINATION;
+                        //  goPage(ApplicationConstants.FRAGMENT,bundle);
+                    }
+                });
     }
 
     @Override

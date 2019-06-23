@@ -9,47 +9,10 @@
         android:layout_gravity="bottom|end"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
+
         <TableRow
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-
-            >
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/taxi"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableBottom="@mipmap/marker_car"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:background="@color/colorPrimary"
-                android:text="@string/taxi"/>
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/meteredtaxi"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableBottom="@mipmap/marker_car"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:background="@color/colorPrimary"
-                android:text="@string/metered_taxi"/>
-            <android.support.v7.widget.AppCompatButton
-                android:id="@+id/bus"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:drawableBottom="@mipmap/marker_car"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:background="@color/colorPrimary"
-                android:text="@string/bus"/>
-
-        </TableRow>
-        <TableRow
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-
             >
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/ridenow"

@@ -43,5 +43,16 @@ public class TravelModel {
     private String time;
     private String subTitle;
     private String price;
+//    @Override
+//    public String toString(){
+//        return
+//                "TravelModel{" +
+//                        "name = '" +"Srikrishna Travels" + '\'' +
+//                        "time = '" + "10-11-2018" + '\'' +
+//                        "subTitle = '" + "sdf" + '\'' +
+//                        "price = '" + "250" + '\'' +
+//
+//                        "}";
+//    }
 
 }

@@ -17,7 +17,12 @@ import android.widget.Toast;
 import com.webingate.paysmartcustomerapp.R;
 
 
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappAmbulanceActivity;
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappBusBookingMainActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappFlightBookingSearchActivity;
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappGetaLyftActivity;
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappHireVehicleActivity;
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappTowingVehicleActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappTrainBookingSearchActivity;
 import com.webingate.paysmartcustomerapp.adapter.customerapp_FlightsAdapter;
 import com.webingate.paysmartcustomerapp.adapter.customerapp_PopularAdapter;
@@ -25,6 +30,7 @@ import com.webingate.paysmartcustomerapp.adapter.customerapp_ProductsAdapter;
 import com.webingate.paysmartcustomerapp.adapter.customerapp_PromotionsAdapter;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.GetaLyft;
+import com.webingate.paysmartcustomerapp.customerapp.Ticket_Source_Destination_Date;
 import com.webingate.paysmartcustomerapp.object.DirectoryHome9CategoryVO;
 import com.webingate.paysmartcustomerapp.object.DirectoryHome9FlightsVO;
 import com.webingate.paysmartcustomerapp.object.DirectoryHome9PopularVO;
@@ -146,8 +152,9 @@ public class customerAppDashboardFragment extends Fragment {
 
                 switch(position){
                     case 0:
+                        Toast.makeText(getContext(), "Clicked : get a lyft", Toast.LENGTH_SHORT).show();
                         ApplicationConstants.marker = R.mipmap.marker_taxi;
-                        Intent intent = new Intent(getActivity(), GetaLyft.class);
+                        Intent intent = new Intent(getActivity(), customerappGetaLyftActivity.class);
                         startActivity(intent);
                         break;
                     case 1:
@@ -160,16 +167,26 @@ public class customerAppDashboardFragment extends Fragment {
 //                                .commitAllowingStateLoss();
                         break;
                     case 2:
-
+                        Toast.makeText(getContext(), "Clicked : hire a vehicle", Toast.LENGTH_SHORT).show();
+                        ApplicationConstants.marker = R.mipmap.marker_taxi;
+                         intent = new Intent(getActivity(), customerappHireVehicleActivity.class);
+                        startActivity(intent);
 
                         break;
                     case 3:
-                        intent = new Intent(getActivity(), customerappTrainBookingSearchActivity.class);
+                        Toast.makeText(getContext(), "Clicked : Towing vehicle", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(getActivity(), customerappTowingVehicleActivity.class);
                         startActivity(intent);
                         break;
                     case 4:
+                        Toast.makeText(getContext(), "Clicked : Ambulance", Toast.LENGTH_SHORT).show();
+                        intent = new Intent(getActivity(), customerappAmbulanceActivity.class);
+                        startActivity(intent);
                         break;
                     case 5:
+                        intent = new Intent(getActivity(), customerappBusBookingMainActivity.class);
+                        startActivity(intent);
+
                         break;
                     case 6:
                         break;

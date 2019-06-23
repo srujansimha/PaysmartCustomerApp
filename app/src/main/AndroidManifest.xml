@@ -5,10 +5,11 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <application
         android:name=".paysmartcustomerapp"
         android:allowBackup="true"
@@ -17,16 +18,13 @@
         android:roundIcon="@mipmap/paysmart"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
         <meta-data
-         android:name="com.google.android.geo.API_KEY"
-         android:value="AIzaSyBdLsoQN4TDHBGdwXvwp35gFo9o9cn8lus" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCc5LJh1ZMYHCodjSFQMq-2s1obdt4JTDw" />
 
-
-        <!--<activity-->
-            <!--android:name=".activity.uicollection.container.spinner.UiContainerCustomSpinnerActivity"-->
-            <!--android:theme="@style/AppTheme.NoActionBar" />-->
+        <!-- <activity -->
+        <!-- android:name=".activity.uicollection.container.spinner.UiContainerCustomSpinnerActivity" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar" /> -->
 
         <activity
             android:name=".activity.customerapp.login_activity"
@@ -38,11 +36,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
-        android:name=".activity.customerapp.customerDashboardActivity"
-        android:theme="@style/AppTheme.NoActionBar" />
-
+            android:name=".activity.customerapp.customerDashboardActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.customerapp.customerSignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -55,72 +51,138 @@
         <activity
             android:name=".activity.customerapp.customerMOTPVerificationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.customerapp.customerEOTPVerificationActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <!--<activity-->
-        <!--android:name=".activity.feature.map.directory.FeatureMapDirectoryMap1Activity"-->
-        <!--android:theme="@style/AppTheme.NoActionBar" />-->
+        <!-- <activity -->
+        <!-- android:name=".activity.feature.map.directory.FeatureMapDirectoryMap1Activity" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar" /> -->
 
         <activity
             android:name=".activity.customerapp.customerappUserprofileActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.customerapp.customerappPaymentModeActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.customerapp.customerappaboutusactivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.customerapp.customerAppContactUs"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.customerapp.customerappSOSListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.customerapp.customerappTroubleTicketListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.customerapp.customerAppTTicketTimelineActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.customerapp.customerappTroubleTicketCreation"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.customerapp.customerappFAQMainMenuActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity
-            android:name=".customerapp.GetaLyft"
-            android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.customerapp.customerappFAQListDetailActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.customerapp.customerappBookingsMainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.customerapp.customerappGetaLyftBookingsListActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".activity.customerapp.customerappFlightBookingSearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.customerapp.customerappTrainBookingSearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappHireBookingSearchActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappGetaLyftActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".customerapp.GetaLyft"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappGetaLyftDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappGetaLyftConfirmActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".customerapp.CurrentTrip"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappBusBookingMainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.DashboardEWallet"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerEwalletMOTPVerificationActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappEwalletSendTransactionslistActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappPaymentCardDetails"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappUserDetailsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".customerapp.EWallet"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerewalletActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappGetaLyftBookingsListsActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+        android:name=".activity.customerapp.customerappPaymentModeDetails"
+        android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.customerapp.customerappAddPaymentModeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+        android:name=".activity.customerapp.customerappAddPaymentBankingActivity"
+        android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappHireVehicleActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappHireVehicleConfirmActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappTowingVehicleActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappTowingVehicleConfirmActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappAmbulanceActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.customerapp.customerappAmbulanceConfirmActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".activity.customerapp.customerappBookingDetails"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".activity.customerapp.CropingMainActivity" android:theme="@style/Theme.AppCompat.Light"/>
+        <activity android:name="cropper.CropImageActivity" android:theme="@style/Theme.AppCompat.Light"/>
 
 
     </application>
+
 </manifest>

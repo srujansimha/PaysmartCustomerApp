@@ -13,7 +13,7 @@
         AIzaSyBdLsoQN4TDHBGdwXvwp35gFo9o9cn8lus
     </string>
 
-    <string name="title_activity_login_activity">login_activity</string>
+    <string name="title_activity_login_activity">Paysmart Customer app</string>
 
     <!--Main server-->
     <!--  <string name="url_server">http://154.120.237.198:8088</string>-->
@@ -98,6 +98,7 @@
     <string name="update">Update</string>
     <string name="seats">Seats</string>
     <string name="continue_bus">Continue</string>
+    <string name="conf_booking">Confirm Booking</string>
     <string name="cancelride">Cancel Ride</string>
     <string name="call_driver">Call Driver</string>
     <string name="home">Home</string>
@@ -163,5 +164,9 @@
     <string name="hotel">HOTEL</string>
     <string name="standard_title">Loading</string>
     <string name="standard_message">Please Wait</string>
+    <string name="Return_journey_date">Return Journey Date(Optional)</string>
+    <string name="intro">Capture a picture to crop!</string>
+    <string name="picture">Picture</string>
+    <string name="capture">Launch Camera</string>
 
 </resources>

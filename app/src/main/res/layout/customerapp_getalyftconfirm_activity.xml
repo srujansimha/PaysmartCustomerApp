@@ -1,0 +1,178 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <include layout="@layout/layout_map" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:background="@color/white"
+        >
+
+
+        <!--<TableRow>-->
+        <!--<android.support.v7.widget.RecyclerView-->
+        <!--android:id="@+id/rvProducts"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textStyle="bold"-->
+        <!--android:textColor="@color/black"-->
+        <!--android:background="@color/white"-->
+        <!--/>-->
+        <!--</TableRow>-->
+
+        <TableRow >
+
+            <TextView
+                android:id="@+id/pricetextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="150dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="$100"
+                android:textAlignment="center"
+                android:textColor="@color/md_grey_800"
+                android:textSize="@dimen/font_h7_size" />
+
+        </TableRow>
+        <View
+            android:layout_height="1px"
+            android:background="@color/md_grey_400" />
+        <TableRow>
+
+            <TextView
+                android:id="@+id/personal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/roboto_medium"
+                android:inputType="textNoSuggestions"
+                android:text="Personal"
+                android:textAlignment="center"
+                android:textColor="@color/md_grey_800"
+                android:textColorHint="@color/md_grey_400"
+                android:textSize="@dimen/font_h7_size" />
+
+            <TextView
+                android:id="@+id/payment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/roboto_medium"
+                android:inputType="textNoSuggestions"
+                android:text="Setup Payment"
+                android:textAlignment="center"
+                android:textColor="@color/md_grey_800"
+                android:textColorHint="@color/md_grey_400"
+                android:textSize="@dimen/font_h7_size" />
+
+        </TableRow>
+
+        <View
+            android:layout_height="1px"
+            android:background="@color/md_grey_400" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/roboto_medium"
+            android:textAlignment="center"
+            android:textColor="@color/colorbackground" />
+
+        <View
+            android:layout_height="1px"
+            android:background="@color/md_grey_400" />
+        <TableRow >
+
+            <TextView
+                android:id="@+id/coupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="130dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/roboto_medium"
+                android:text="Coupon"
+                android:textAlignment="center"
+                android:textColor="@color/md_grey_800"
+                android:textSize="@dimen/font_h7_size" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            >
+            <!--<android.support.v7.widget.AppCompatButton-->
+            <!--android:id="@+id/ridenow"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:text="@string/ride_now"/>-->
+            <!--<android.support.v7.widget.AppCompatButton-->
+            <!--android:id="@+id/ridelater"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:layout_weight="1"-->
+            <!--android:textStyle="bold"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:background="@color/colorPrimary"-->
+            <!--android:text="@string/ride_later"/>-->
+
+
+        </TableRow>
+
+        <TableRow>
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/ConfirmBooking"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/colorPrimary"
+                android:text="CONFIRM BOOKING"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+        </TableRow>
+    </TableLayout>
+
+
+
+</android.support.design.widget.CoordinatorLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

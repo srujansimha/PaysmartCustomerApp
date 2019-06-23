@@ -15,7 +15,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
+    <style name="Toolbar.Light" parent="@style/AppTheme">
+        <item name="colorControlNormal">@color/grey_60</item>
+        <item name="android:textColorPrimary">@color/grey_60</item>
+    </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
@@ -37,7 +40,13 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="PSButton.Primary.Borderless" parent="@style/Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
 
+    <style name="PSButton.Default.Borderless" parent="@style/Widget.AppCompat.Button.Borderless.Colored">
+        <item name="android:textColor">@color/md_grey_600</item>
+    </style>
     <!-- PS Custom Alert Dialog -->
 
     <!--<style name="AppTheme" parent="BaseTheme" />-->
@@ -93,5 +102,10 @@
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="EditText.Grey" parent="@style/AppTheme">
+        <item name="colorControlActivated">@color/grey_60</item>
+        <item name="colorControlHighlight">@color/grey_60</item>
+        <item name="colorControlNormal">@color/grey_40</item>
     </style>
 </resources>

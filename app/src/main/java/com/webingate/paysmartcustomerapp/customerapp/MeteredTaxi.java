@@ -118,11 +118,11 @@ public class MeteredTaxi extends AppCompatActivity implements OnMapReadyCallback
     @BindView(R.id.map_destination)
     TextView selectDestination;
 
-    @BindView(R.id.taxi)
-    AppCompatButton taxi;
-    @BindView(R.id.meteredtaxi)
-    AppCompatButton meteredtaxi;
-    @BindView(R.id.bus)
+//    @BindView(R.id.taxi)
+//    AppCompatButton taxi;
+//    @BindView(R.id.meteredtaxi)
+//    AppCompatButton meteredtaxi;
+//    @BindView(R.id.bus)
     AppCompatButton bus;
     @BindView(R.id.ridenow)
     AppCompatButton rideNow;
@@ -169,8 +169,8 @@ public class MeteredTaxi extends AppCompatActivity implements OnMapReadyCallback
         setSupportActionBar(toolbar);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        taxi.setVisibility(View.GONE);
-        meteredtaxi.setVisibility(View.GONE);
+//        taxi.setVisibility(View.GONE);
+//        meteredtaxi.setVisibility(View.GONE);
         bus.setVisibility(View.GONE);
         sourceGpsLocation.setVisibility(View.GONE);
         dialog = new ProgressDialog(MeteredTaxi.this);

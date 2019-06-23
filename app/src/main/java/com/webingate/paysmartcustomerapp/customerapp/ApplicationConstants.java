@@ -10,25 +10,34 @@ import java.util.ArrayList;
 
 public class ApplicationConstants {
     public static  String estPrice="";
+    public static String userAccountNo="";
     public static int tripFlag=0;
+    public static int userid=0;
     public static String mobileNo="";
     public static String id="";
     public static String username="";
     public static String password="";
     public static String email="";
+    public static String photo="";
     public static boolean verify_email=true;
     public static boolean isResetPasswordfirstWondow=true;
     public static String source="";
     public static String destination="";
     public static String date="";
+    public static String rdate="";
     public static int sourceid=0;
     public static int destinationid=0;
     public static TravelModel travel;
     public static String bookingDate="";
     public static String bookingTime="";
     public static String walletBalance="";
+    public static String pic_format;
+    public static String pic_data;
+
+
     //public static ArrayList confirmedTrips=new ArrayList();
     public static String rating,comments;
+    public static String address;
 
     public static int vehicleType=0;
     public static final int HOME=0;
@@ -44,6 +53,7 @@ public class ApplicationConstants {
 
     //public static ArrayList<StopsModel> stopsArraylist = new ArrayList<StopsModel>();
     public static ArrayList<TravelModel> travelsArraylist = new ArrayList<TravelModel>();
+
     //public static ArrayList<Payment_Method_model> paymentMethods= new ArrayList<Payment_Method_model>();
 
     public static int FRAGMENT=0;
@@ -64,7 +74,12 @@ public class ApplicationConstants {
     public static String gender="";
     public static String paymenttype="";
     public static String profilepic="";
-
+    public static String csource;
+    public static String cdestination;
+    public static String cslat;
+    public static String cslog;
+    public static String cdlat;
+    public static String cdlog;
     //Registration Details
     /*public static String Username="";
     public static String Email="";

@@ -84,7 +84,7 @@ public class ConfirmedTripsDetails extends AppCompatActivity implements OnMapRea
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         mapDestination.setVisibility(View.GONE);
-        tableRow.setVisibility(View.GONE);
+        //tableRow.setVisibility(View.GONE);
         driverdetails.setText(tripdetails.getDriver());
         comment.setText(tripdetails.getComments());
         startTime.setText(tripdetails.getBookedDate());

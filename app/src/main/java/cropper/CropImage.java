@@ -40,7 +40,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 
-
 import com.webingate.paysmartcustomerapp.R;
 
 import java.io.File;
