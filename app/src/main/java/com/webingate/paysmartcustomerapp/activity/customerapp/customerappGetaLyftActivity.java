@@ -694,6 +694,8 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                         DisplayToast(destination.getName().toString());
                         destLatitude = destination.getLatLng().latitude;
                         destLongitude = destination.getLatLng().longitude;
+                        dlat=destLatitude;
+                        dlog=destLongitude;
                         selectDestination.setText("Destination :" + destination.getName() + "," + destination.getAddress());
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(destination.getLatLng());
