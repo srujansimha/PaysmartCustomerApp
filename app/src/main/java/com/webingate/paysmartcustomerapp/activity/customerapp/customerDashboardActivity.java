@@ -120,7 +120,7 @@ public class customerDashboardActivity extends AppCompatActivity {
                     break;
             }
 
-            Toast.makeText(getApplicationContext(), "Clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
 
             return false;
         });
@@ -143,14 +143,14 @@ public class customerDashboardActivity extends AppCompatActivity {
                 .subscribe(new Subscriber<List<AppUsersResponce>>() {
                     @Override
                     public void onCompleted() {
-                        DisplayToast("Successfully Registered");
+                        //DisplayToast("Successfully Registered");
                         //StopDialogue();
                     }
                     @Override
                     public void onError(Throwable e) {
                         try {
-                            //Log.d("OnError ", e.getMessage());
-                            DisplayToast("Error"+e.getMessage());
+                            Log.d("OnError ", e.getMessage());
+                            //DisplayToast("Error"+e.getMessage());
                             //StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -171,7 +171,7 @@ public class customerDashboardActivity extends AppCompatActivity {
                             editor.putString(Name, response.getUsername());
                             editor.commit();
                             startActivity(new Intent(customerDashboardActivity.this, customerappUserprofileActivity.class));
-                            finish();
+                            //finish();
                         }
                     }
                 });

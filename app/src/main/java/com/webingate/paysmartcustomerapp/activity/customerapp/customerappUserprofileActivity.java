@@ -299,14 +299,14 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
                 .subscribe(new Subscriber<List<MOTPVerificationResponse>>() {
                     @Override
                     public void onCompleted() {
-                        DisplayToast("Successfully Registered");
+                        //DisplayToast("Successfully Registered");
                         //StopDialogue();
                     }
                     @Override
                     public void onError(Throwable e) {
                         try {
-                            //Log.d("OnError ", e.getMessage());
-                            DisplayToast("Error"+e.getMessage());
+                            Log.d("OnError ", e.getMessage());
+                            //DisplayToast("Error"+e.getMessage());
                             //StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
