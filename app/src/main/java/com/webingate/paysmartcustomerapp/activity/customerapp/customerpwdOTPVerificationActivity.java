@@ -246,7 +246,7 @@ String useracntno;
             toolbar.getNavigationIcon().setColorFilter(getResources().getColor(R.color.md_white_1000), PorterDuff.Mode.SRC_ATOP);
         }
 
-        toolbar.setTitle("Verification 3");
+        toolbar.setTitle("Forgot Password Verify");
 
         try {
             toolbar.setTitleTextColor(getResources().getColor(R.color.md_white_1000));

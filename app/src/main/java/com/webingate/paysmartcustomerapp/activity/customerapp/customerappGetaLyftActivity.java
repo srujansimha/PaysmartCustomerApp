@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -107,6 +108,15 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class customerappGetaLyftActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
+
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String ID ="idKey";
+    public static final String Name = "nameKey";
+    public static final String Phone = "phoneKey";
+    public static final String Email = "emailKey";
+    public static final String Password = "passwordkey";
+    public static final String UserAccountNo = "UserAccountNokey";
+
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.map_source)
@@ -117,11 +127,6 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     TableRow tableRow;
     @BindView(R.id.map_destination)
     TextView selectDestination;
-    //    @BindView(R.id.taxi)
-//    AppCompatButton taxi;
-//    @BindView(R.id.meteredtaxi)
-//    AppCompatButton meteredtaxi;
-//    @BindView(R.id.bus)
     AppCompatButton bus;
     @BindView(R.id.ridenow)
     AppCompatButton rideNow;
@@ -198,6 +203,8 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_getalyft_activity);
         ButterKnife.bind(this);
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        ApplicationConstants.mobileNo= prefs.getString(Phone, null);
         dialog = new ProgressDialog.Builder(customerappGetaLyftActivity.this)
                 .setTitle("Loading...")
                 .setTitleColorRes(R.color.gray)
@@ -206,11 +213,13 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         checkPermissions();//Check Permission
         //  configureCameraIdle();//cofigure drag destionatio selection
         setSupportActionBar(toolbar);
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 //        taxi.setVisibility(View.GONE);
 //        meteredtaxi.setVisibility(View.GONE);
 //        bus.setVisibility(View.GONE);
+
         selectsource.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

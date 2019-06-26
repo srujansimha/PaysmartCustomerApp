@@ -65,7 +65,7 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_motpverification_activity);
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        id = prefs.getString(ID, null);
+        ApplicationConstants.userid = prefs.getInt(ID, 0);
         mobileno = prefs.getString(Phone, null);
         useracntno = prefs.getString(UserAccountNo, null);
 
@@ -136,7 +136,7 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("Mobilenumber",mobileno);
                 jsonObject.addProperty("MVerificationCode", motp.getText().toString());
-                jsonObject.addProperty("userId",id);
+                jsonObject.addProperty("userId",ApplicationConstants.userid);
                 MOTPVerifications(jsonObject);
             }
         });
@@ -190,7 +190,7 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
                 .subscribe(new Subscriber<List<MOTPVerificationResponse>>() {
                     @Override
                     public void onCompleted() {
-                        DisplayToast("Successfully Registered");
+                        //DisplayToast("Successfully Registered");
                         //StopDialogue();
                     }
                     @Override

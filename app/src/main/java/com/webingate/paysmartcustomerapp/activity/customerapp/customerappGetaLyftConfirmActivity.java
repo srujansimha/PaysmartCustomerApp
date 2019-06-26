@@ -122,7 +122,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
 public static final String MyPREFERENCES = "MyPrefs";
     public static final String ID = "idKey";
     public static final String UserAccountNo = "UserAccountNokey";
-
+    public static final String BookingNO = "bookingno";
     LinearLayout bsLayout;
     ArrayList<String> list;
     ArrayAdapter<String> adapter;
@@ -187,7 +187,8 @@ public static final String MyPREFERENCES = "MyPrefs";
     boolean isBookingStarted=true;
     Toast toast;
     ProgressDialog dialog;
-    String useracntno,id;
+    String useracntno;
+    int id;
     String slat,slog,dlat,dlog;
     //TODO: this is to test then scroll view navigation
 //    List<DirectoryHome9ProductsVO> productsList;
@@ -261,7 +262,7 @@ public static final String MyPREFERENCES = "MyPrefs";
   //      selectDestination.setText(C_des);
 
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        id = prefs.getString(ID, null);
+        id = prefs.getInt(ID, 0);
         useracntno = prefs.getString(UserAccountNo, null);
 
         fruits = getResources().getStringArray(R.array.fruits);
@@ -1251,6 +1252,12 @@ public static final String MyPREFERENCES = "MyPrefs";
                     public void onNext(List<SaveBookingDetailsResponse> responselist) {
                         SaveBookingDetailsResponse response = responselist.get(0);
                         if(response.getBookingNumber()!=null) {
+
+                            SharedPreferences sharedPref = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString(BookingNO, response.getBookingNumber());
+                            editor.commit();
+
                             ApplicationConstants.bookingNo = response.getBookingNumber();
                             isBookingStarted = true;
                             checkingCabsDialogue = new CheckingCabsDialogue(customerappGetaLyftConfirmActivity.this);

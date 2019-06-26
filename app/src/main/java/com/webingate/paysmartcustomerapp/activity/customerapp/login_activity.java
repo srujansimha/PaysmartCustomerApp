@@ -14,6 +14,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -74,9 +75,10 @@ public class login_activity extends AppCompatActivity{
     public static final String Passwordotp = "passwordotpkey";
     public static final String UserAccountNo = "UserAccountNokey";
     public static final String Isocode = "ISOCodekey";
+    public static final String UserPhoto = "UserPhoto";
 
     private String response;
-
+    private  ProgressDialog pd;
    ArrayList<GeneralList> countriesList;
     TextView forgotTextView, signUpTextView;
     @BindView(R.id.loginButton)
@@ -103,7 +105,8 @@ public class login_activity extends AppCompatActivity{
 
     public final static int REQUEST_CODE = 10101;
     private boolean isServerOn;
-    String mobNo, id, emailOTP, mobileOTP,pwdotp;
+    String mobNo,  emailOTP, mobileOTP,pwdotp;
+    int id;
     private static final int PERMISSIONS_ALL = 7;
     String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -123,14 +126,17 @@ public class login_activity extends AppCompatActivity{
         checkServerTask.execute();
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         //mobNo = prefs.getString(Phone, null);
-        id = prefs.getString(ID, null);
+        id = prefs.getInt(ID, 0);
         emailOTP = prefs.getString(Emailotp, null);
         mobileOTP = prefs.getString(Mobileotp, null);
         pwdotp = prefs.getString(Passwordotp, null);
+        ApplicationConstants.userAccountNo=prefs.getString(UserAccountNo,null);
         ApplicationConstants.username = prefs.getString(Name, null);
         ApplicationConstants.email = prefs.getString(Email, null);
         ApplicationConstants.dateofbirth = prefs.getString(Dateofbirth, null);
         ApplicationConstants.profilepic = prefs.getString(Profilepic, null);
+        ApplicationConstants.mobileNo=prefs.getString(Phone,null);
+        ApplicationConstants.id=prefs.getInt(ID,0);
 
         // Making notification bar transparent
         if (Build.VERSION.SDK_INT >= 21) {
@@ -157,6 +163,8 @@ public class login_activity extends AppCompatActivity{
 //        twitterCardView = findViewById(R.id.twitterCardView);
         bgImageView = findViewById(R.id.bgImageView);
       //  countryImage = findViewById(R.id.countryImg);
+        login_activity.CheckServerTask checkServerTask = new login_activity.CheckServerTask();
+        checkServerTask.execute();
     }
 
     private void initDataBindings() {
@@ -178,7 +186,7 @@ public class login_activity extends AppCompatActivity{
         });
 
         signUpTextView.setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Clicked Sign Up.", Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getApplicationContext(), "Clicked Sign Up.", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(this, customerSignUpActivity.class);
             startActivity(intent);
@@ -232,7 +240,7 @@ public class login_activity extends AppCompatActivity{
 
     public void CustomerLogin(JsonObject jsonObject){
 
-        // StartDialogue();
+        StartDialogue1();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
                 .ValidateCredentials(jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -241,14 +249,14 @@ public class login_activity extends AppCompatActivity{
                     @Override
                     public void onCompleted() {
                         //    DisplayToast("Successfully LoggedIn");
-                        //   StopDialogue();
+                           StopDialogue1();
                     }
                     @Override
                     public void onError(Throwable e) {
                         try {
                             Log.d("OnError ", e.getLocalizedMessage());
                             DisplayToast("Unable to Login");
-                            StopDialogue();
+                            StopDialogue1();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -264,9 +272,16 @@ public class login_activity extends AppCompatActivity{
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString(UserAccountNo, credentialsResponse.getUserAccountNo());
                             editor.putString(Phone,credentialsResponse.getMobilenumber());
+                            editor.putInt(ID,credentialsResponse.getId());
+                            editor.putString(Name,credentialsResponse.getUsername());
+                            editor.putString(UserPhoto,credentialsResponse.getUserPhoto());
+                            editor.putString(Email,credentialsResponse.getEmail());
+
                             ApplicationConstants.userAccountNo=credentialsResponse.getUserAccountNo();
-                            ApplicationConstants.userid=Integer.parseInt(credentialsResponse.getId());
+                            ApplicationConstants.userid=credentialsResponse.getId();
                             ApplicationConstants.photo=credentialsResponse.getUserPhoto();
+                            ApplicationConstants.mobNo=credentialsResponse.getMobilenumber();
+                            ApplicationConstants.email=credentialsResponse.getEmail();
 //                            editor.putString(VEHICLEID, credentialsResponse.getVehicleId());
 //                            editor.putString(Phone, mobileNo.getText().toString());
 //                            editor.putString(Emailotp, null);
@@ -461,20 +476,17 @@ public class login_activity extends AppCompatActivity{
                 if (dialog.isShowing())
                     dialog.dismiss();
                 if (isServerOn) {
-                    if (emailOTP != null && mobileOTP != null) {
-                        ApplicationConstants.mobileNo = mobNo;
-                        ApplicationConstants.id = id;
+
+                    if(emailOTP !=null){
                         startActivity(new Intent(login_activity.this,customerEOTPVerificationActivity.class));
                         finish();
-                    } else {
-                        if (emailOTP == null && mobileOTP != null) {
-                           // startActivity(new Intent(login_activity.this, customerMOTPVerificationActivity.class));
-                           // finish();
-                    } else if(emailOTP != null && mobileOTP == null){
+                    } else if(mobileOTP != null){
 
-                            startActivity(new Intent(login_activity.this,customerEOTPVerificationActivity.class));
-                            finish();
-                        }
+                        startActivity(new Intent(login_activity.this,customerMOTPVerificationActivity.class));
+                        finish();
+                    } else if((emailOTP==null && mobileOTP==null)&& ApplicationConstants.userAccountNo!=null) {
+                        startActivity(new Intent(login_activity.this, customerDashboardActivity.class));
+                        finish();
                     }
                 } else {
                     AlertDialog.Builder alertDialog = new AlertDialog.Builder(login_activity.this, R.style.Theme_AppCompat_DayNight_Dialog);
@@ -571,6 +583,18 @@ public class login_activity extends AppCompatActivity{
         if(dialog.isShowing()){
             dialog.cancel();
         }
+    }
+    public void StartDialogue1(){
+        pd=new ProgressDialog(this);
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.setMessage("Please wait.....");
+
+        pd.incrementProgressBy(50);
+        pd.show();
+    }
+    public void StopDialogue1(){
+
+        pd.dismiss();
     }
     }
 

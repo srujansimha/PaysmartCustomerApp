@@ -285,7 +285,7 @@ public class LoginActivity extends FragmentActivity {
                             SharedPreferences.Editor editor = sharedPref.edit();
                             editor.putString(Phone, mobileNo.getText().toString());
                             ApplicationConstants.id =response.getId();
-                            editor.putString(ID, ApplicationConstants.id);
+                            editor.putInt(ID, response.getId());
                             editor.putString(Name,response.getUsername());
                             editor.putString(Emailotp, null);
                             editor.putString(Mobileotp, null);

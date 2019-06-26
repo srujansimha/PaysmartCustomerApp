@@ -17,7 +17,7 @@ public class ValidateCredentialsResponse{
 	private String statusId;
 
 	@SerializedName("Id")
-	private String id;
+	private int id;
 
 	@SerializedName("AuthTypeId")
 	private String authTypeId;
@@ -88,11 +88,11 @@ public class ValidateCredentialsResponse{
 		return statusId;
 	}
 
-	public void setId(String id){
+	public void setId(int id){
 		this.id = id;
 	}
 
-	public String getId(){
+	public int getId(){
 		return id;
 	}
 	public String getUserPhoto(){

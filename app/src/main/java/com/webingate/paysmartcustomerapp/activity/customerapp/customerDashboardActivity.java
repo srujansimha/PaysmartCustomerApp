@@ -52,7 +52,7 @@ public class customerDashboardActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_dashboard_activity);
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        useracc= prefs.getString(UserAccountNo, null);
+        ApplicationConstants.userAccountNo= prefs.getString(UserAccountNo, null);
 
         initData();
 
@@ -110,8 +110,10 @@ public class customerDashboardActivity extends AppCompatActivity {
 //                    loadFragment(new AppDirectoryHome3Fragment());
 //                    break;
                 case R.id.profileMenu:
+                    startActivity(new Intent(customerDashboardActivity.this, customerappUserprofileActivity.class));
+
                     //loadFragment(new AppDirectoryHome4Fragment());
-                    GetAppUserDetails(useracc);
+                    //GetAppUserDetails( ApplicationConstants.userAccountNo);
 //                    Intent intent = new Intent(this, customerappUserprofileActivity.class);
 //                    startActivity(intent);
                     break;
@@ -143,7 +145,7 @@ public class customerDashboardActivity extends AppCompatActivity {
                 .subscribe(new Subscriber<List<AppUsersResponce>>() {
                     @Override
                     public void onCompleted() {
-                        DisplayToast("Successfully Registered");
+                       // DisplayToast("Successfully Registered");
                         //StopDialogue();
                     }
                     @Override

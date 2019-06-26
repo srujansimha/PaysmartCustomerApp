@@ -54,6 +54,7 @@ public class RatingBarDialogue extends Dialog implements
     public void onClick(View v) {
         if (comments.getText().toString().matches("")) {
             Toast.makeText(getContext(), "Please Provide Your Comments", Toast.LENGTH_SHORT).show();
+            //System.exit(0);
         } else {
           //  ApplicationConstants.rating = feedback.getRating() + "";
           //  ApplicationConstants.comments = comments.getText().toString();

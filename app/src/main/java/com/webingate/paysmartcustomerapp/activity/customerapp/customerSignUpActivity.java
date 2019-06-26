@@ -264,7 +264,7 @@ public class customerSignUpActivity extends AppCompatActivity {
                 .subscribe(new Subscriber<List<RegisterUserResponse>>() {
                     @Override
                     public void onCompleted() {
-                        DisplayToast("Successfully Registered");
+                        //DisplayToast("Successfully Registered");
                         //StopDialogue();
                     }
                     @Override

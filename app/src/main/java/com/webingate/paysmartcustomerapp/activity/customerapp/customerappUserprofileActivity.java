@@ -167,9 +167,25 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
             Intent intent = new Intent(this, customerappFAQMainMenuActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_logout) {
-            //Toast.makeText(this, "Clicked Logout.", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, login_activity.class);
-            startActivity(intent);
+            SharedPreferences sharedPref = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedPref.edit();
+//                            SharedPreferences pref = getApplicationContext().getSharedPreferences(MyPREFERENCES, 0);
+//                            Editor editor = pref.edit();
+            //editor.putString(ID, null);
+            editor.putString(mobno, null);
+
+            editor.putString(UserAccountNo,null);
+
+            editor.commit();
+            Intent i = new Intent(customerappUserprofileActivity.this, login_activity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    | Intent.FLAG_ACTIVITY_NEW_TASK);
+            //i.putExtra("logout",ApplicationConstants.Loginby);
+            startActivity(i);
+            finish();
+//            Intent intent = new Intent(this, login_activity.class);
+//
+//            startActivity(intent);
 
         } else if (id == R.id.nav_about_us) {
            // Toast.makeText(this, "Clicked About Us.", Toast.LENGTH_SHORT).show();

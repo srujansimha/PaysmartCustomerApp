@@ -104,7 +104,11 @@ import com.webingate.paysmartcustomerapp.R;
 import static com.google.android.gms.location.LocationRequest.*;
 
 public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,RatingBarDialogue.Ratingfinished {
-    String serverUrl = "", otp = "";
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String ID = "idKey";
+    public static final String UserAccountNo = "UserAccountNokey";
+    public static final String BookingNO = "bookingno";
+    String serverUrl = "", otp = "",amt,ctype,chekcstt="test";
     static GoogleMap mMap;
     static Marker marker, markerDriver;
     private static final int GETDRIVELLOCATION = 1;
@@ -149,6 +153,9 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_trip);
+
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        ApplicationConstants.bookingNo= prefs.getString(BookingNO, null);
         ButterKnife.bind(this);
         bookingDetails= (CustomerBookingStatusResponse) getIntent().getSerializableExtra("details");
         dialog =  new ProgressDialog.Builder(CurrentTrip.this)
@@ -211,6 +218,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
         callCustomer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                try{
                 Intent intent = new Intent(Intent.ACTION_CALL);
 
                 intent.setData(Uri.parse("tel:" + bookingDetails.getPMobNo()));
@@ -227,6 +235,9 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                 //    return;
                // }
                 startActivity(intent);
+                }catch (SecurityException ex){
+                    throw  ex;
+                }
             }
         });
         VehiclePosition();
@@ -713,14 +724,24 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                     public void onCompleted() {
                         //  DisplayToast("Successfully Registered");
                        // StopDialogue();
-                        VehiclePosition();
+                        if(chekcstt.contains("Trip Completed")){
+                        return;
+                        }else{
+                            VehiclePosition();
+
+                        }
                     }
                     @Override
                     public void onError(Throwable e) {
                         try {
                             //DisplayToast("Error");
                             //StopDialogue();
-                            VehiclePosition();
+                            if(chekcstt.contains("Trip Completed")){
+                                return;
+                            }else{
+                                VehiclePosition();
+
+                            }
                             Log.d("OnError ", e.getMessage());
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -746,8 +767,10 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             rotateMarker(markerDriver, latlngnew, rotation);
                             updatemarkers++;
                         } else if (response.getBookingStatus().contains("Trip Completed")) {
+                            chekcstt=response.getBookingStatus();
                             tripFlag = 0;
                             String amount = response.getAmount();
+                            amt=response.getAmount();
                             String paymentmethod = response.getPaymentTypeId();
                             switch (paymentmethod) {
                                 case "90":
@@ -766,17 +789,12 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                                     paymentmethod = "Debit Card";
                                     break;
                             }
-                            AlertDialog.Builder alertDialog = new AlertDialog.Builder(CurrentTrip.this, R.style.Theme_AppCompat_DayNight_Dialog);
-                            alertDialog.setCancelable(false);
-                            alertDialog.setTitle("Payment Mode - " + paymentmethod);
-                            alertDialog.setMessage("Amount - " + amount);
-                            alertDialog.setPositiveButton("Pay",
-                                    new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int which) {
-                                            MakePayment();
-                                        }
-                                    });
-                            alertDialog.show();
+                            if(amt!=null){
+                            ctype=paymentmethod;
+                            MakePayment();
+                            return;
+                            }
+
                         } else if (driverLatitude == 0.0 || driverLongitude == 0.0) {
                             driverLatitude = response.getLatitude();
                             driverLongitude =response.getLongitude();
@@ -806,6 +824,21 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void MakePayment(){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(CurrentTrip.this, R.style.Theme_AppCompat_DayNight_Dialog);
+        alertDialog.setCancelable(false);
+        alertDialog.setTitle("Payment Mode - " + ctype);
+        alertDialog.setMessage("Amount - " + amt);
+        alertDialog.setPositiveButton("Pay",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Makepayment1();
+                    }
+                });
+        alertDialog.show();
+
+    }
+    public void Makepayment1(){
         JsonObject object = new JsonObject();
         object.addProperty("flag", "I");
         object.addProperty("BNo", ApplicationConstants.bookingNo);
@@ -847,6 +880,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             RatingBarDialogue cdd = new RatingBarDialogue(CurrentTrip.this);
                             cdd.setCanceledOnTouchOutside(false);
                             cdd.show();
+
                         }
 
                     }

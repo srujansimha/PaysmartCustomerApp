@@ -9,20 +9,20 @@ import java.util.ArrayList;
  */
 
 public class ApplicationConstants {
-    public static  String estPrice="";
-    public static String userAccountNo="";
+    public static  String estPrice;
+    public static String userAccountNo;
     public static int tripFlag=0;
     public static int userid=0;
-    public static String mobileNo="";
-    public static String id="";
-    public static String username="";
-    public static String password="";
-    public static String email="";
-    public static String photo="";
+    public static String mobileNo;
+    public static int id;
+    public static String username;
+    public static String password;
+    public static String email;
+    public static String photo;
     public static boolean verify_email=true;
     public static boolean isResetPasswordfirstWondow=true;
-    public static String source="";
-    public static String destination="";
+    public static String source;
+    public static String destination;
     public static String date="";
     public static String rdate="";
     public static int sourceid=0;
@@ -59,7 +59,7 @@ public class ApplicationConstants {
     public static int FRAGMENT=0;
     public static ArrayList seatsSelected=new ArrayList();
 
-    public static String bookingNo="";
+    public static String bookingNo;
     public static String booKingOTP="";
     public static String driverName;
     public static String driverId="";

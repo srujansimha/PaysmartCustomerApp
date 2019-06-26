@@ -59,7 +59,7 @@ String id,email,useracntno;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_eotpverification_activity);
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        id = prefs.getString(ID, null);
+         ApplicationConstants.userid= prefs.getInt(ID, 0);
         email = prefs.getString(Email, null);
         useracntno = prefs.getString(UserAccountNo,null);
         initUI();
@@ -132,7 +132,7 @@ String id,email,useracntno;
                 JsonObject jsonObject = new JsonObject();
                 jsonObject.addProperty("Email",email);
                 jsonObject.addProperty("EVerificationCode", etop.getText().toString());
-                jsonObject.addProperty("userId", id);
+                jsonObject.addProperty("userId", ApplicationConstants.userid);
                 EOTPVerification(jsonObject);
             }
         });
@@ -185,7 +185,7 @@ String id,email,useracntno;
                 .subscribe(new Subscriber<List<CustomerEOTPVerificationResponse>>() {
                     @Override
                     public void onCompleted() {
-                        DisplayToast("Successfully Registered");
+                        //DisplayToast("Successfully Registered");
                         //StopDialogue();
                     }
                     @Override

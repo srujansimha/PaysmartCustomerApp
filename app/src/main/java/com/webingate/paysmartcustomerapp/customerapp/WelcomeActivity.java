@@ -49,7 +49,8 @@ public class WelcomeActivity extends AppCompatActivity {
     public static final String Profilepic = "profilepic";
     public final static int REQUEST_CODE = 10101;
     private boolean isServerOn;
-    String mobNo, id, emailOTP, mobileOTP;
+    String mobNo,emailOTP, mobileOTP;
+    int id;
     private static final int PERMISSIONS_ALL = 7;
     String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -69,7 +70,7 @@ public class WelcomeActivity extends AppCompatActivity {
         checkServerTask.execute();
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         mobNo = prefs.getString(Phone, null);
-        id = prefs.getString(ID, null);
+        id = prefs.getInt(ID, 0);
         emailOTP = prefs.getString(Emailotp, null);
         mobileOTP = prefs.getString(Mobileotp, null);
         ApplicationConstants.username = prefs.getString(Name, null);
