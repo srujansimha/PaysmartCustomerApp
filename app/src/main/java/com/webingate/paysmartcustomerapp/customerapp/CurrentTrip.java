@@ -110,6 +110,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
     public static final String BookingNO = "bookingno";
     String serverUrl = "", otp = "",amt,ctype,chekcstt="test";
     static GoogleMap mMap;
+    String paymentmethod;
     static Marker marker, markerDriver;
     private static final int GETDRIVELLOCATION = 1;
     private static final int PAYMENTS = 2;
@@ -770,7 +771,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             tripFlag = 0;
                             String amount = response.getAmount();
                             amt=response.getAmount();
-                            String paymentmethod = response.getPaymentTypeId();
+                            paymentmethod = response.getPaymentTypeId();
                             switch (paymentmethod) {
                                 case "90":
                                     paymentmethod = "Cash";
@@ -823,7 +824,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
     public void MakePayment(){
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(CurrentTrip.this, R.style.Theme_AppCompat_DayNight_Dialog);
         alertDialog.setCancelable(false);
-        alertDialog.setTitle("Payment Mode - " + ctype);
+        alertDialog.setTitle("Payment Mode - " + paymentmethod);
         alertDialog.setMessage("Amount - " + amt);
         alertDialog.setPositiveButton("Pay",
                 new DialogInterface.OnClickListener() {
