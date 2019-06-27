@@ -725,6 +725,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                         //  DisplayToast("Successfully Registered");
                        // StopDialogue();
                         if(chekcstt.contains("Trip Completed")){
+                            MakePayment();
                         return;
                         }else{
                             VehiclePosition();
@@ -736,12 +737,10 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                         try {
                             //DisplayToast("Error");
                             //StopDialogue();
-                            if(chekcstt.contains("Trip Completed")){
-                                return;
-                            }else{
+
                                 VehiclePosition();
 
-                            }
+
                             Log.d("OnError ", e.getMessage());
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -789,11 +788,9 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                                     paymentmethod = "Debit Card";
                                     break;
                             }
-                            if(amt!=null){
-                            ctype=paymentmethod;
-                            MakePayment();
+
                             return;
-                            }
+
 
                         } else if (driverLatitude == 0.0 || driverLongitude == 0.0) {
                             driverLatitude = response.getLatitude();
@@ -824,7 +821,6 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void MakePayment(){
-
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(CurrentTrip.this, R.style.Theme_AppCompat_DayNight_Dialog);
         alertDialog.setCancelable(false);
         alertDialog.setTitle("Payment Mode - " + ctype);
@@ -836,7 +832,6 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                     }
                 });
         alertDialog.show();
-
     }
     public void Makepayment1(){
         JsonObject object = new JsonObject();
@@ -846,9 +841,9 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
         object.addProperty("PaymentModeId", ApplicationConstants.paymenttype);
         object.addProperty("CustAccountId", "1");
         object.addProperty("AppUserId", "2");
-        MakePayment(object);
+        MakePayment2(object);
     }
-    public void MakePayment(JsonObject jsonObject){
+    public void MakePayment2(JsonObject jsonObject){
 
         StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(CurrentTrip.this).getrestadapter()

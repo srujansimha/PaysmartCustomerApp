@@ -123,6 +123,7 @@ public static final String MyPREFERENCES = "MyPrefs";
     public static final String ID = "idKey";
     public static final String UserAccountNo = "UserAccountNokey";
     public static final String BookingNO = "bookingno";
+    public static final String Phone = "phoneKey";
     LinearLayout bsLayout;
     ArrayList<String> list;
     ArrayAdapter<String> adapter;
@@ -263,7 +264,9 @@ public static final String MyPREFERENCES = "MyPrefs";
 
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         id = prefs.getInt(ID, 0);
+        ApplicationConstants.mobileNo= prefs.getString(Phone, null);
         useracntno = prefs.getString(UserAccountNo, null);
+
 
         fruits = getResources().getStringArray(R.array.fruits);
         ButterKnife.bind(this);
@@ -381,7 +384,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                     object.addProperty("Pricing", "300");
                     object.addProperty("DriverId", "");
                     object.addProperty("DriverPhoneNo", "");
-                    object.addProperty("CustomerPhoneNo", useracntno);
+                    object.addProperty("CustomerPhoneNo", ApplicationConstants.mobileNo);
                     object.addProperty("CustomerId", "568");
                     object.addProperty("BookingStatus", "New");
                     object.addProperty("NoofVehicles", "1");
