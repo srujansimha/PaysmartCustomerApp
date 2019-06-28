@@ -1,5 +1,6 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -39,7 +40,7 @@ public class customerpwdOTPVerificationActivity extends AppCompatActivity {
     public static final String Phone = "phoneKey";
     public static final String UserAccountNo = "UserAccountNoKey";
 String useracntno;
-
+    private ProgressDialog pd;
     Toast toast;
     @BindView(R.id.s_passwordotp)
     EditText potp;
@@ -68,7 +69,7 @@ String useracntno;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_true, menu);
+        //getMenuInflater().inflate(R.menu.menu_true, menu);
         return true;
     }
 
@@ -138,6 +139,7 @@ String useracntno;
     }
 
     public void ForgotPassword(JsonObject jsonObject){
+        StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
                 .Passwordverification(jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -145,15 +147,15 @@ String useracntno;
                 .subscribe(new Subscriber<List<CustomerPwdVerificationResponse>>() {
                     @Override
                     public void onCompleted() {
-                        DisplayToast("Password Updated Successfully");
-                        //StopDialogue();
+                        //DisplayToast("Password Updated Successfully");
+                        StopDialogue();
                     }
                     @Override
                     public void onError(Throwable e) {
                         try {
                             //Log.d("OnError ", e.getMessage());
-                            DisplayToast("onError"+e.getMessage());
-                            //StopDialogue();
+                           // DisplayToast("onError"+e.getMessage());
+                            StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -235,7 +237,18 @@ String useracntno;
 
     }
 
+    public void StartDialogue(){
+        pd=new android.app.ProgressDialog(this);
+        pd.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
+        pd.setMessage("Please wait.....");
 
+        pd.incrementProgressBy(50);
+        pd.show();
+    }
+    public void StopDialogue(){
+
+        pd.dismiss();
+    }
     private void initToolbar() {
 
         Toolbar toolbar = findViewById(R.id.toolbar);

@@ -61,7 +61,6 @@ import static com.webingate.paysmartcustomerapp.data.DataGenerator.getAvailableS
 public class Ticket_Source_Destination_Date extends Fragment {
     private static final String ARG_SECTION_NUMBER = "section_number";
     Calendar dateTime = Calendar.getInstance();
-
     @BindView(R.id.source)
     TextView source;
     @BindView(R.id.destination)

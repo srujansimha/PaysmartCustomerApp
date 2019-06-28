@@ -1,5 +1,6 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -32,7 +33,7 @@ import butterknife.BindView;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
+
 public class customerSignUpActivity extends AppCompatActivity {
 
     public static final String MyPREFERENCES = "MyPrefs";
@@ -61,8 +62,8 @@ public class customerSignUpActivity extends AppCompatActivity {
     TextView forgotTextView, signUpTextView;
     Button registerButton;
     ImageView bgImageView;
-
-    ProgressDialog dialog ;
+    private  ProgressDialog pd;
+//    ProgressDialog dialog ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,10 +91,10 @@ public class customerSignUpActivity extends AppCompatActivity {
         S_password=findViewById(R.id.s_password);
         registerButton = findViewById(R.id.registerButton);
         bgImageView = findViewById(R.id.bgImageView);
-        dialog =  new ProgressDialog.Builder(this)
-                .setTitle("Loading...")
-                .setTitleColorRes(R.color.gray)
-                .build();
+//        dialog =  new ProgressDialog.Builder(this)
+//                .setTitle("Loading...")
+//                .setTitleColorRes(R.color.gray)
+//                .build();
     }
 
     private void initDataBindings() {
@@ -203,6 +204,7 @@ public class customerSignUpActivity extends AppCompatActivity {
     }
 
     public void GetActiveCountries(int active){
+        StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerSignUpActivity.this).getrestadapter()
                 .GetActiveCountry(active)
                 .subscribeOn(Schedulers.io())
@@ -211,14 +213,14 @@ public class customerSignUpActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted() {
                         //DisplayToast("Successfully Registered");
-                        //StopDialogue();
+                        StopDialogue();
                     }
                     @Override
                     public void onError(Throwable e) {
                         try {
                             Log.d("OnError ", e.getMessage());
                             DisplayToast("Error");
-                            //StopDialogue();
+                            StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -256,7 +258,7 @@ public class customerSignUpActivity extends AppCompatActivity {
 
     public void RegisterUser(JsonObject jsonObject){
 
-      //  StartDialogue();
+        StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerSignUpActivity.this).getrestadapter()
                 .RegisterUser(jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -265,13 +267,13 @@ public class customerSignUpActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted() {
                         //DisplayToast("Successfully Registered");
-                        //StopDialogue();
+                        StopDialogue();
                     }
                     @Override
                     public void onError(Throwable e) {
                         try {
                             DisplayToast("Error"+e.getMessage());
-                        //    StopDialogue();
+                            StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -285,7 +287,7 @@ public class customerSignUpActivity extends AppCompatActivity {
                         } else {
                             SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedpreferences.edit();
-                            editor.putString(ID, response.getId());
+                            editor.putInt(ID, response.getId());
                             editor.putString(Name, response.getUsername());
                             editor.putString(Phone, response.getMobilenumber());
                             editor.putString(Email,response.getEmail());
@@ -313,16 +315,29 @@ public class customerSignUpActivity extends AppCompatActivity {
         toast.show();
 
     }
-    public void StartDialogue(){
+//    public void StartDialogue(){
+//
+//        dialog.setCanceledOnTouchOutside(false);
+//        dialog.show();
+//    }
+//    public void StopDialogue(){
+//        if(dialog.isShowing()){
+//            dialog.cancel();
+//        }
+//
+//    }
 
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+    public void StartDialogue(){
+        pd=new ProgressDialog(this);
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.setMessage("Please wait.....");
+
+        pd.incrementProgressBy(50);
+        pd.show();
     }
     public void StopDialogue(){
-        if(dialog.isShowing()){
-            dialog.cancel();
-        }
 
+        pd.dismiss();
     }
     //endregion
 }

@@ -92,8 +92,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         usrname = prefs.getString(Name, null);
         emailid = prefs.getString(Email, null);
         mobno = prefs.getString(Phone, null);
-        puphone=findViewById(R.id.puphone);
-        phoneno=findViewById(R.id.phoneno);
+
         //puphone.setText("7883890asdf");
        // phoneno.setText("asdf");
         initUI();
@@ -110,6 +109,10 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
     private void initData() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.openDrawer(GravityCompat.START);
+//        TextView puphone=findViewById(R.id.puphone);
+//        TextView phoneno=findViewById(R.id.phoneno);
+//        phoneno.setText(mobno);
+//        puphone.setText(mobno);
     }
 
     @Override
@@ -218,6 +221,9 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         TextView fname = findViewById(R.id.FirstnameTextView);
 //        TextView phoneno=(TextView)findViewById(R.id.phoneno);
         TextView puphone=findViewById(R.id.puphone);
+
+        //puphone=findViewById(R.id.puphone);
+
         // Main User Profile Screen
         tt.setText(emailid);
         pht.setText(mobno);
@@ -239,6 +245,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
         ImageView userImageView1 = findViewById(R.id.userImageView1);
         //Utils.setCircleImageToImageView(this, userImageView1, R.drawable.profile1, 0, 0);
+
 
         if(ApplicationConstants.photo==null){
             Utils.setCircleImageToImageView(getApplicationContext(), userImageView, R.drawable.profile1, 0, 0);

@@ -84,7 +84,7 @@ public class RatingBarDialogue extends Dialog implements
         object.addProperty("CustomerPhoneNo", ApplicationConstants.mobileNo);
         object.addProperty("BNo", ApplicationConstants.bookingNo);
         object.addProperty("Rating", ApplicationConstants.rating );
-        object.addProperty("RatedBy", "");
+        object.addProperty("RatedBy", 0);
         object.addProperty("Comments", ApplicationConstants.comments);
         RateTheRide1(object);
     }

@@ -65,9 +65,15 @@ public class CheckingCabsDialogue extends Dialog implements
         }.start();
     }
 
+    public void testclose(){
+        //dismiss();
+        this.cancel();
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+
         countDownTimer.cancel();
         //cancelling trip
         checkingcabsDialogue.DialogueCancelled();

@@ -712,10 +712,10 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
     public void VehiclePosition(){
         JsonObject object=new JsonObject();
         object.addProperty("BNo", ApplicationConstants.bookingNo);
-        VehiclePosition(object);
+        VehiclePosition1(object);
     }
 
-    public void VehiclePosition(JsonObject jsonObject){
+    public void VehiclePosition1(JsonObject jsonObject){
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(CurrentTrip.this).getrestadapter()
                 .VehiclePosition(jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -750,6 +750,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
 
                     @Override
                     public void onNext(List<VehiclePositionResponse> responselist) {
+
                         VehiclePositionResponse response=responselist.get(0);
                         if (response.getBookingStatus().contains("OnTrip")) {
                             Log.i("Trip status", " Ontrip : " + +driverLatitude + "," + driverLongitude);

@@ -1,5 +1,6 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
@@ -40,11 +42,12 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
     public static final String Email = "emailKey";
     public static final String Emailotp = "emailotpkey";
     public static final String UserAccountNo = "UserAccountNokey";
-
-String id,email,useracntno;
+    private  ProgressDialog pd;
+    String id,email,useracntno;
 
     Toast toast;
-
+    TextView textView253;
+// You"ve just received an email containing verification code on
     @BindView(R.id.s_email)
     EditText etop;
 
@@ -70,7 +73,7 @@ String id,email,useracntno;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_true, menu);
+        //getMenuInflater().inflate(R.menu.menu_true, menu);
         return true;
     }
 
@@ -92,7 +95,8 @@ String id,email,useracntno;
         Utils.setImageToImageView(getApplicationContext(), bgImageView, id);
 
         changeButton = findViewById(R.id.changeButton);
-
+        textView253=findViewById(R.id.textView253);
+        textView253.setText("You have just received an email containing verification code on "+email);
         resendButton = findViewById(R.id.resendButton);
         etop=findViewById(R.id.s_email);
         submitOTPButton = findViewById(R.id.submitOTPButton);
@@ -178,6 +182,7 @@ String id,email,useracntno;
     }
 
     public void EOTPVerification(JsonObject jsonObject){
+        StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
                 .CustomerEOTPVerification(jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -186,14 +191,15 @@ String id,email,useracntno;
                     @Override
                     public void onCompleted() {
                         //DisplayToast("Successfully Registered");
-                        //StopDialogue();
+                        StopDialogue();
                     }
                     @Override
                     public void onError(Throwable e) {
                         try {
+                            StopDialogue();
                             //Log.d("OnError ", e.getMessage());
                             DisplayToast("Error"+e.getMessage());
-                            //StopDialogue();
+
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -224,6 +230,7 @@ String id,email,useracntno;
     }
 
     public void ResendOTP(JsonObject jsonObject){
+        StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
                 .ResendOTP(jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -232,14 +239,15 @@ String id,email,useracntno;
                     @Override
                     public void onCompleted() {
                         DisplayToast("OTP has been Resent");
-                        //StopDialogue();
+                        StopDialogue();
                     }
                     @Override
                     public void onError(Throwable e) {
                         try {
+                            StopDialogue();
                             //Log.d("OnError ", e.getMessage());
                             DisplayToast("onError"+e.getMessage());
-                            //StopDialogue();
+
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -276,5 +284,17 @@ String id,email,useracntno;
         toast= Toast.makeText(getApplicationContext(),text,Toast.LENGTH_SHORT);
         toast.show();
 
+    }
+    public void StartDialogue(){
+        pd=new ProgressDialog(this);
+        pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        pd.setMessage("Please wait.....");
+
+        pd.incrementProgressBy(50);
+        pd.show();
+    }
+    public void StopDialogue(){
+
+        pd.dismiss();
     }
 }

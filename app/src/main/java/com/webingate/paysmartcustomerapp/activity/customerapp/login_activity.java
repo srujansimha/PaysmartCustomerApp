@@ -79,7 +79,7 @@ public class login_activity extends AppCompatActivity{
 
     private String response;
     private  ProgressDialog pd;
-   ArrayList<GeneralList> countriesList;
+    ArrayList<GeneralList> countriesList;
     TextView forgotTextView, signUpTextView;
     @BindView(R.id.loginButton)
     Button loginButton;
@@ -126,7 +126,7 @@ public class login_activity extends AppCompatActivity{
         checkServerTask.execute();
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         //mobNo = prefs.getString(Phone, null);
-        id = prefs.getInt(ID, 0);
+       // id = prefs.getInt(ID, 0);
         emailOTP = prefs.getString(Emailotp, null);
         mobileOTP = prefs.getString(Mobileotp, null);
         pwdotp = prefs.getString(Passwordotp, null);

@@ -44,7 +44,7 @@ public class RegisterUserResponse{
 	private String emailotp;
 
 	@SerializedName("Id")
-	private String id;
+	private int id;
 
 	@SerializedName("Mobilenumber")
 	private String mobilenumber;
@@ -181,11 +181,11 @@ public class RegisterUserResponse{
 		return emailotp;
 	}
 
-	public void setId(String id){
+	public void setId(int id){
 		this.id = id;
 	}
 
-	public String getId(){
+	public int getId(){
 		return id;
 	}
 

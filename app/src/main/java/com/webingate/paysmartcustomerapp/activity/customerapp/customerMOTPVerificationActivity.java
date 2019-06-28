@@ -1,5 +1,6 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,7 +26,6 @@ import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerResendOTPResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.DefaultResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.MOTPVerificationResponse;
-import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
 import com.webingate.paysmartcustomerapp.customerapp.LoginActivity;
 import com.webingate.paysmartcustomerapp.customerapp.VerificationActivity;
 import com.webingate.paysmartcustomerapp.utils.Utils;
@@ -46,7 +46,7 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
     public static final String Mobileotp = "mobileotpkey";
     public static final String UserAccountNo = "UserAccountNokey";
     Toast toast;
-    ProgressDialog dialog ;
+    private ProgressDialog pd;
 
     String id,mobileno,useracntno;
 
@@ -77,7 +77,7 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_true, menu);
+        //getMenuInflater().inflate(R.menu.menu_true, menu);
         return true;
     }
 
@@ -291,15 +291,16 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
 
     }
     public void StartDialogue(){
+        pd=new android.app.ProgressDialog(this);
+        pd.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
+        pd.setMessage("Please wait.....");
 
-        dialog.setCanceledOnTouchOutside(false);
-        dialog.show();
+        pd.incrementProgressBy(50);
+        pd.show();
     }
     public void StopDialogue(){
-        if(dialog.isShowing()){
-            dialog.cancel();
-        }
 
+        pd.dismiss();
     }
 
 }

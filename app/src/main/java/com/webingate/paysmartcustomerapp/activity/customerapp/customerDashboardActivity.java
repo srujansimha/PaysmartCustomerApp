@@ -65,7 +65,7 @@ public class customerDashboardActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_more, menu);
+       // getMenuInflater().inflate(R.menu.menu_more, menu);
         return super.onCreateOptionsMenu(menu);
     }
 

@@ -19,6 +19,7 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -127,10 +128,10 @@ public static final String MyPREFERENCES = "MyPrefs";
     LinearLayout bsLayout;
     ArrayList<String> list;
     ArrayAdapter<String> adapter;
-
+    String tt=null;
     String[] fruits;
 
-
+    JsonObject object1;
     @BindView(R.id.map_source)
     TextView selectsource;
     @BindView(R.id.source_gps_location)
@@ -1253,6 +1254,8 @@ public static final String MyPREFERENCES = "MyPrefs";
 
                     @Override
                     public void onNext(List<SaveBookingDetailsResponse> responselist) {
+                        List<SaveBookingDetailsResponse> res=responselist;
+                        if(res.size()!=0){
                         SaveBookingDetailsResponse response = responselist.get(0);
                         if(response.getBookingNumber()!=null) {
 
@@ -1271,7 +1274,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                             DisplayToast("Booking Failed");
                             //BookingStatus();
                         }
-
+                        }
                     }
                 });
     }
@@ -1314,11 +1317,13 @@ public static final String MyPREFERENCES = "MyPrefs";
         if(isBookingStarted) {
             JsonObject object = new JsonObject();
             object.addProperty("BNo", ApplicationConstants.bookingNo);
-            BookingStatus(object);
+            object1 = new JsonObject();
+            object1.addProperty("BNo", ApplicationConstants.bookingNo);
+            BookingStatus1(object);
         }
     }
-    public void BookingStatus(JsonObject jsonObject) {
-        // StartDialogue();
+    public void BookingStatus1(JsonObject jsonObject) {
+       // StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftConfirmActivity.this).getrestadapter()
                 .BookingStatus(jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -1327,7 +1332,14 @@ public static final String MyPREFERENCES = "MyPrefs";
                     @Override
                     public void onCompleted() {
                         //  DisplayToast("Successfully Registered");
-                        //   StopDialogue();
+                           //StopDialogue();
+                        if (tt != null) {
+                            //StopDialogue();
+                            return;
+                        }
+                        else{
+                            BookingStatus();
+                        }
                     }
 
                     @Override
@@ -1336,7 +1348,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                             BookingStatus();
                             Log.d("OnError ", e.getMessage());
                             //  DisplayToast("Error");
-                            //    StopDialogue();
+                                //StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -1344,11 +1356,18 @@ public static final String MyPREFERENCES = "MyPrefs";
 
                     @Override
                     public void onNext(List<CustomerBookingStatusResponse> responselist) {
+                        List<CustomerBookingStatusResponse> res=responselist;
+                        if(res.size()!=0){
                         CustomerBookingStatusResponse response = responselist.get(0);
                         if (response.getBooKingOTP() != null) {
-                            if (checkingCabsDialogue != null)
-                                checkingCabsDialogue.dismiss();
+                            tt=response.getBooKingOTP();
+                            if (checkingCabsDialogue != null) {
+                                //CheckingCabsDialogue dd = new CheckingCabsDialogue(customerappGetaLyftConfirmActivity.this);
+                                //dd.testclose();
+                                checkingCabsDialogue.cancel();
+                            }
                             isBookingStarted=false;
+
                             Intent intent = new Intent(customerappGetaLyftConfirmActivity.this, CurrentTrip.class);
                             intent.putExtra("lat", sourceLatitude);
                             intent.putExtra("lon", sourceLongitude);
@@ -1357,9 +1376,11 @@ public static final String MyPREFERENCES = "MyPrefs";
                             intent.putExtra("details", response);
                             startActivity(intent);
                             finish();
+                            return;
                         }else {
                             BookingStatus();
                         }
+                    }
                     }
                 });
     }
