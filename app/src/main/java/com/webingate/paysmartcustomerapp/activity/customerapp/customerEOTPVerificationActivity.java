@@ -114,7 +114,7 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
         resendButton.setOnClickListener((View v) ->{
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("UserAccountNo",useracntno);
-            jsonObject.addProperty("change","1");
+            jsonObject.addProperty("change",1);
             ResendOTP(jsonObject);
             //Toast.makeText(getApplicationContext(),"OTP is Resent.",Toast.LENGTH_SHORT).show();
         });
@@ -198,7 +198,7 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
                         try {
                             StopDialogue();
                             //Log.d("OnError ", e.getMessage());
-                            DisplayToast("Error"+e.getMessage());
+                            //DisplayToast("Error"+e.getMessage());
 
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -246,7 +246,7 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
                         try {
                             StopDialogue();
                             //Log.d("OnError ", e.getMessage());
-                            DisplayToast("onError"+e.getMessage());
+                            //DisplayToast("onError"+e.getMessage());
 
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -261,15 +261,15 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
                         } else {
                             SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedpreferences.edit();
-                            Intent intent = new Intent(customerEOTPVerificationActivity.this, customerEOTPVerificationActivity.class);
+                            //Intent intent = new Intent(customerEOTPVerificationActivity.this, customerEOTPVerificationActivity.class);
                             editor.putString(UserAccountNo, response.getUserAccountNo());
                             //intent.putExtra("Uid",E_uid);
-                            startActivity(intent);
+                            //startActivity(intent);
                             editor.commit();
                             //startActivity(new Intent(customerEOTPVerificationActivity.this, login_activity.class));
 //                       Intent intent = new Intent(customerEOTPVerificationActivity.this, businessappMOTPVerificationActivity.class);
 //                        intent.putExtra("eotp","");
-                            finish();
+                            //finish();
                         }
                     }
                 });
@@ -289,7 +289,7 @@ public class customerEOTPVerificationActivity extends AppCompatActivity {
         pd=new ProgressDialog(this);
         pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         pd.setMessage("Please wait.....");
-
+        pd.setCancelable(false);
         pd.incrementProgressBy(50);
         pd.show();
     }

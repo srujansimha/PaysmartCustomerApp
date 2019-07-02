@@ -147,7 +147,7 @@ public interface APIInterface  {
     @POST("/api/Forgotpassword/Forgotpassword")
     public Observable<List<CustomerforgotPwdResponse>> Forgotpassword(@Body JsonObject jsonObject);
 
-    @POST("/api/Forgotpassword/Forgotpassword")
+    @POST("/api/UserAccount/ResendOtp")
     public Observable<List<CustomerResendOTPResponse>> ResendOTP(@Body JsonObject jsonObject);
 
     @POST("/api/UserAccount/Passwordverification")
@@ -170,6 +170,7 @@ public interface APIInterface  {
 
     @POST("api/Common/ConfigData")
     public Observable<List<ConfigData>> GetConfigData(@Body JsonObject jsonObject);
+
     /*
 
 

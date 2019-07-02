@@ -213,15 +213,15 @@ String useracntno;
                         } else {
                             SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedpreferences.edit();
-                            Intent intent = new Intent(customerpwdOTPVerificationActivity.this, customerpwdOTPVerificationActivity.class);
+                            //Intent intent = new Intent(customerpwdOTPVerificationActivity.this, customerpwdOTPVerificationActivity.class);
                             editor.putString(UserAccountNo, response.getUserAccountNo());
                             //intent.putExtra("Uid",E_uid);
-                            startActivity(intent);
+                            //startActivity(intent);
                             editor.commit();
                             //startActivity(new Intent(customerEOTPVerificationActivity.this, login_activity.class));
 //                       Intent intent = new Intent(customerEOTPVerificationActivity.this, businessappMOTPVerificationActivity.class);
 //                        intent.putExtra("eotp","");
-                            finish();
+                            //finish();
                         }
                     }
                 });
@@ -241,7 +241,7 @@ String useracntno;
         pd=new android.app.ProgressDialog(this);
         pd.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
         pd.setMessage("Please wait.....");
-
+        pd.setCancelable(false);
         pd.incrementProgressBy(50);
         pd.show();
     }

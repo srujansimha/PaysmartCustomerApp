@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.gson.JsonObject;
+import com.webingate.paysmartcustomerapp.activity.customerapp.DialogPaymentTransactionsFragment;
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappBusBookingMainActivity;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerPayResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.ValidateCredentialsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
@@ -85,7 +87,7 @@ public class Payments extends Fragment {
         ewallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                ApplicationConstants.pmode="E-Wallet";
                 JsonObject object = new JsonObject();
                 object.addProperty("Transactionid", "1256");
                 object.addProperty("Transaction_Number", "ts1258967");
@@ -93,12 +95,46 @@ public class Payments extends Fragment {
                 object.addProperty("Paymentmode", "1");
                 object.addProperty("TransactionStatus", "1");
                 object.addProperty("Gateway_transId", "wb123");
+                object.addProperty("flag","I");
                 Pay(object);
                 /*PaymentRequest paymentRequest = new PaymentRequest();
                 paymentRequest.execute();*/
             }
         });
-
+        btnPreferences.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApplicationConstants.pmode="Net Banking";
+                JsonObject object = new JsonObject();
+                object.addProperty("Transactionid", "1256");
+                object.addProperty("Transaction_Number", "ts1258967");
+                object.addProperty("Amount", "150");
+                object.addProperty("Paymentmode", "1");
+                object.addProperty("TransactionStatus", "1");
+                object.addProperty("Gateway_transId", "wb123");
+                object.addProperty("flag","I");
+                Pay(object);
+                /*PaymentRequest paymentRequest = new PaymentRequest();
+                paymentRequest.execute();*/
+            }
+        });
+        btnFeedbackEnquiry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApplicationConstants.pmode="Credit & Debit";
+                JsonObject object = new JsonObject();
+                object.addProperty("Transactionid", "1256");
+                object.addProperty("Transaction_Number", "ts1258967");
+                object.addProperty("Amount", "150");
+                object.addProperty("Paymentmode", "1");
+                object.addProperty("TransactionStatus", "1");
+                object.addProperty("Gateway_transId", "wb123");
+                object.addProperty("flag","I");
+                Pay(object);
+                /*PaymentRequest paymentRequest = new PaymentRequest();
+                paymentRequest.execute();*/
+            }
+        });
         return v;
     }
 
@@ -152,6 +188,19 @@ public class Payments extends Fragment {
         unbinder.unbind();
     }
 
+    private void showDialogPaymentTransactions() {
+        //ApplicationConstants.transactionsId=id;
+        FragmentManager fragmentManager =getActivity().getSupportFragmentManager();
+
+        DialogPaymentTransactionsFragment dptf = new DialogPaymentTransactionsFragment();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+
+        transaction.add(android.R.id.content, dptf).addToBackStack(null).commit();
+
+    }
+
+
 
     public void Pay(JsonObject jsonObject){
 
@@ -179,7 +228,11 @@ public class Payments extends Fragment {
 
                     @Override
                     public void onNext(List<CustomerPayResponse> responselist) {
+                        List<CustomerPayResponse> res=responselist;
+                        ApplicationConstants.pdate=res.get(0).getPaymentDate();
+                        ApplicationConstants.ptime=res.get(0).getPaymentTime();
 
+                        showDialogPaymentTransactions();
 
                     }
                 });

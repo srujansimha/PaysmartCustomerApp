@@ -47,7 +47,7 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
     public static final String UserAccountNo = "UserAccountNokey";
     Toast toast;
     private ProgressDialog pd;
-
+    TextView textView253;
     String id,mobileno,useracntno;
 
     @BindView(R.id.mobile_otp)
@@ -103,6 +103,8 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
         resendButton = findViewById(R.id.resendButton);
         motp = findViewById(R.id.mobile_otp);
         submitOTPButton = findViewById(R.id.submitOTPButton);
+        textView253=findViewById(R.id.textView253);
+        //textView253.setText("");
     }
 
     private void initActions(){
@@ -118,7 +120,7 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
         resendButton.setOnClickListener((View v) ->{
             JsonObject jsonObject = new JsonObject();
             jsonObject.addProperty("UserAccountNo",useracntno);
-            jsonObject.addProperty("change","2");
+            jsonObject.addProperty("change",2);
             ResendOTP(jsonObject);
             Toast.makeText(getApplicationContext(),"OTP is Resent.",Toast.LENGTH_SHORT).show();
         });
@@ -183,6 +185,7 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
     }
 
     public void MOTPVerifications(JsonObject jsonObject){
+        StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerMOTPVerificationActivity.this).getrestadapter()
                 .MOTPVerifications(jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -191,14 +194,14 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted() {
                         //DisplayToast("Successfully Registered");
-                        //StopDialogue();
+                        StopDialogue();
                     }
                     @Override
                     public void onError(Throwable e) {
                         try {
-                            Log.d("OnError ", e.getMessage());
-                            DisplayToast("Error");
-                            //StopDialogue();
+                            //Log.d("OnError ", e.getMessage());
+                           // DisplayToast("Error");
+                            StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -230,6 +233,7 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
                             intent.putExtra("Mobilenumber", response.getMobilenumber());
                             //intent.putExtra("Uid",E_uid);
                             startActivity(intent);
+                            finish();
                             editor.commit();
                         }
                     }
@@ -237,6 +241,7 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
     }
 
     public void ResendOTP(JsonObject jsonObject){
+        StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(this).getrestadapter()
                 .ResendOTP(jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -245,14 +250,14 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
                     @Override
                     public void onCompleted() {
                         DisplayToast("OTP has been Resent");
-                        //StopDialogue();
+                        StopDialogue();
                     }
                     @Override
                     public void onError(Throwable e) {
                         try {
-                            //Log.d("OnError ", e.getMessage());
-                            DisplayToast("onError"+e.getMessage());
-                            //StopDialogue();
+                            Log.d("OnError ", e.getMessage());
+                            //DisplayToast("onError"+e.getMessage());
+                            StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -266,15 +271,15 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
                         } else {
                             SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedpreferences.edit();
-                            Intent intent = new Intent(customerMOTPVerificationActivity.this, customerMOTPVerificationActivity.class);
+                            //Intent intent = new Intent(customerMOTPVerificationActivity.this, customerMOTPVerificationActivity.class);
                             editor.putString(UserAccountNo, response.getUserAccountNo());
                             //intent.putExtra("Uid",E_uid);
-                            startActivity(intent);
+                            //startActivity(intent);
                             editor.commit();
                             //startActivity(new Intent(customerEOTPVerificationActivity.this, login_activity.class));
 //                       Intent intent = new Intent(customerEOTPVerificationActivity.this, businessappMOTPVerificationActivity.class);
 //                        intent.putExtra("eotp","");
-                            finish();
+                           // finish();
                         }
                     }
                 });
@@ -294,7 +299,7 @@ public class customerMOTPVerificationActivity extends AppCompatActivity {
         pd=new android.app.ProgressDialog(this);
         pd.setProgressStyle(android.app.ProgressDialog.STYLE_SPINNER);
         pd.setMessage("Please wait.....");
-
+        pd.setCancelable(false);
         pd.incrementProgressBy(50);
         pd.show();
     }

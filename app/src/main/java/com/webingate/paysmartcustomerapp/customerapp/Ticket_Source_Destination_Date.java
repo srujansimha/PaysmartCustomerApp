@@ -77,11 +77,10 @@ public class Ticket_Source_Destination_Date extends Fragment {
     ScrollView scrollView1;
     Toast toast;
     ProgressDialog dialog ;
-
-
     Unbinder unbinder;
     private String response;
     List<CustomerGetstopsResponse> stops;
+
     public static Ticket_Source_Destination_Date newInstance(int SectionNumber) {
         Ticket_Source_Destination_Date ticket_source_destination_date = new Ticket_Source_Destination_Date();
         Bundle args = new Bundle();
@@ -111,10 +110,10 @@ public class Ticket_Source_Destination_Date extends Fragment {
         date = (TextView) v.findViewById(R.id.journeyDate);
         rdate=(TextView)v.findViewById(R.id.returnjourneyDate);
         next = (Button) v.findViewById(R.id.next);
-        if (!ApplicationConstants.source.matches("")) {
+        if (!(ApplicationConstants.source==null)) {
             source.setText("  " + ApplicationConstants.source);
         }
-        if (!ApplicationConstants.destination.matches("")) {
+        if (!(ApplicationConstants.destination==null)) {
             destination.setText("  " + ApplicationConstants.destination);
         }
         View.OnClickListener citySelection = new View.OnClickListener() {

@@ -42,6 +42,7 @@ public class RatingBarDialogue extends Dialog implements
     @BindView(R.id.submit)
     Button submit;
     Ratingfinished ratingfinished;
+
     public interface Ratingfinished{
         public void Rating(String rating,String comments);
     }
@@ -114,7 +115,7 @@ public class RatingBarDialogue extends Dialog implements
 
                     @Override
                     public void onNext(List<CustomerRateTheRideResponse> responselist) {
-                        //   CustomerRateTheRideResponse response=responselist.get(0);
+                           //CustomerRateTheRideResponse response=responselist.get(0);
                         //finish();
                     }
                 });

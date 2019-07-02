@@ -80,6 +80,9 @@ public class ApplicationConstants {
     public static String cslog;
     public static String cdlat;
     public static String cdlog;
+    public static String pdate;
+    public static String ptime;
+    public static String pmode;
     //Registration Details
     /*public static String Username="";
     public static String Email="";

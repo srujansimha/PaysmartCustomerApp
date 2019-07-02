@@ -331,7 +331,7 @@ public class customerSignUpActivity extends AppCompatActivity {
         pd=new ProgressDialog(this);
         pd.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         pd.setMessage("Please wait.....");
-
+        pd.setCancelable(false);
         pd.incrementProgressBy(50);
         pd.show();
     }

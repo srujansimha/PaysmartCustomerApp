@@ -9,12 +9,14 @@
     <!--<color name="colorAccentDark">#f50057</color>-->
     <!--<color name="colorAccentLight">#ff80ab</color>-->
 
-
+    <color name="md_black_1000">#000000</color>
     <color name="colorPrimary">#1976D2</color>
     <color name="colorPrimaryDark">#1565C0</color>
     <color name="colorAccent">#FF4081</color>
     <color name="colorAccentLight">#FF80AB</color>
-
+    <color name="md_green_400">#66bb6a</color>
+    <color name="md_green_500">#4CAF50</color>
+    <color name="md_green_600">#43a047</color>
     <!-- Line -->
     <color name="colorLine">#e0e0e0</color>
 

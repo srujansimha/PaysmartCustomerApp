@@ -127,7 +127,7 @@ public class customerForgotPasswordActivity extends AppCompatActivity {
                         try {
                             StopDialogue();//Log.d("OnError ", e.getMessage());
                             //DisplayToast("onError"+e.getMessage());
-                            StopDialogue();
+                            //StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }

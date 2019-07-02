@@ -101,9 +101,9 @@ public class customerAppDashboardFragment extends Fragment {
 
             rvProduct = view.findViewById(R.id.rvProducts);
            // rvCategory = view.findViewById(R.id.rvCategory);
-            rvPromotions = view.findViewById(R.id.rvPromotions);
-            rvPopular = view.findViewById(R.id.rvPopular);
-            rvFlights = view.findViewById(R.id.rvFlights);
+           // rvPromotions = view.findViewById(R.id.rvPromotions);
+           // rvPopular = view.findViewById(R.id.rvPopular);
+           // rvFlights = view.findViewById(R.id.rvFlights);
 
             RecyclerView.LayoutManager productLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), noOfProductColumn);
             rvProduct.setLayoutManager(productLayoutManager);
@@ -114,21 +114,21 @@ public class customerAppDashboardFragment extends Fragment {
            // rvCategory.setLayoutManager(categoryLayoutManger);
            // rvCategory.setAdapter(categoryAdapter);
 
-            RecyclerView.LayoutManager promotionsLayoutManger = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-            rvPromotions.setLayoutManager(promotionsLayoutManger);
-            rvPromotions.setAdapter(promotionsAdapter);
+           // RecyclerView.LayoutManager promotionsLayoutManger = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+            //rvPromotions.setLayoutManager(promotionsLayoutManger);
+           // rvPromotions.setAdapter(promotionsAdapter);
 
-            RecyclerView.LayoutManager popularLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), noOfPopularColumn);
-            rvPopular.setLayoutManager(popularLayoutManager);
-            rvPopular.setAdapter(popularAdapter);
+           // RecyclerView.LayoutManager popularLayoutManager = new GridLayoutManager(getActivity().getApplicationContext(), noOfPopularColumn);
+            //rvPopular.setLayoutManager(popularLayoutManager);
+           // rvPopular.setAdapter(popularAdapter);
 
-            RecyclerView.LayoutManager flightsLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
-            rvFlights.setLayoutManager(flightsLayoutManager);
-            rvFlights.setAdapter(flightsAdapter);
+           //RecyclerView.LayoutManager flightsLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext(), LinearLayoutManager.HORIZONTAL, false);
+          //  rvFlights.setLayoutManager(flightsLayoutManager);
+           // rvFlights.setAdapter(flightsAdapter);
         }
 
-        moreImageView = view.findViewById(R.id.moreImageView);
-        moreImageView2 = view.findViewById(R.id.moreImageView2);
+        //moreImageView = view.findViewById(R.id.moreImageView);
+        //moreImageView2 = view.findViewById(R.id.moreImageView2);
         //profileImageView = view.findViewById(R.id.home9ProfileImageView);
         //loginRegisterTextView = view.findViewById(R.id.loginRegisterTextView);
     }
@@ -137,8 +137,8 @@ public class customerAppDashboardFragment extends Fragment {
         int leftImageId = R.drawable.baseline_arrow_right_24;
         int profileImageId = R.drawable.home9_profile;
 
-        Utils.setImageToImageView(getContext(), moreImageView, leftImageId);
-        Utils.setImageToImageView(getContext(), moreImageView2, leftImageId);
+       // Utils.setImageToImageView(getContext(), moreImageView, leftImageId);
+      //  Utils.setImageToImageView(getContext(), moreImageView2, leftImageId);
       //  Utils.setImageToImageView(getContext(), profileImageView, profileImageId);
 
        // profileImageView.setOnClickListener(view -> Toast.makeText(getContext(), "Clicked : Profile", Toast.LENGTH_SHORT).show());
