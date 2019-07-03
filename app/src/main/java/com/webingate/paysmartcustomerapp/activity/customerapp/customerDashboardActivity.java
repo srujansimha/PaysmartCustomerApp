@@ -205,6 +205,7 @@ public class customerDashboardActivity extends AppCompatActivity {
 
         try {
             if (getSupportActionBar() != null) {
+
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
         } catch (Exception e) {

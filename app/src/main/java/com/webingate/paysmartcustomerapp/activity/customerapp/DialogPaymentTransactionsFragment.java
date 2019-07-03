@@ -83,6 +83,9 @@ public class DialogPaymentTransactionsFragment extends DialogFragment {
 //               Intent intent= new Intent(getContext(),EwalletMainActivity.class);
 //               startActivity(intent);
 //               getActivity().finish();
+                ApplicationConstants.source="";
+                ApplicationConstants.destination="";
+
                 startActivity(new Intent(getContext(), customerappBusBookingMainActivity.class));
                 getActivity().finish();
                 dismiss();

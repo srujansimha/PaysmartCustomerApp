@@ -9,6 +9,13 @@ import java.util.ArrayList;
  */
 
 public class ApplicationConstants {
+
+    public static  String fdate;
+    public static  int fstatus;
+    public static  String adultquantity;
+    public static  String childquantity;
+    public static  String infantquantity;
+    public static  String CabinName;
     public static  String estPrice;
     public static String userAccountNo;
     public static int tripFlag=0;
@@ -23,10 +30,14 @@ public class ApplicationConstants {
     public static boolean isResetPasswordfirstWondow=true;
     public static String source;
     public static String destination;
+    public static String fsource;
+    public static String fdestination;
     public static String date="";
     public static String rdate="";
     public static int sourceid=0;
     public static int destinationid=0;
+    public static int fsourceid=0;
+    public static int fdestinationid=0;
     public static TravelModel travel;
     public static String bookingDate="";
     public static String bookingTime="";

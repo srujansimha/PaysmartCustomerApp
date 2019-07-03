@@ -203,6 +203,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_getalyft_activity);
         ButterKnife.bind(this);
+
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         ApplicationConstants.mobileNo= prefs.getString(Phone, null);
         dialog = new ProgressDialog.Builder(customerappGetaLyftActivity.this)

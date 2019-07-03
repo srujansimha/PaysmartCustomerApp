@@ -15,7 +15,7 @@ public class CustomerGetstopsResponse {
 
 	@SerializedName("Id")
 	private String id;
-
+//"Id":1,"name":"Hyderabad","desce":"Rajiv Gandhi Internation Airport","active":1,"latitude":null,"longitude":null,"code":"HYD","countryid":"101"}
 	@SerializedName("Code")
 	private String code;
 
