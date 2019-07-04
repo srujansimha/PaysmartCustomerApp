@@ -20,6 +20,7 @@ import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.activity.customerapp.DialogPaymentTransactionsFragment;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappBusBookingMainActivity;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerPayResponse;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.GetCustomerBookingListResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.ValidateCredentialsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
 
@@ -87,16 +88,22 @@ public class Payments extends Fragment {
         ewallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApplicationConstants.pmode="E-Wallet";
+                ApplicationConstants.pmode="EWallet";
                 JsonObject object = new JsonObject();
-                object.addProperty("Transactionid", "1256");
-                object.addProperty("Transaction_Number", "ts1258967");
+                object.addProperty("Id", "");
+                object.addProperty("TicketNo", "D435");
+                object.addProperty("TransId", 150);
+                object.addProperty("EmailId", ApplicationConstants.pemail);
+                object.addProperty("MobileNo", ApplicationConstants.pmobno);
+                object.addProperty("JourneyDate", "");
+                object.addProperty("JourneyTime","");
+                object.addProperty("Src",ApplicationConstants.source);
+                object.addProperty("Dest",ApplicationConstants.destination);
+                object.addProperty("NoOfSeats",1);
+                object.addProperty("insupddelflag", "I");
                 object.addProperty("Amount", "150");
-                object.addProperty("Paymentmode", "1");
-                object.addProperty("TransactionStatus", "1");
-                object.addProperty("Gateway_transId", "wb123");
-                object.addProperty("flag","I");
-                Pay(object);
+                SaveBusBooking(object);
+                //Pay(object);
                 /*PaymentRequest paymentRequest = new PaymentRequest();
                 paymentRequest.execute();*/
             }
@@ -237,6 +244,42 @@ public class Payments extends Fragment {
                     }
                 });
     }
+
+
+    public void SaveBusBooking(JsonObject jsonObject){
+
+        //StartDialogue();
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(getActivity()).getrestadapter()
+                .SaveBookingDetails1(jsonObject)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<GetCustomerBookingListResponse>>()
+                {
+                    @Override
+                    public void onCompleted() {
+                        //  DisplayToast("Successfully Registered");
+                        //StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            Log.d("OnError ", e.getMessage());
+                            //DisplayToast("Error");
+                            //StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<GetCustomerBookingListResponse> responselist) {
+                        List<GetCustomerBookingListResponse> res=responselist;
+                        showDialogPaymentTransactions();
+
+                    }
+                });
+    }
+
     public void DisplayToast(String text){
         if(toast!=null){
             toast.cancel();

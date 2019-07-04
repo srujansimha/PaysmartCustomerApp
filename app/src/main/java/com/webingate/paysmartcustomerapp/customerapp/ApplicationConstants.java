@@ -83,6 +83,12 @@ public class ApplicationConstants {
     public static String pdate;
     public static String ptime;
     public static String pmode;
+    public static String pmobno;
+    public static String pemail;
+    public static String pname;
+    public static String passengerage;
+    public static String pgender;
+    public static String passengerdate;
     //Registration Details
     /*public static String Username="";
     public static String Email="";

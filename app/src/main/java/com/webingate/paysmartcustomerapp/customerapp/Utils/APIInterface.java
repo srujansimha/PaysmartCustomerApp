@@ -171,6 +171,9 @@ public interface APIInterface  {
     @POST("api/Common/ConfigData")
     public Observable<List<ConfigData>> GetConfigData(@Body JsonObject jsonObject);
 
+    @POST("api/TicketBooking/SaveBookingDetails")
+    public Observable<List<GetCustomerBookingListResponse>> SaveBookingDetails1(@Body JsonObject jsonObject);
+
     /*
 
 

@@ -17,6 +17,8 @@ import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
 @SuppressLint("NewApi")
 public class PassengerDetails extends Fragment {
@@ -27,6 +29,9 @@ public class PassengerDetails extends Fragment {
     EditText age[]=new EditText[5];
     ToggleButton gender[]=new ToggleButton[5];
     Button payment;
+    EditText mobileno,email;
+    EditText fgender,fname,fage;
+
     ArrayList selected=new ArrayList();
     public static PassengerDetails newInstance(int SectionNumber) {
         PassengerDetails home = new PassengerDetails();
@@ -67,6 +72,11 @@ public class PassengerDetails extends Fragment {
         gender[3]= (ToggleButton) v.findViewById(R.id.gender4);
         gender[4]= (ToggleButton) v.findViewById(R.id.gender5);
         payment= (Button) v.findViewById(R.id.btn_payments);
+        mobileno = v.findViewById(R.id.input_mobile);
+        email = v.findViewById(R.id.input_email);
+//        fname = v.findViewById(R.id.firstname);
+//        fage = v.findViewById(R.id.firstage);
+//        fgender = v.findViewById(R.id.firstgender);
 
         for(int i=5;i>ApplicationConstants.seatsSelected.size();i--){
             tableRow[i-1].setVisibility(View.GONE);
@@ -75,6 +85,11 @@ public class PassengerDetails extends Fragment {
             @Override
             public void onClick(View v) {
                 ApplicationConstants.FRAGMENT=ApplicationConstants.PAYMENTS;
+                ApplicationConstants.pmobno = mobileno.getText().toString();
+                ApplicationConstants.pemail = email.getText().toString();
+//                ApplicationConstants.pname = fname.getText().toString();
+//                ApplicationConstants.passengerage = fage.getText().toString();
+//                ApplicationConstants.pgender = fgender.getText().toString();
                 goPage(ApplicationConstants.FRAGMENT);
             }
         });

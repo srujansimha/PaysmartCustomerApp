@@ -125,6 +125,7 @@ public static final String MyPREFERENCES = "MyPrefs";
     public static final String UserAccountNo = "UserAccountNokey";
     public static final String BookingNO = "bookingno";
     public static final String Phone = "phoneKey";
+    private static final int intervaltime = 2000;
     LinearLayout bsLayout;
     ArrayList<String> list;
     ArrayAdapter<String> adapter;
@@ -1338,14 +1339,31 @@ public static final String MyPREFERENCES = "MyPrefs";
                             return;
                         }
                         else{
-                            BookingStatus();
+                            try
+                            {
+                                Thread.sleep(intervaltime);
+                                BookingStatus();
+                            }
+                            catch(InterruptedException ex)
+                            {
+                                Thread.currentThread().interrupt();
+                            }
+
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         try {
-                            BookingStatus();
+                            try
+                            {
+                                Thread.sleep(intervaltime);
+                                BookingStatus();
+                            }
+                            catch(InterruptedException ex)
+                            {
+                                Thread.currentThread().interrupt();
+                            }
                             Log.d("OnError ", e.getMessage());
                             //  DisplayToast("Error");
                                 //StopDialogue();
@@ -1378,7 +1396,15 @@ public static final String MyPREFERENCES = "MyPrefs";
                             finish();
                             return;
                         }else {
-                            BookingStatus();
+                            try
+                            {
+                                Thread.sleep(intervaltime);
+                                BookingStatus();
+                            }
+                            catch(InterruptedException ex)
+                            {
+                                Thread.currentThread().interrupt();
+                            }
                         }
                     }
                     }

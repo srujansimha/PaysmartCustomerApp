@@ -436,7 +436,7 @@ public class GetCustomerBookingListResponse {
 	@Override
  	public String toString(){
 		return 
-			"GetdriverTripsResponse{" + 
+			"GetCustomerBookingListResponse{" +
 			"departureTime = '" + departureTime + '\'' + 
 			",destLongitude = '" + destLongitude + '\'' + 
 			",cancelledBy = '" + cancelledBy + '\'' + 

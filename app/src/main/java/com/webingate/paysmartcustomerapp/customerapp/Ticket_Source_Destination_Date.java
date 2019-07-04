@@ -144,7 +144,7 @@ public class Ticket_Source_Destination_Date extends Fragment {
                         //newFragment.show(this.getFragmentManager(), "datePicker");
 
                         new DatePickerDialog(v.getContext(), datePickerDialog, dateTime.get(Calendar.YEAR),dateTime.get(Calendar.MONTH),dateTime.get(Calendar.DAY_OF_MONTH)).show();
-
+                         ApplicationConstants.passengerdate = date.getText().toString();
                         break;
                     case R.id.returnjourneyDate:
                         // DialogFragment newFragment = new DatePickerFragment();

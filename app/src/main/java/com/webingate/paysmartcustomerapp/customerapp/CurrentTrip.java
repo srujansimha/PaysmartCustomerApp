@@ -88,6 +88,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Locale;
 import java.util.Timer;
@@ -106,9 +107,11 @@ import static com.google.android.gms.location.LocationRequest.*;
 public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,RatingBarDialogue.Ratingfinished {
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String ID = "idKey";
+    private static final String TAG = "CurrentTrip";
     public static final String UserAccountNo = "UserAccountNokey";
     public static final String BookingNO = "bookingno";
     String serverUrl = "", otp = "",amt,ctype,chekcstt="test";
+    private static final int intervaltime = 2000;
     static GoogleMap mMap;
     String paymentmethod;
     static Marker marker, markerDriver;
@@ -729,7 +732,15 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             MakePayment();
                         return;
                         }else{
-                            VehiclePosition();
+                            try
+                            {
+                                Thread.sleep(intervaltime);
+                                VehiclePosition();
+                            }
+                            catch(InterruptedException ex)
+                            {
+                                Thread.currentThread().interrupt();
+                            }
 
                         }
                     }
@@ -738,8 +749,15 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                         try {
                             //DisplayToast("Error");
                             //StopDialogue();
-
+                            try
+                            {
+                                Thread.sleep(intervaltime);
                                 VehiclePosition();
+                            }
+                            catch(InterruptedException ex)
+                            {
+                                Thread.currentThread().interrupt();
+                            }
 
 
                             Log.d("OnError ", e.getMessage());
@@ -753,6 +771,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
 
                         VehiclePositionResponse response=responselist.get(0);
                         if (response.getBookingStatus().contains("OnTrip")) {
+                            Log.e(TAG,"OnTrip");
                             Log.i("Trip status", " Ontrip : " + +driverLatitude + "," + driverLongitude);
                             latitude = getIntent().getDoubleExtra("destlat", 0.0);
                             longitude = getIntent().getDoubleExtra("destlon", 0.0);
@@ -768,6 +787,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             rotateMarker(markerDriver, latlngnew, rotation);
                             updatemarkers++;
                         } else if (response.getBookingStatus().contains("Trip Completed")) {
+                            Log.e(TAG,"Trip Completed");
                             chekcstt=response.getBookingStatus();
                             tripFlag = 0;
                             String amount = response.getAmount();
@@ -795,6 +815,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
 
 
                         } else if (driverLatitude == 0.0 || driverLongitude == 0.0) {
+                            Log.e(TAG,"Driver Marker Position is zero");
                             driverLatitude = response.getLatitude();
                             driverLongitude =response.getLongitude();
                             latlngnew = new LatLng(driverLatitude, driverLongitude);
@@ -804,8 +825,9 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_car));
                             markerDriver = mMap.addMarker(markerOptions);
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
-                            mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
+                            mMap.animateCamera(CameraUpdateFactory.zoomTo(12.0f));
                         } else {
+                            Log.e(TAG,"Driver Marker Position is equall");
                             latLng = latlngnew;
                             driverLatitude = response.getLatitude();
                             driverLongitude =response.getLongitude();
