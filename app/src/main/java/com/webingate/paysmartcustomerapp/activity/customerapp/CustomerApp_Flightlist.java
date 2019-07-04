@@ -15,8 +15,6 @@ import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.adapter.FlightlistAdapter;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerFlightResponce;
-import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerGetstopsResponse;
-import com.webingate.paysmartcustomerapp.customerapp.ListViewAdapter;
 
 import java.util.List;
 

@@ -193,8 +193,13 @@ public interface APIInterface  {
 
 
     */
-    @GET("api/airport/getairport")
+    @GET("/api/airport/getairport")
     public Observable<List<CustomerFlightResponce>> GetAirPortList();
+
+    @POST("/api/flightschedule/getflightschedule")
+    public Observable<List<CustomerFlightResponce>> getflightschedule(@Body JsonObject jsonObject);//i
+
+
 
 
 }

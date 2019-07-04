@@ -2,7 +2,9 @@ package com.webingate.paysmartcustomerapp.activity.customerapp;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -34,6 +36,16 @@ import java.util.Locale;
 import butterknife.ButterKnife;
 
 public class customerappFlightBookingselectioncabin extends AppCompatActivity implements View.OnClickListener{
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String fsourceid = "sourceid";
+    public static final String fdestinationid= "fdestinationid";
+    public static final String fsourcename = "fsourcename";
+    public static final String fdestinationname= "fdestinationname";
+    public static final String fjourneydate = "fjourneydate";
+    public static final String fcabinename = "fcabinename";
+    public static final String fadults = "fadults";
+    public static final String fchild = "fchild";
+    public static final String finfant = "finfant";
 
     private Toolbar toolbar;
     EditText destination,orgin;
@@ -57,6 +69,7 @@ public class customerappFlightBookingselectioncabin extends AppCompatActivity im
         super.onCreate(savedInstanceState);
         setContentView(R.layout.flight_custmer_selection);
         ButterKnife.bind(this);
+
         initUI();
         initToolbar();
         initActions();
@@ -234,9 +247,25 @@ public class customerappFlightBookingselectioncabin extends AppCompatActivity im
 
 
 
+            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            if(!(ApplicationConstants.adultquantity==null)){
+                editor.putString("fadults",ApplicationConstants.adultquantity);
+            }
+            if(!(ApplicationConstants.childquantity==null)){
+                editor.putString("fchild",ApplicationConstants.childquantity);
+            }
+            if(!(ApplicationConstants.infantquantity==null)){
+                editor.putString("finfant",ApplicationConstants.infantquantity);
 
+            }
+            if(!(ApplicationConstants.CabinName==null)){
+                editor.putString("fcabinename",ApplicationConstants.CabinName);
+            }
+            editor.commit();
 
             startActivity(new Intent(this,customerappFlightBookingSearchActivity.class));
+            finish();
         });
     }
     private void initToolbar() {

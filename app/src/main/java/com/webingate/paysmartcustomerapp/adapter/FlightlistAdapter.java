@@ -1,9 +1,5 @@
 package com.webingate.paysmartcustomerapp.adapter;
 
-/**
- * Created by Seshu on 3/24/2017.
- */
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,3 +88,4 @@ public class FlightlistAdapter extends BaseAdapter {
 
 
 }
+

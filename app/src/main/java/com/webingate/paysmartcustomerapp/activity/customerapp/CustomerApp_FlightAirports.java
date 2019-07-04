@@ -1,16 +1,12 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
-import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -21,14 +17,10 @@ import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.adapter.FlightlistAdapter;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerFlightResponce;
-import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerGetstopsResponse;
-import com.webingate.paysmartcustomerapp.customerapp.ListViewAdapter;
-import com.webingate.paysmartcustomerapp.customerapp.Ticket_Source_Destination_Date;
 
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -36,6 +28,13 @@ import rx.schedulers.Schedulers;
 
 public class CustomerApp_FlightAirports extends AppCompatActivity implements SearchView.OnQueryTextListener {
     // Declare Variables
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String fsourceid = "sourceid";
+    public static final String fdestinationid= "fdestinationid";
+    public static final String fsourcename = "fsourcename";
+    public static final String fdestinationname= "fdestinationname";
+    public static final String fstatusno = "fstatusno";
+
     FlightlistAdapter adapter;
     //String[] stopsList;
     private static final String ARG_SECTION_NUMBER = "section_number";
@@ -53,6 +52,8 @@ public class CustomerApp_FlightAirports extends AppCompatActivity implements Sea
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_flight_ariport);
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        ApplicationConstants.fstatus=prefs.getInt(fstatusno,0);
         //ButterKnife.bind(this);
 
         initUI();
@@ -68,16 +69,32 @@ public class CustomerApp_FlightAirports extends AppCompatActivity implements Sea
                 // TODO Auto-generated method stub
                 //   Toast.makeText(getContext(), stopsList[position], Toast.LENGTH_SHORT).show();
                 if (ApplicationConstants.fstatus==1)  {
+
                     ApplicationConstants.fsource =stopslist.get(position).getName();
                     ApplicationConstants.fsourceid = stopslist.get(position).getId();
 
+                    SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString(fsourcename,ApplicationConstants.fsource);
+                    editor.putInt(fsourceid,ApplicationConstants.fsourceid);
+                    editor.commit();
+
                     startActivity(new Intent(CustomerApp_FlightAirports.this,customerappFlightBookingSearchActivity.class));
+                    finish();
                     // goPage(ApplicationConstants.FRAGMENT);
                 } else if(ApplicationConstants.fstatus==2) {
+
                     ApplicationConstants.fdestination = stopslist.get(position).getName();
                     ApplicationConstants.fdestinationid = stopslist.get(position).getId();
 
+                    SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedpreferences.edit();
+                    editor.putString(fdestinationname,ApplicationConstants.fdestination);
+                    editor.putInt(fdestinationid,ApplicationConstants.fdestinationid);
+                    editor.commit();
+
                     startActivity(new Intent(CustomerApp_FlightAirports.this,customerappFlightBookingSearchActivity.class));
+                    finish();
                     // goPage(ApplicationConstants.FRAGMENT);
                 }
             }

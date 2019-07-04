@@ -2,10 +2,14 @@ package com.webingate.paysmartcustomerapp.activity.customerapp;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -13,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +32,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
+import com.webingate.paysmartcustomerapp.customerapp.Ticket_Source_Destination_Date;
+import com.webingate.paysmartcustomerapp.fragment.customerAppFragments.Flightslist;
 import com.webingate.paysmartcustomerapp.utils.Tools;
 
 import java.text.SimpleDateFormat;
@@ -36,6 +43,18 @@ import java.util.Locale;
 import butterknife.ButterKnife;
 
 public class customerappFlightBookingSearchActivity extends AppCompatActivity {
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String fsourceid = "sourceid";
+    public static final String fdestinationid= "fdestinationid";
+    public static final String fsourcename = "fsourcename";
+    public static final String fdestinationname= "fdestinationname";
+    public static final String fjourneydate = "fjourneydate";
+    public static final String fcabinename = "fcabinename";
+    public static final String fadults = "fadults";
+    public static final String fchild = "fchild";
+    public static final String finfant = "finfant";
+    public static final String fstatusno = "fstatusno";
+
 
     private Toolbar toolbar;
     EditText destination,orgin;
@@ -47,17 +66,32 @@ public class customerappFlightBookingSearchActivity extends AppCompatActivity {
     TextView journeyDate,adults,child,infants,selectcabin;
     Calendar dateTime = Calendar.getInstance();
     Button confirmButton;
+    //LinearLayout homeliner;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_flightbookingsearch);
         ButterKnife.bind(this);
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        ApplicationConstants.adultquantity=prefs.getString(fadults,null);
+        ApplicationConstants.childquantity=prefs.getString(fchild,null);
+        ApplicationConstants.infantquantity=prefs.getString(finfant,null);
+        ApplicationConstants.fsource=prefs.getString(fsourcename,null);
+        ApplicationConstants.fsourceid=prefs.getInt(fsourceid,0);
+        ApplicationConstants.fdestination=prefs.getString(fdestinationname,null);
+        ApplicationConstants.fdestinationid=prefs.getInt(fdestinationid,0);
+        ApplicationConstants.CabinName=prefs.getString(fcabinename,null);
+        ApplicationConstants.fdate=prefs.getString(fjourneydate,null);
         initUI();
         initToolbar();
         initActions();
     }
 
     private void initUI() {
+         //homeliner=findViewById(R.id.homeliner);
+        if(ApplicationConstants.seatsSelected.size()!=0){
+        ApplicationConstants.seatsSelected.clear();
+        }
         destination=findViewById(R.id.destination);
         orgin=findViewById(R.id.orgin);
         journeyDate = findViewById(R.id.journeyDate);
@@ -98,20 +132,29 @@ public class customerappFlightBookingSearchActivity extends AppCompatActivity {
         }
         adults.setOnClickListener(view -> {
             startActivity(new Intent(this,customerappFlightBookingselectioncabin.class));
+            finish();
         });
         child.setOnClickListener(view -> {
             startActivity(new Intent(this,customerappFlightBookingselectioncabin.class));
+            finish();
         });
         infants.setOnClickListener(view -> {
             startActivity(new Intent(this,customerappFlightBookingselectioncabin.class));
+            finish();
         });
         selectcabin.setOnClickListener(view -> {
             startActivity(new Intent(this,customerappFlightBookingselectioncabin.class));
+            finish();
         });
 
         orgin.setOnClickListener(view -> {
+            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putInt("fstatusno",1);
+            editor.commit();
             ApplicationConstants.fstatus=1;
             startActivity(new Intent(this,CustomerApp_FlightAirports.class));
+            finish();
             if(!(ApplicationConstants.fsource==null)){
                 orgin.setText(ApplicationConstants.fsource);
             }
@@ -138,8 +181,13 @@ public class customerappFlightBookingSearchActivity extends AppCompatActivity {
 //            }
         });
         destination.setOnClickListener(view -> {
+            SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = sharedpreferences.edit();
+            editor.putInt("fstatusno",2);
+            editor.commit();
             ApplicationConstants.fstatus=2;
             startActivity(new Intent(this,CustomerApp_FlightAirports.class));
+            finish();
             if(!(ApplicationConstants.fdestination==null)){
                 destination.setText(ApplicationConstants.fdestination);
             }
@@ -165,7 +213,15 @@ public class customerappFlightBookingSearchActivity extends AppCompatActivity {
        });
 
         confirmButton.setOnClickListener(view -> {
-            DisplayToast("Clicked on Confirm");
+            //DisplayToast("Clicked on Confirm");
+            if(ApplicationConstants.fdestination==null && ApplicationConstants.fsource==null){
+                DisplayToast("Select Source or Destination.");
+            } else if(ApplicationConstants.fdate==null){
+                DisplayToast("Select Journey Date.");
+            }else{
+                Confirm();
+            }
+
         });
     }
     private void initToolbar() {
@@ -233,6 +289,10 @@ public class customerappFlightBookingSearchActivity extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         String shortTimeStr = sdf.format(dateTime.getTime());
         ApplicationConstants.fdate = shortTimeStr;
+        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedpreferences.edit();
+        editor.putString("fjourneydate",ApplicationConstants.fdate);
+        editor.commit();
         journeyDate.setText( ApplicationConstants.fdate);
     }
 
@@ -246,5 +306,17 @@ public class customerappFlightBookingSearchActivity extends AppCompatActivity {
         toast.show();
 
     }
+    private void Confirm() {
+       // initToolbar();
+        //confirmButton.setVisibility(View.GONE);
+        loadFragment(new Flightslist());
 
+
+    }
+    private void loadFragment(Fragment fragment) {
+
+        this.getSupportFragmentManager().beginTransaction()
+                .replace(R.id.homeliner, fragment)
+                .commitAllowingStateLoss();
+    }
 }

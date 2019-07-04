@@ -13,10 +13,14 @@ public class CustomerFlightResponce {
 	@SerializedName("code") private String code;
 	@SerializedName("countryid") private String countryid;
 
+	@SerializedName("Sourceterminal") private String Sourceterminal;
+	@SerializedName("destinationterminal") private String destinationterminal;
+	@SerializedName("amount") private String amount;
+
+
 	public int getId(){
 		return Id;
 	}
-
 	public String getActive(){
 		return active;
 	}
@@ -38,6 +42,15 @@ public class CustomerFlightResponce {
 	public String getName(){
 		return name;
 	}
+	public String getSourceterminal(){
+		return Sourceterminal;
+	}
+	public String getDestinationterminal(){
+		return destinationterminal;
+	}
+	public String getAmount(){
+		return amount;
+	}
 
-	
+
 }

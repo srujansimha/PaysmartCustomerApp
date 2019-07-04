@@ -2,6 +2,8 @@ package com.webingate.paysmartcustomerapp.customerapp;
 
 import android.graphics.Bitmap;
 
+import com.webingate.paysmartcustomerapp.fragment.customerAppFragments.Flightslist;
+
 import java.util.ArrayList;
 
 /**
@@ -39,6 +41,7 @@ public class ApplicationConstants {
     public static int fsourceid=0;
     public static int fdestinationid=0;
     public static TravelModel travel;
+    public static Flightslist flightslist;
     public static String bookingDate="";
     public static String bookingTime="";
     public static String walletBalance="";
@@ -69,6 +72,10 @@ public class ApplicationConstants {
 
     public static int FRAGMENT=0;
     public static ArrayList seatsSelected=new ArrayList();
+    public static ArrayList<String> passengerlist=new ArrayList();
+    public static ArrayList<String> passengerage=new ArrayList();
+    public static String PassengerMobileno;
+    public static String PassengerEmailid;
 
     public static String bookingNo;
     public static String booKingOTP="";
