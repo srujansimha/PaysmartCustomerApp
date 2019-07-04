@@ -37,13 +37,19 @@
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/nested_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="525dp"
+        android:layout_height="wrap_content"
         android:scrollbars="none"
         android:scrollingCache="true">
 
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/homeliner"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            >
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:descendantFocusability="blocksDescendants"
             android:orientation="vertical">
 
@@ -96,9 +102,11 @@
                             app:srcCompat="@drawable/ic_flight_takeoff" />
 
                         <EditText
+                            android:id="@+id/orgin"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:clickable="true"
                             android:background="@android:color/transparent"
                             android:hint="Origin"
                             android:imeOptions="actionSearch"
@@ -151,9 +159,11 @@
                             app:srcCompat="@drawable/ic_flight_land" />
 
                         <EditText
+                            android:id="@+id/destination"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+
                             android:background="@android:color/transparent"
                             android:hint="Destination"
                             android:imeOptions="actionSearch"
@@ -218,6 +228,9 @@
                             app:srcCompat="@drawable/ic_event" />
 
                         <TextView
+                            android:id="@+id/journeyDate"
+                            android:clickable="true"
+                            android:focusableInTouchMode="true"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
@@ -261,10 +274,13 @@
                             app:srcCompat="@drawable/ic_person" />
 
                         <TextView
+                            android:id="@+id/adults"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="2 Adult"
+                            android:text="0 Adults"
+                            android:clickable="true"
+                            android:focusableInTouchMode="true"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
                             android:textColor="@color/grey_60" />
 
@@ -289,15 +305,53 @@
                             app:srcCompat="@drawable/ic_person" />
 
                         <TextView
+                            android:id="@+id/child"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="1 Child"
+                            android:text="0 Child"
+                            android:clickable="true"
+                            android:focusableInTouchMode="true"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
                             android:textColor="@color/grey_60" />
 
                     </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:layout_marginLeft="@dimen/spacing_large"
+                        android:layout_marginRight="@dimen/spacing_large"
+                        android:background="@color/grey_20" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
 
+                        <View
+                            android:layout_width="@dimen/spacing_xmedium"
+                            android:layout_height="0dp" />
+
+                        <ImageButton
+                            android:layout_width="@dimen/spacing_xmlarge"
+                            android:layout_height="@dimen/spacing_xmlarge"
+                            android:background="@android:color/transparent"
+                            android:clickable="true"
+                            android:tint="@color/grey_40"
+                            app:srcCompat="@drawable/ic_person" />
+
+                        <TextView
+                            android:id="@+id/infants"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="0 Infants"
+                            android:clickable="true"
+                            android:focusableInTouchMode="true"
+                            android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
+                            android:textColor="@color/grey_60" />
+
+                    </LinearLayout>
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="2px"
@@ -332,10 +386,13 @@
                             app:srcCompat="@drawable/ic_event_seat" />
 
                         <TextView
+                            android:id="@+id/selectcabin"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Thus, 10 Mar 2018"
+                            android:text="Economy"
+                            android:clickable="true"
+                            android:focusableInTouchMode="true"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
                             android:textColor="@color/grey_60" />
 
@@ -344,104 +401,22 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/spacing_large" />
-
+                    <Button
+                        android:id="@+id/confirmButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_gravity="bottom"
+                        android:background="@color/colorPrimary"
+                        android:text="Search"
+                        android:textColor="@color/md_white_1000" />
                 </LinearLayout>
 
             </android.support.v7.widget.CardView>
 
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="horizontal"-->
-            <!--android:padding="@dimen/spacing_xmedium">-->
-
-            <!--<android.support.v7.widget.CardView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:visibility="visible"-->
-            <!--app:cardCornerRadius="1dp"-->
-            <!--app:cardElevation="2dp"-->
-            <!--app:cardUseCompatPadding="true">-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="vertical"-->
-            <!--android:padding="@dimen/spacing_large">-->
-
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Balance"-->
-            <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"-->
-            <!--android:textColor="@color/grey_40" />-->
-
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="$ 730"-->
-            <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"-->
-            <!--android:textColor="@color/green_400"-->
-            <!--android:textStyle="bold" />-->
-
-            <!--</LinearLayout>-->
-
-            <!--</android.support.v7.widget.CardView>-->
-
-            <!--<View-->
-            <!--android:layout_width="@dimen/spacing_medium"-->
-            <!--android:layout_height="0dp" />-->
-
-            <!--<android.support.v7.widget.CardView-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_weight="1"-->
-            <!--android:visibility="visible"-->
-            <!--app:cardCornerRadius="1dp"-->
-            <!--app:cardElevation="2dp"-->
-            <!--app:cardUseCompatPadding="true">-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="vertical"-->
-            <!--android:padding="@dimen/spacing_large">-->
-
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Points"-->
-            <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"-->
-            <!--android:textColor="@color/grey_40" />-->
-
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="320"-->
-            <!--android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"-->
-            <!--android:textColor="@color/green_400"-->
-            <!--android:textStyle="bold" />-->
-
-            <!--</LinearLayout>-->
-
-            <!--</android.support.v7.widget.CardView>-->
-
-            <!--</LinearLayout>-->
-
-            <!--<View-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="@dimen/spacing_middle" />-->
 
         </LinearLayout>
 
+        </FrameLayout>
     </android.support.v4.widget.NestedScrollView>
-    <Button
-        android:id="@+id/confirmButton"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_gravity="bottom"
-        android:background="@color/colorPrimary"
-        android:text="Search"
-        android:textColor="@color/md_white_1000" />
+
 </android.support.design.widget.CoordinatorLayout>

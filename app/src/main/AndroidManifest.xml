@@ -172,6 +172,8 @@
         <activity
             android:name=".activity.customerapp.customerappAmbulanceActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.customerapp.CustomerApp_FlightAirports"></activity>
+        <activity android:name=".activity.customerapp.CustomerApp_Flightlist"></activity>
         <activity
             android:name=".activity.customerapp.customerappAmbulanceConfirmActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -179,6 +181,7 @@
         <activity
             android:name=".activity.customerapp.customerappBookingDetails"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.customerapp.customerappFlightBookingselectioncabin"></activity>
 
         <activity android:name=".activity.customerapp.CropingMainActivity" android:theme="@style/Theme.AppCompat.Light"/>
         <activity android:name="cropper.CropImageActivity" android:theme="@style/Theme.AppCompat.Light"/>

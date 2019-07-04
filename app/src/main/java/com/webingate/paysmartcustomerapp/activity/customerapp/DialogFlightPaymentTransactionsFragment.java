@@ -4,38 +4,37 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.DialogFragment;
-import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 
-import java.util.List;
-
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
-
-public class DialogPaymentTransactionsFragment extends DialogFragment {
+public class DialogFlightPaymentTransactionsFragment extends DialogFragment {
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String Phone = "phoneKey";
     public static final String ID = "idKey";
     public static final String Name = "nameKey";
     public static final String Email = "emailKey";
+    public static final String fsourceid = "sourceid";
+    public static final String fdestinationid= "fdestinationid";
+    public static final String fsourcename = "fsourcename";
+    public static final String fdestinationname= "fdestinationname";
+    public static final String fjourneydate = "fjourneydate";
+    public static final String fcabinename = "fcabinename";
+    public static final String fadults = "fadults";
+    public static final String fchild = "fchild";
+    public static final String finfant = "finfant";
+    public static final String fstatusno = "fstatusno";
 
     private View root_view;
     Toast toast;
@@ -86,7 +85,19 @@ public class DialogPaymentTransactionsFragment extends DialogFragment {
                 ApplicationConstants.source="";
                 ApplicationConstants.destination="";
 
-                startActivity(new Intent(getContext(), customerappBusBookingMainActivity.class));
+                SharedPreferences sharedPref = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(fadults,null);
+                editor.putString(fchild,null);
+                editor.putString(finfant,null);
+                editor.putString(fsourcename,null);
+                editor.putInt(fsourceid,0);
+                editor.putString(fdestinationname,null);
+                editor.putInt(fdestinationid,0);
+                editor.putString(fcabinename,null);
+                editor.putString(fjourneydate,null);
+                editor.commit();
+                startActivity(new Intent(getContext(), customerappFlightBookingSearchActivity.class));
                 getActivity().finish();
                 dismiss();
             }

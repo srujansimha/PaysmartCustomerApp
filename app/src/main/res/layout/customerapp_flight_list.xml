@@ -1,0 +1,52 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    android:layout_marginTop="@dimen/space_60">
+    <FrameLayout
+        android:id="@+id/flContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@null"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+    <LinearLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="vertical"
+
+        android:paddingLeft="@dimen/fab_margin"
+        android:paddingRight="@dimen/fab_margin"
+        android:paddingTop="@dimen/fab_margin">
+
+        <SearchView
+            android:id="@+id/search"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:iconifiedByDefault="false">
+            <requestFocus />
+        </SearchView>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
+
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+        <!--<ListView-->
+            <!--android:paddingLeft="@dimen/fab_margin"-->
+            <!--android:paddingBottom="@dimen/fab_margin"-->
+            <!--android:id="@+id/listview"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:layout_below="@+id/search" />-->
+    </LinearLayout>
+    </FrameLayout>
+</RelativeLayout>
