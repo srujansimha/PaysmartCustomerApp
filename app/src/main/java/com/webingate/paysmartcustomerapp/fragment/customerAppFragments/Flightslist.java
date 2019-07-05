@@ -50,6 +50,8 @@ public class Flightslist extends Fragment {
     public static final String fadults = "fadults";
     public static final String fchild = "fchild";
     public static final String finfant = "finfant";
+    public static final String flighid= "flighid";
+
     // Declare Variables
 
     FlightSchedulelist adapter;
@@ -199,6 +201,16 @@ public class Flightslist extends Fragment {
                         adapter.setOnItemClickListener((view, obj, position) ->
                                 {
                                     //ApplicationConstants.flightslist = responselist.get(position);
+
+
+//                                    public static int FlightId;
+//                                    public static String FlightArriveTime;
+//                                    public static String FlightDepTime;
+//                                    public static String FlightAmount;
+
+                                    ApplicationConstants.FlightId=obj.getId();
+                                    ApplicationConstants.FlightAmount=obj.getAmount();
+
                                     ApplicationConstants.FRAGMENT = ApplicationConstants.BUSLAYOUT;
                                     goPage(ApplicationConstants.FRAGMENT);
                                 }

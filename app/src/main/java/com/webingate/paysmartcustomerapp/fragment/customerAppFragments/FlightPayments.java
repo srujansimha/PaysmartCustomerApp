@@ -19,13 +19,18 @@ import com.webingate.paysmartcustomerapp.activity.customerapp.DialogFlightPaymen
 import com.webingate.paysmartcustomerapp.activity.customerapp.DialogPaymentTransactionsFragment;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.BusLayout;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerFlightResponce;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerPayResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Dialog.ProgressDialog;
 import com.webingate.paysmartcustomerapp.customerapp.Mytickets;
 import com.webingate.paysmartcustomerapp.customerapp.Stops;
 import com.webingate.paysmartcustomerapp.customerapp.Ticket_Source_Destination_Date;
+import com.webingate.paysmartcustomerapp.customerapp.TravelModel;
 import com.webingate.paysmartcustomerapp.customerapp.Travels;
 
+import org.joda.time.DateTime;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -115,15 +120,41 @@ public class FlightPayments extends Fragment {
             public void onClick(View v) {
                 ApplicationConstants.pmode="Credit & Debit";
 
-                JsonObject object = new JsonObject();
-                object.addProperty("Transactionid", "1256");
-                object.addProperty("Transaction_Number", "ts1258967");
-                object.addProperty("Amount", "150");
-                object.addProperty("Paymentmode", "1");
-                object.addProperty("TransactionStatus", "1");
-                object.addProperty("Gateway_transId", "wb123");
-                object.addProperty("flag","I");
-                Pay(object);
+                //ArrayList<TravelModel> servicesList =  new ArrayList<>();
+//                //TravelModel travelModel = new TravelModel();
+//                //travelModel.setName(c.getString("srcName") + "-" + c.getString("destName"));
+//                // travelModel.setSubTitle("Arrival - " + c.getString("ArrivalTime") + "\nDeparture - " + c.getString("DepartureTime"));
+//                //travelModel.setPrice("Amount - " + c.getString("Amount") + "$");
+//
+//                // travelModel.setActive(Integer.parseInt(c.getString("Active")));
+//
+//                for (int i = 0; i < 5; i++) {
+//                    TravelModel obj = new TravelModel();
+//                    obj.setName("travels"+i);
+//                    obj.setPrice("200"+(i*50));
+//                    obj.setTime(DateTime.now().toString());
+//                    obj.setSubTitle("good morning travels"+1);
+//                    servicesList.add(obj);
+//                }
+//                //Collections.shuffle(items);
+
+                ArrayList<CustomerFlightResponce> pasengerlist=new ArrayList<>();
+                CustomerFlightResponce obj=new CustomerFlightResponce();
+                for(int i=0;i<ApplicationConstants.passengerlist.size();i++){
+                obj.setName(ApplicationConstants.passengerlist.get(i));
+                obj.setAge(Integer.parseInt((ApplicationConstants.passengerage.get(i)!=null)?(ApplicationConstants.passengerage.get(i)):"0"));
+                obj.setappuserid(ApplicationConstants.userid);
+                obj.setFlag("I");
+                obj.setgender(0);
+                obj.setMobileno(ApplicationConstants.PassengerMobileno);
+                obj.setEmailid(ApplicationConstants.PassengerEmailid);
+                obj.setSeatno(String.valueOf(ApplicationConstants.seatsSelected.get(i)));
+                pasengerlist.add(obj);
+                }
+
+                if(!(pasengerlist.size()!=0)){
+                    SaveFlightPassengerDetails(pasengerlist);
+                }
                 /*PaymentRequest paymentRequest = new PaymentRequest();
                 paymentRequest.execute();*/
             }
@@ -192,7 +223,47 @@ public class FlightPayments extends Fragment {
         transaction.add(android.R.id.content, dptf).addToBackStack(null).commit();
 
     }
+    public void SaveFlightPassengerDetails(ArrayList<CustomerFlightResponce> jsonObject){
 
+        StartDialogue();
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(getActivity()).getrestadapter()
+                .saveflightbooking(jsonObject)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<CustomerFlightResponce>>() {
+                    @Override
+                    public void onCompleted() {
+                        //  DisplayToast("Successfully Registered");
+                        StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            Log.d("OnError ", e.getMessage());
+                            DisplayToast("Error");
+                            StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<CustomerFlightResponce> responselist) {
+                        List<CustomerFlightResponce> res=responselist;
+
+                        JsonObject object = new JsonObject();
+                        object.addProperty("Transactionid", "1256");
+                        object.addProperty("Transaction_Number", "ts1258967");
+                        object.addProperty("Amount", "150");
+                        object.addProperty("Paymentmode", "1");
+                        object.addProperty("TransactionStatus", "1");
+                        object.addProperty("Gateway_transId", "wb123");
+                        object.addProperty("flag","I");
+                        Pay(object);
+
+                    }
+                });
+    }
 
 
     public void Pay(JsonObject jsonObject){

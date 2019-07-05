@@ -12,6 +12,15 @@ import java.util.ArrayList;
 
 public class ApplicationConstants {
 
+    //start Flight Application Constants
+    public static int FlightId;
+    public static String FlightArriveTime;
+    public static String FlightDepTime;
+    public static String FlightAmount;
+    //End Flight Application Constants
+
+
+
     public static  String fdate;
     public static  int fstatus;
     public static  String adultquantity;
@@ -104,7 +113,6 @@ public class ApplicationConstants {
     public static String pmobno;
     public static String pemail;
     public static String pname;
-    public static String passengerage;
     public static String pgender;
     public static String passengerdate;
     //Registration Details

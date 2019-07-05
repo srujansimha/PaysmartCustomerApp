@@ -111,7 +111,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
     public static final String UserAccountNo = "UserAccountNokey";
     public static final String BookingNO = "bookingno";
     String serverUrl = "", otp = "",amt,ctype,chekcstt="test";
-    private static final int intervaltime = 2000;
+    private static final int intervaltime = 3000;
     static GoogleMap mMap;
     String paymentmethod;
     static Marker marker, markerDriver;
@@ -317,7 +317,8 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             .icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_car))
                             .title("Driver :" + result.routes[0].legs[0].startAddress);
                     if (markerDriver != null)
-                        markerDriver.remove();
+                        //markerDriver.remove();
+                    markerDriver.isVisible();
                     markerDriver = mMap.addMarker(markerOptions);
                     markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
                             .legs[0].endLocation.lat, result.routes[0]
@@ -325,13 +326,13 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
                             .title("My Location :" + result.routes[0].legs[0].endAddress);
                     if (marker != null)
-                        marker.remove();
+                        marker.isVisible();
                     marker = mMap.addMarker(markerOptions);
                 }
                 List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
                 PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
                 if (line != null)
-                    line.remove();
+                    line.isVisible();
                 line = mMap.addPolyline(polylineOptions);
                 driverTimeDistance.setText(getEndLocationTitle());
             }
@@ -783,9 +784,9 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             DirectionsTask directionsTask = new DirectionsTask();
                             directionsTask.execute();
                             // moving driver vehicle
-                            float rotation = (float) SphericalUtil.computeHeading(latLng, latlngnew);
-                            rotateMarker(markerDriver, latlngnew, rotation);
-                            updatemarkers++;
+                            //float rotation = (float) SphericalUtil.computeHeading(latLng, latlngnew);
+                            //rotateMarker(markerDriver, latlngnew, rotation);
+                            updatemarkers=1;
                         } else if (response.getBookingStatus().contains("Trip Completed")) {
                             Log.e(TAG,"Trip Completed");
                             chekcstt=response.getBookingStatus();
@@ -814,7 +815,9 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             return;
 
 
-                        } else if (driverLatitude == 0.0 || driverLongitude == 0.0) {
+                        }
+                        else if (driverLatitude == 0.0 || driverLongitude == 0.0) {
+
                             Log.e(TAG,"Driver Marker Position is zero");
                             driverLatitude = response.getLatitude();
                             driverLongitude =response.getLongitude();
@@ -825,8 +828,9 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_car));
                             markerDriver = mMap.addMarker(markerOptions);
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
-                            mMap.animateCamera(CameraUpdateFactory.zoomTo(12.0f));
-                        } else {
+                            mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
+                        }
+                        else {
                             Log.e(TAG,"Driver Marker Position is equall");
                             latLng = latlngnew;
                             driverLatitude = response.getLatitude();
@@ -836,8 +840,8 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             DirectionsTask directionsTask = new DirectionsTask();
                             directionsTask.execute();
                             // moving driver vehicle
-                            float rotation = (float) SphericalUtil.computeHeading(latLng, latlngnew);
-                            rotateMarker(markerDriver, latlngnew, rotation);
+                           // float rotation = (float) SphericalUtil.computeHeading(latLng, latlngnew);
+                            //rotateMarker(markerDriver, latlngnew, rotation);
                         }
 
                     }

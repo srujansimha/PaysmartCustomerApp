@@ -221,64 +221,14 @@
                     <TableRow
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="#FFFF"
-                        android:paddingLeft="40dp"
-                        android:paddingRight="40dp"
-                        android:paddingBottom="16dp">
+                        android:background="@color/grey_900"
+                        android:paddingLeft="5dp"
+                      >
 
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
-                            android:background="#FFFF" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#FFFF" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
-                            android:background="#FFFF" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#FFFF" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#FFFF" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="#FFFF" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.1"
-                            android:background="#FFFF" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:background="@drawable/driver" />
-
-                        <Button
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="0.5"
-                            android:background="#FFFF" />
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/flight_front_image" />
                     </TableRow>
 
                     <TableRow
@@ -677,7 +627,17 @@
                             android:layout_weight="0.2"
                             android:background="#FFFF" />
                     </TableRow>
+                    <TableRow
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingLeft="5dp"
+                        android:background="@color/grey_900">
 
+                        <ImageView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/flight_back_image" />
+                    </TableRow>
                     <TableRow>
 
                         <android.support.v7.widget.AppCompatButton
@@ -695,5 +655,6 @@
         </ScrollView>
 
 </LinearLayout>
+
     </FrameLayout>
 </RelativeLayout>
