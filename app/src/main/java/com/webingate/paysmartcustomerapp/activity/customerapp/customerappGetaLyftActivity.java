@@ -389,7 +389,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     public  void AvailableVehiclesTest(int vehicleType){
         switch (vehicleType){
             case 0:
-                ApplicationConstants.marker = R.mipmap.marker_car;
+                ApplicationConstants.marker = R.mipmap.marker_taxi;
                 break;
             case 1:
                 ApplicationConstants.marker = R.mipmap.marker_taxi;
@@ -1240,7 +1240,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
             object.addProperty("CustomerPhoneNo", ApplicationConstants.mobileNo);
             object.addProperty("SrcLatitude", sourceLongitude);
             object.addProperty("SrcLongitude", sourceLongitude);
-            object.addProperty("VehicleGroupId", "69");
+            object.addProperty("VehicleGroupId", "34");
             AvailableVehicles(object);
         }
     }

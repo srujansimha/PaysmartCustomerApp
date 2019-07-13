@@ -27,8 +27,8 @@ public class CustomerBookingStatusResponse implements Serializable{
 	@SerializedName("BooKingOTP")
 	private String booKingOTP;
 
-	@SerializedName("Name")
-	private String name;
+	@SerializedName("Username")
+	private String Username;
 
 	public void setImg(String img){
 		this.img = img;
@@ -86,12 +86,12 @@ public class CustomerBookingStatusResponse implements Serializable{
 		return booKingOTP;
 	}
 
-	public void setName(String name){
-		this.name = name;
+	public void setName(String Username){
+		this.Username = Username;
 	}
 
 	public String getName(){
-		return name;
+		return Username;
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class CustomerBookingStatusResponse implements Serializable{
 			",registrationNo = '" + registrationNo + '\'' + 
 			",id = '" + id + '\'' + 
 			",booKingOTP = '" + booKingOTP + '\'' + 
-			",name = '" + name + '\'' + 
+			",Username = '" + Username + '\'' +
 			"}";
 		}
 }
