@@ -202,7 +202,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                                 object.addProperty("BookingStatus", "Cancelled");
                                 object.addProperty("UpdatedBy", "1");
                                 object.addProperty("UpdatedUserId", "21");
-                              //  UpdateBookingStatus(object);
+                                UpdateBookingStatus(object);
                             }
                         });
                 alertDialog.setNegativeButton("NO",
@@ -825,7 +825,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             MarkerOptions markerOptions = new MarkerOptions();
                             markerOptions.position(latlngnew);
                             markerOptions.title("Driver Position");
-                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_car));
+                            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_taxi));
                             markerDriver = mMap.addMarker(markerOptions);
                             mMap.moveCamera(CameraUpdateFactory.newLatLng(latlngnew));
                             mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
