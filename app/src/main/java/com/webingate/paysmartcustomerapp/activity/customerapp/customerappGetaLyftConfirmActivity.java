@@ -1453,7 +1453,7 @@ public static final String MyPREFERENCES = "MyPrefs";
     }
 
     public void AdvanceBookingDetails(JsonObject jsonObject) {
-        StartDialogue();
+       // StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftConfirmActivity.this).getrestadapter()
                 .AdvanceBookingDetails(jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -1462,7 +1462,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                     @Override
                     public void onCompleted() {
                         DisplayToast("Booking Completed");
-                        StopDialogue();
+                        //StopDialogue();
                     }
 
                     @Override
@@ -1470,7 +1470,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                         try {
                             Log.d("OnError ", e.getMessage());
                             DisplayToast("Error");
-                            StopDialogue();
+                           // StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }

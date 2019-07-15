@@ -234,7 +234,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Thus, 10 Mar 2018"
+                            android:text="Select Date"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"
                             android:textColor="@color/grey_60" />
 
@@ -285,7 +285,12 @@
                             android:textColor="@color/grey_60" />
 
                     </LinearLayout>
-
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2px"
+                        android:layout_marginLeft="@dimen/spacing_large"
+                        android:layout_marginRight="@dimen/spacing_large"
+                        android:background="@color/grey_20" />
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -390,7 +395,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="Economy"
+                            android:text="Select Cabin"
                             android:clickable="true"
                             android:focusableInTouchMode="true"
                             android:textAppearance="@style/Base.TextAppearance.AppCompat.Body2"

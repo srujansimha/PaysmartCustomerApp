@@ -786,7 +786,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             // moving driver vehicle
                             //float rotation = (float) SphericalUtil.computeHeading(latLng, latlngnew);
                             //rotateMarker(markerDriver, latlngnew, rotation);
-                            updatemarkers=1;
+                            updatemarkers++;
                         } else if (response.getBookingStatus().contains("Trip Completed")) {
                             Log.e(TAG,"Trip Completed");
                             chekcstt=response.getBookingStatus();

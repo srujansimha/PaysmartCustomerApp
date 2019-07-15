@@ -1,6 +1,8 @@
 package com.webingate.paysmartcustomerapp.fragment.customerAppFragments;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -42,9 +44,13 @@ import rx.schedulers.Schedulers;
 
 @SuppressLint("NewApi")
 public class FlightPayments extends Fragment {
-    Button bookTicket, myTickets, eWallet;
-    private static final String ARG_SECTION_NUMBER = "section_number";
 
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String Phone = "phoneKey";
+    public static final String ID = "idKey";
+
+    private static final String ARG_SECTION_NUMBER = "section_number";
+    Button bookTicket, myTickets, eWallet;
     @BindView(R.id.btn_ewallet)
     AppCompatButton ewallet;
     @BindView(R.id.btn_preferences)
@@ -75,6 +81,9 @@ public class FlightPayments extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.flightpaymentmethods, container, false);
+        SharedPreferences prefs = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        ApplicationConstants.userid=prefs.getInt(ID,0);
+
         dialog =  new ProgressDialog.Builder(getActivity())
                 .setTitle("Loading...")
                 .setTitleColorRes(R.color.gray)
@@ -120,39 +129,33 @@ public class FlightPayments extends Fragment {
             public void onClick(View v) {
                 ApplicationConstants.pmode="Credit & Debit";
 
-                //ArrayList<TravelModel> servicesList =  new ArrayList<>();
-//                //TravelModel travelModel = new TravelModel();
-//                //travelModel.setName(c.getString("srcName") + "-" + c.getString("destName"));
-//                // travelModel.setSubTitle("Arrival - " + c.getString("ArrivalTime") + "\nDeparture - " + c.getString("DepartureTime"));
-//                //travelModel.setPrice("Amount - " + c.getString("Amount") + "$");
-//
-//                // travelModel.setActive(Integer.parseInt(c.getString("Active")));
-//
-//                for (int i = 0; i < 5; i++) {
-//                    TravelModel obj = new TravelModel();
-//                    obj.setName("travels"+i);
-//                    obj.setPrice("200"+(i*50));
-//                    obj.setTime(DateTime.now().toString());
-//                    obj.setSubTitle("good morning travels"+1);
-//                    servicesList.add(obj);
-//                }
-//                //Collections.shuffle(items);
-
+                //ApplicationConstants.pmode="Net Banking";
+//                JsonObject object = new JsonObject();
+//                object.addProperty("Transactionid", "1256");
+//                object.addProperty("Transaction_Number", "ts1258967");
+//                object.addProperty("Amount", "150");
+//                object.addProperty("Paymentmode", "1");
+//                object.addProperty("TransactionStatus", "1");
+//                object.addProperty("Gateway_transId", "wb123");
+//                object.addProperty("flag","I");
+//                Pay(object);
                 ArrayList<CustomerFlightResponce> pasengerlist=new ArrayList<>();
-                CustomerFlightResponce obj=new CustomerFlightResponce();
+
                 for(int i=0;i<ApplicationConstants.passengerlist.size();i++){
+                 CustomerFlightResponce obj=new CustomerFlightResponce();
                 obj.setName(ApplicationConstants.passengerlist.get(i));
                 obj.setAge(Integer.parseInt((ApplicationConstants.passengerage.get(i)!=null)?(ApplicationConstants.passengerage.get(i)):"0"));
                 obj.setappuserid(ApplicationConstants.userid);
                 obj.setFlag("I");
-                obj.setgender(0);
+                obj.setgender((ApplicationConstants.passengergender.get(i)));
                 obj.setMobileno(ApplicationConstants.PassengerMobileno);
                 obj.setEmailid(ApplicationConstants.PassengerEmailid);
                 obj.setSeatno(String.valueOf(ApplicationConstants.seatsSelected.get(i)));
                 pasengerlist.add(obj);
+                    obj=null;
                 }
 
-                if(!(pasengerlist.size()!=0)){
+                if(pasengerlist.size()!=0){
                     SaveFlightPassengerDetails(pasengerlist);
                 }
                 /*PaymentRequest paymentRequest = new PaymentRequest();
@@ -227,7 +230,7 @@ public class FlightPayments extends Fragment {
 
         StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(getActivity()).getrestadapter()
-                .saveflightbooking(jsonObject)
+                .savepassenger(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<CustomerFlightResponce>>() {
@@ -252,20 +255,63 @@ public class FlightPayments extends Fragment {
                         List<CustomerFlightResponce> res=responselist;
 
                         JsonObject object = new JsonObject();
-                        object.addProperty("Transactionid", "1256");
-                        object.addProperty("Transaction_Number", "ts1258967");
-                        object.addProperty("Amount", "150");
-                        object.addProperty("Paymentmode", "1");
-                        object.addProperty("TransactionStatus", "1");
-                        object.addProperty("Gateway_transId", "wb123");
+                        object.addProperty("Amount",200);
+                        object.addProperty("StatusId",47);
                         object.addProperty("flag","I");
-                        Pay(object);
-
+                        object.addProperty("HolderName","Ram");
+                        object.addProperty("TransModeId",25);
+                        object.addProperty("TotalAmount",800);
+                        saveFBTransactionMaster(object);
                     }
                 });
     }
 
+    public void saveFBTransactionMaster(JsonObject object){
 
+        StartDialogue();
+        com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(getActivity()).getrestadapter()
+                .saveFBTransactionMaster(object)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Subscriber<List<CustomerFlightResponce>>() {
+                    @Override
+                    public void onCompleted() {
+                        //  DisplayToast("Successfully Registered");
+                        StopDialogue();
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        try {
+                            Log.d("OnError ", e.getMessage());
+                            DisplayToast("Error");
+                            StopDialogue();
+                        } catch (Exception ex) {
+                            ex.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onNext(List<CustomerFlightResponce> responselist) {
+                        List<CustomerFlightResponce> res=responselist;
+                        JsonObject object = new JsonObject();
+                        CustomerFlightResponce obj=new CustomerFlightResponce();
+                        for(int i=0;i<ApplicationConstants.passengerlist.size();i++){
+                            obj.setName(ApplicationConstants.passengerlist.get(i));
+                            obj.setFlag("I");
+                            obj.setSeatno(String.valueOf(ApplicationConstants.seatsSelected.get(i)));
+
+                        }
+
+
+                        object.addProperty("Amount",200);
+                        object.addProperty("StatusId",47);
+                        object.addProperty("flag","I");
+                        object.addProperty("HolderName","Ram");
+                        object.addProperty("TransModeId",25);
+                        object.addProperty("TotalAmount",800);
+                    }
+                });
+    }
     public void Pay(JsonObject jsonObject){
 
         StartDialogue();

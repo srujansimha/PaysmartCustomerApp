@@ -6,7 +6,7 @@ public class CustomerFlightResponce {
 	@SerializedName("age") private int age;
 	@SerializedName("Id") private int Id;
 	@SerializedName("name") private String name;
-	@SerializedName("gender") private int gender;
+	@SerializedName("gender") private String gender;
 	@SerializedName("appuserid") private int appuserid;
 	@SerializedName("flag") private String flag;
 	@SerializedName("Mobileno") private String Mobileno;
@@ -60,8 +60,8 @@ public class CustomerFlightResponce {
 	}
 
 	public void setName(String name){this.name=name;}
-	public void setAge(int name){this.age=age;}
-	public void setgender(int gender){this.gender=gender;}
+	public void setAge(int age){this.age=age;}
+	public void setgender(String gender){this.gender=gender;}
 	public void setappuserid(int appuserid){this.appuserid=appuserid;}
     public void setFlag(String flag){this.flag=flag;}
 	public void setMobileno(String Mobileno){this.Mobileno=Mobileno;}

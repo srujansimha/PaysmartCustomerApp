@@ -202,10 +202,14 @@ public interface APIInterface  {
     @POST("/api/flightschedule/getflightschedule")
     public Observable<List<CustomerFlightResponce>> getflightschedule(@Body JsonObject jsonObject);//i
 
-    @POST("/ api/flightbooking/saveflightbooking")
+    @POST("/api/flightbooking/saveflightbooking")
     public Observable<List<CustomerFlightResponce>> saveflightbooking(@Body List<CustomerFlightResponce> jsonObject);//i
 
 
+    @POST("/api/passengerFlight/savepassenger")
+    public Observable<List<CustomerFlightResponce>> savepassenger(@Body List<CustomerFlightResponce> jsonObject);//i
+    @POST("/api/FBTransactionMaster/saveFBTransactionMaster")
+    public Observable<List<CustomerFlightResponce>> saveFBTransactionMaster(@Body JsonObject jsonObject);//i
 
 
 }

@@ -35,6 +35,8 @@ public class FlightPassengerDetails extends Fragment {
     ToggleButton gender[]=new ToggleButton[5];
     ArrayList<String> namelist=new ArrayList();
     ArrayList<String> agelist=new ArrayList();
+    ArrayList<String> genderlist=new ArrayList();
+
     Button payment;
     ArrayList selected=new ArrayList();
     public static FlightPassengerDetails newInstance(int SectionNumber) {
@@ -94,14 +96,18 @@ public class FlightPassengerDetails extends Fragment {
                 ApplicationConstants.PassengerMobileno=input_mobile.getText().toString();
                 ApplicationConstants.PassengerEmailid=input_email.getText().toString();
                 for(int i=0;i<ApplicationConstants.seatsSelected.size();i++){
+
                     if(names[i].getText().toString()!=null){
                     namelist.add(names[i].getText().toString());
                     ApplicationConstants.passengerlist=namelist;
-                }
+                    }
+
                     if(age[i].getText().toString()!=null){
                         agelist.add(age[i].getText().toString());
                         ApplicationConstants.passengerage=agelist;
                     }
+                    genderlist.add(gender[i].getText().toString());
+                    ApplicationConstants.passengergender=genderlist;
                 }
                 ApplicationConstants.FRAGMENT=ApplicationConstants.PAYMENTS;
                 goPage(ApplicationConstants.FRAGMENT);

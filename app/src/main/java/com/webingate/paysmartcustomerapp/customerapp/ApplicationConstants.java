@@ -83,6 +83,7 @@ public class ApplicationConstants {
     public static ArrayList seatsSelected=new ArrayList();
     public static ArrayList<String> passengerlist=new ArrayList();
     public static ArrayList<String> passengerage=new ArrayList();
+    public static ArrayList<String> passengergender=new ArrayList();
     public static String PassengerMobileno;
     public static String PassengerEmailid;
 
