@@ -314,11 +314,11 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                     MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
                             .legs[0].startLocation.lat, result.routes[0]
                             .legs[0].startLocation.lng))
-                            .icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_car))
+                            //.icon(BitmapDescriptorFactory.fromResource(R.mipmap.marker_car))
                             .title("Driver :" + result.routes[0].legs[0].startAddress);
                     if (markerDriver != null)
                         //markerDriver.remove();
-                    markerDriver.isVisible();
+                    markerDriver.remove();
                     markerDriver = mMap.addMarker(markerOptions);
                     markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
                             .legs[0].endLocation.lat, result.routes[0]
@@ -579,7 +579,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                 == PackageManager.PERMISSION_GRANTED) {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
-        mMap.animateCamera(CameraUpdateFactory.zoomTo(18.5f));
+        mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
     }
 
     @Override
