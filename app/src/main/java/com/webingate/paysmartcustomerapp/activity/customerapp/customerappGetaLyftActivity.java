@@ -305,7 +305,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 //                    object.addProperty("BNo", ApplicationConstants.bookingNo);
 //                    object.addProperty("PackageId", "3");
 //                    CalculatePrice(object);
-                    Toast.makeText(getApplicationContext(), "Clicked : get a lyft details", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getApplicationContext(), "Clicked : get a lyft details", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(customerappGetaLyftActivity.this, customerappGetaLyftConfirmActivity.class);
                     intent.putExtra("source", selectsource.getText().toString());
                     intent.putExtra("destination", selectDestination.getText().toString());
@@ -490,6 +490,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                 selectDestination.setText("Destination :" + result.routes[0].legs[0].endAddress);
                 List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
                 PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
+                polylineOptions.width(20);
                 if (line != null)
                     line.remove();
                 line = mMap.addPolyline(polylineOptions);

@@ -195,7 +195,7 @@ public class DirectoryHome9Repository {
 
     private static String productsJson = "[{\n" +
             "  \"id\": \"product11\",\n" +
-            "  \"icon\": \"home9_rental\",\n" +
+            "  \"icon\": \"lyft\",\n" +
             "   \"name\": \"Get a Lyft\"\n" +
             " },\n" +
             "{\n" +

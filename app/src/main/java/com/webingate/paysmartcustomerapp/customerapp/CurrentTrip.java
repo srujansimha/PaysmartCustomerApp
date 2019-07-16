@@ -208,7 +208,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                 alertDialog.setNegativeButton("NO",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-
+                               dialog.dismiss();
                             }
                         });
 
@@ -331,8 +331,9 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                 }
                 List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
                 PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
+                polylineOptions.width(20);
                 if (line != null)
-                    line.isVisible();
+                    line.remove();
                 line = mMap.addPolyline(polylineOptions);
                 driverTimeDistance.setText(getEndLocationTitle());
             }
@@ -780,6 +781,9 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                             driverLatitude =response.getLatitude();
                             driverLongitude =response.getLongitude();
                             latlngnew = new LatLng(driverLatitude, driverLongitude);
+                            driverDetails.setText("Trip Details : "+" Your Trip has been Started"+"\n" + "Name : " + bookingDetails.getName());
+                            vehicleImage.setVisibility(View.GONE);
+                            driverimage.setVisibility(View.GONE);
                             // drawing path between customer and driver with updated location
                             DirectionsTask directionsTask = new DirectionsTask();
                             directionsTask.execute();

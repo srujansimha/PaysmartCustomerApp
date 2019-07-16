@@ -427,7 +427,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                             }
                             else
                             {
-                                DisplayToast("selected Cash mode");
+                                //DisplayToast("selected Cash mode");
                                 dialog.cancel();
                                 TextView tname = (TextView) findViewById(R.id.name);
                                 tname.setText("Cash");
@@ -733,6 +733,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                 selectDestination.setText("Destination :" + result.routes[0].legs[0].endAddress);
                 List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
                 PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
+                polylineOptions.width(20);
                 if (line != null)
                     line.remove();
                 line = mMap.addPolyline(polylineOptions);
