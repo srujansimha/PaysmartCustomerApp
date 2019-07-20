@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
+
         android:name=".paysmartcustomerapp"
         android:allowBackup="true"
         android:icon="@mipmap/paysmart"
@@ -99,6 +100,7 @@
         <activity
             android:name=".activity.customerapp.customerappFlightBookingSearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.customerapp.DownloadPdf"></activity>
         <activity
             android:name=".activity.customerapp.customerappTrainBookingSearchActivity"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -185,7 +187,7 @@
 
         <activity android:name=".activity.customerapp.CropingMainActivity" android:theme="@style/Theme.AppCompat.Light"/>
         <activity android:name="cropper.CropImageActivity" android:theme="@style/Theme.AppCompat.Light"/>
-
+        <activity android:name=".activity.customerapp.customerappFlightBookingsListsActivity"></activity>
 
     </application>
 

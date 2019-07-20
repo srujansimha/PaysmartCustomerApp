@@ -1,21 +1,44 @@
 package com.webingate.paysmartcustomerapp.fragment.customerAppFragments;
 
 import android.annotation.SuppressLint;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
+import android.util.Xml;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.bumptech.glide.load.resource.bytes.BytesResource;
 import com.google.gson.JsonObject;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.pchmn.materialchips.R2;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.activity.customerapp.DialogFlightPaymentTransactionsFragment;
 import com.webingate.paysmartcustomerapp.activity.customerapp.DialogPaymentTransactionsFragment;
@@ -30,10 +53,28 @@ import com.webingate.paysmartcustomerapp.customerapp.Ticket_Source_Destination_D
 import com.webingate.paysmartcustomerapp.customerapp.TravelModel;
 import com.webingate.paysmartcustomerapp.customerapp.Travels;
 
+import junit.framework.Test;
+
 import org.joda.time.DateTime;
 
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -43,12 +84,12 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 @SuppressLint("NewApi")
-public class FlightPayments extends Fragment {
+public class FlightPayments extends Fragment  {
 
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String Phone = "phoneKey";
     public static final String ID = "idKey";
-
+    Double totalamount=0.0;
     private static final String ARG_SECTION_NUMBER = "section_number";
     Button bookTicket, myTickets, eWallet;
     @BindView(R.id.btn_ewallet)
@@ -61,6 +102,7 @@ public class FlightPayments extends Fragment {
     Unbinder unbinder;
     private String response;
 
+    String PassengerId;
     Toast toast;
     ProgressDialog dialog ;
     public static FlightPayments newInstance(int SectionNumber) {
@@ -94,34 +136,56 @@ public class FlightPayments extends Fragment {
             @Override
             public void onClick(View v) {
                 ApplicationConstants.pmode="E-Wallet";
-                JsonObject object = new JsonObject();
-                object.addProperty("Transactionid", "1256");
-                object.addProperty("Transaction_Number", "ts1258967");
-                object.addProperty("Amount", "150");
-                object.addProperty("Paymentmode", "1");
-                object.addProperty("TransactionStatus", "1");
-                object.addProperty("Gateway_transId", "wb123");
-                object.addProperty("flag","I");
-                Pay(object);
-                /*PaymentRequest paymentRequest = new PaymentRequest();
-                paymentRequest.execute();*/
+                ArrayList<CustomerFlightResponce> pasengerlist=new ArrayList<>();
+                Double famt=Double.parseDouble(ApplicationConstants.FlightAmount);
+
+                for(int i=0;i<ApplicationConstants.passengerlist.size();i++){
+                    CustomerFlightResponce obj=new CustomerFlightResponce();
+                    obj.setName(ApplicationConstants.passengerlist.get(i));
+                    obj.setAge(Integer.parseInt((ApplicationConstants.passengerage.get(i)!=null)?(ApplicationConstants.passengerage.get(i)):"0"));
+                    obj.setappuserid(ApplicationConstants.userid);
+                    obj.setFlag("I");
+                    obj.setgender((ApplicationConstants.passengergender.get(i)));
+                    obj.setMobileno(ApplicationConstants.PassengerMobileno);
+                    obj.setEmailid(ApplicationConstants.PassengerEmailid);
+                    obj.setSource(ApplicationConstants.fsource);
+                    obj.setDestination(ApplicationConstants.fdestination);
+                    obj.setSeatno(String.valueOf(ApplicationConstants.seatsSelected.get(i)));
+                    totalamount=totalamount+famt;
+                    pasengerlist.add(obj);
+                    obj=null;
+                }
+
+                if(pasengerlist.size()!=0){
+                    SaveFlightPassengerDetails(pasengerlist);
+                }
             }
         });
         btnPreferences.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 ApplicationConstants.pmode="Net Banking";
-                JsonObject object = new JsonObject();
-                object.addProperty("Transactionid", "1256");
-                object.addProperty("Transaction_Number", "ts1258967");
-                object.addProperty("Amount", "150");
-                object.addProperty("Paymentmode", "1");
-                object.addProperty("TransactionStatus", "1");
-                object.addProperty("Gateway_transId", "wb123");
-                object.addProperty("flag","I");
-                Pay(object);
-                /*PaymentRequest paymentRequest = new PaymentRequest();
-                paymentRequest.execute();*/
+                ArrayList<CustomerFlightResponce> pasengerlist=new ArrayList<>();
+                Double famt=Double.parseDouble(ApplicationConstants.FlightAmount);
+
+                for(int i=0;i<ApplicationConstants.passengerlist.size();i++){
+                    CustomerFlightResponce obj=new CustomerFlightResponce();
+                    obj.setName(ApplicationConstants.passengerlist.get(i));
+                    obj.setAge(Integer.parseInt((ApplicationConstants.passengerage.get(i)!=null)?(ApplicationConstants.passengerage.get(i)):"0"));
+                    obj.setappuserid(ApplicationConstants.userid);
+                    obj.setFlag("I");
+                    obj.setgender((ApplicationConstants.passengergender.get(i)));
+                    obj.setMobileno(ApplicationConstants.PassengerMobileno);
+                    obj.setEmailid(ApplicationConstants.PassengerEmailid);
+                    obj.setSeatno(String.valueOf(ApplicationConstants.seatsSelected.get(i)));
+                    totalamount=totalamount+famt;
+                    pasengerlist.add(obj);
+                    obj=null;
+                }
+
+                if(pasengerlist.size()!=0){
+                    SaveFlightPassengerDetails(pasengerlist);
+                }
             }
         });
         btnFeedbackEnquiry.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +204,7 @@ public class FlightPayments extends Fragment {
 //                object.addProperty("flag","I");
 //                Pay(object);
                 ArrayList<CustomerFlightResponce> pasengerlist=new ArrayList<>();
+                Double famt=Double.parseDouble(ApplicationConstants.FlightAmount);
 
                 for(int i=0;i<ApplicationConstants.passengerlist.size();i++){
                  CustomerFlightResponce obj=new CustomerFlightResponce();
@@ -151,6 +216,7 @@ public class FlightPayments extends Fragment {
                 obj.setMobileno(ApplicationConstants.PassengerMobileno);
                 obj.setEmailid(ApplicationConstants.PassengerEmailid);
                 obj.setSeatno(String.valueOf(ApplicationConstants.seatsSelected.get(i)));
+                    totalamount=totalamount+famt;
                 pasengerlist.add(obj);
                     obj=null;
                 }
@@ -226,6 +292,20 @@ public class FlightPayments extends Fragment {
         transaction.add(android.R.id.content, dptf).addToBackStack(null).commit();
 
     }
+
+
+
+//    public void byteArrayToFile(byte[] bArray) {
+//        try {
+//            Document myDocument = new Document(PageSize.LETTER);
+//            PdfWriter.GetInstance(myDocument, new FileStream("mydocument.pdf", FileMode.Create));
+//            myDocument.Open();
+//            myDocument.Add(new Paragraph(Xml.Encoding.UTF8.GetString(bytes)));
+//            myDocument.Close()
+//        } catch (Exception e) {
+//            System.err.println("Error: " + e.getMessage());
+//        }
+//    }
     public void SaveFlightPassengerDetails(ArrayList<CustomerFlightResponce> jsonObject){
 
         StartDialogue();
@@ -242,8 +322,9 @@ public class FlightPayments extends Fragment {
                     @Override
                     public void onError(Throwable e) {
                         try {
+                            //byteArrayToFile();
                             Log.d("OnError ", e.getMessage());
-                            DisplayToast("Error");
+                            //DisplayToast("Error");
                             StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
@@ -253,14 +334,57 @@ public class FlightPayments extends Fragment {
                     @Override
                     public void onNext(List<CustomerFlightResponce> responselist) {
                         List<CustomerFlightResponce> res=responselist;
+                         PassengerId = res.get(0).getPasssengerId();
+                        Log.e("PDF Bytes", res.get(0).getDescription());
+//                        byte[] bArray = (res.get(0).getDescription()).getBytes();
+//                        File someFile = new File("c:/Java/Output_File.pdf");
+//                        try {
+//                            FileOutputStream fos = new FileOutputStream(someFile);
+//                            fos.write(bArray);
+//                            fos.flush();
+//                            fos.close();
+//                        } catch (Exception e) {
+//                        }
+//                        try {
+//
+//
+//                            File file = new File("java.pdf");
+//
+//                            FileInputStream fis = new FileInputStream(file);
+//                            //System.out.println(file.exists() + "!!");
+//                            //InputStream in = resource.openStream();
+//                            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//                            byte[] buf = new byte[Integer.parseInt(res.get(0).getDescription())];
+//                            try {
+//                                for (int readNum; (readNum = fis.read(buf)) != -1; ) {
+//                                    bos.write(buf, 0, readNum); //no doubt here is 0
+//                                    //Writes len bytes from the specified byte array starting at offset off to this byte array output stream.
+//                                    System.out.println("read " + readNum + " bytes,");
+//                                }
+//                            } catch (IOException ex) {
+//
+//                            }
+//                            byte[] bytes = bos.toByteArray();
+//
+//                            //below is the different part
+//                            File someFile = new File("java2.pdf");
+//                            FileOutputStream fos = new FileOutputStream(someFile);
+//                            fos.write(bytes);
+//                            fos.flush();
+//                            fos.close();
+//                        }
+//                        catch(IOException ex){
+//                        }
 
+                       // createPDF();
                         JsonObject object = new JsonObject();
-                        object.addProperty("Amount",200);
+                        object.addProperty("Amount",totalamount);
                         object.addProperty("StatusId",47);
                         object.addProperty("flag","I");
-                        object.addProperty("HolderName","Ram");
+                        object.addProperty("HolderName",ApplicationConstants.username);
                         object.addProperty("TransModeId",25);
-                        object.addProperty("TotalAmount",800);
+                        object.addProperty("TotalAmount",totalamount);
+                        object.addProperty("PassengerId",PassengerId);
                         saveFBTransactionMaster(object);
                     }
                 });
@@ -293,22 +417,18 @@ public class FlightPayments extends Fragment {
                     @Override
                     public void onNext(List<CustomerFlightResponce> responselist) {
                         List<CustomerFlightResponce> res=responselist;
+
+
+
                         JsonObject object = new JsonObject();
-                        CustomerFlightResponce obj=new CustomerFlightResponce();
-                        for(int i=0;i<ApplicationConstants.passengerlist.size();i++){
-                            obj.setName(ApplicationConstants.passengerlist.get(i));
-                            obj.setFlag("I");
-                            obj.setSeatno(String.valueOf(ApplicationConstants.seatsSelected.get(i)));
-
-                        }
-
-
-                        object.addProperty("Amount",200);
-                        object.addProperty("StatusId",47);
+                        object.addProperty("Transactionid", "1256");
+                        object.addProperty("Transaction_Number", "ts1258967");
+                        object.addProperty("Amount", "150");
+                        object.addProperty("Paymentmode", "1");
+                        object.addProperty("TransactionStatus", "1");
+                        object.addProperty("Gateway_transId", "wb123");
                         object.addProperty("flag","I");
-                        object.addProperty("HolderName","Ram");
-                        object.addProperty("TransModeId",25);
-                        object.addProperty("TotalAmount",800);
+                        Pay(object);
                     }
                 });
     }
@@ -341,6 +461,7 @@ public class FlightPayments extends Fragment {
                         List<CustomerPayResponse> res=responselist;
                         ApplicationConstants.pdate=res.get(0).getPaymentDate();
                         ApplicationConstants.ptime=res.get(0).getPaymentTime();
+
                         showDialogPaymentTransactions();
 
                     }
@@ -368,101 +489,200 @@ public class FlightPayments extends Fragment {
 
     }
 
-   /* class PaymentRequest extends AsyncTask<String, Void, String[]> {
-        ProgressDialog dialog = new ProgressDialog(getActivity());
+    private void createPDF (){
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            dialog.setMessage("Please wait...");
-            dialog.setTitle("Processing....");
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.show();
+        Document doc = new Document();
+        PdfWriter docWriter = null;
+
+        DecimalFormat df = new DecimalFormat("0.00");
+
+        try {
+
+            //special font sizes
+            Font bfBold12 = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, new BaseColor(0, 0, 0));
+            Font bf12 = new Font(Font.FontFamily.TIMES_ROMAN, 12);
+
+            //file path
+            String directory_path = Environment.getExternalStorageDirectory().getPath() + "/mypdf/";
+            File file = new File(directory_path);
+            if (!file.exists()) {
+                file.mkdirs();
+            }
+            String path = directory_path+"test-2.pdf";
+            //String path = "docs/" + pdfFilename;
+            docWriter = PdfWriter.getInstance(doc , new FileOutputStream(path));
+
+            //document header attributes
+            doc.addAuthor("betterThanZero");
+            doc.addCreationDate();
+            doc.addProducer();
+            doc.addCreator("MySampleCode.com");
+            doc.addTitle("Report with Column Headings");
+            doc.setPageSize(PageSize.LETTER);
+
+            //open document
+            doc.open();
+
+            //create a paragraph
+//            Paragraph paragraph = new Paragraph("iText ® is a library that allows you to create and " +
+//                    "manipulate PDF documents. It enables developers looking to enhance web and other " +
+//                    "applications with dynamic PDF document generation and/or manipulation.");
+
+            float[] columnWidths1 = {5f,5f };
+            PdfPTable table1=new PdfPTable(2);
+            //table1.setWidthPercentage(90f);
+            PdfPCell cell1=new PdfPCell(new Phrase("Air india Airlines Tickets",bfBold12));
+            cell1.setBorder(0);
+            cell1.setColspan(2);
+            cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+            table1.addCell(cell1);
+
+            PdfPCell blankcell=new PdfPCell(new Phrase(Chunk.NEWLINE));
+            blankcell.setColspan(2);
+            blankcell.setBorder(0);
+            table1.addCell(blankcell);
+
+            PdfPCell Address=new PdfPCell(new Phrase("AIR INDIA SMART TICKETS"));
+            Address.setColspan(2);
+            Address.setBorder(0);
+            Address.setHorizontalAlignment(Element.ALIGN_LEFT);
+            table1.addCell(blankcell);
+
+            PdfPCell name=new PdfPCell(new Phrase("Your Boarding Pass"));
+            name.setColspan(2);
+            name.setBorder(0);
+
+            name.setHorizontalAlignment(Element.ALIGN_LEFT);
+            table1.addCell(name);
+
+
+            //specify column widths
+            float[] columnWidths = {1.5f, 2f, 5f, 2f};
+            //create PDF table with the given widths
+            PdfPTable table = new PdfPTable(columnWidths);
+            // set table width a percentage of the page width
+            table.setWidthPercentage(90f);
+
+            //insert column headings
+            insertCell(table, "Order No", Element.ALIGN_RIGHT, 1, bfBold12);
+            insertCell(table, "Account No", Element.ALIGN_LEFT, 1, bfBold12);
+            insertCell(table, "Account Name", Element.ALIGN_LEFT, 1, bfBold12);
+            insertCell(table, "Order Total", Element.ALIGN_RIGHT, 1, bfBold12);
+            table.setHeaderRows(1);
+
+            //insert an empty row
+            insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12);
+            //create section heading by cell merging
+            insertCell(table, "New York Orders ...", Element.ALIGN_LEFT, 4, bfBold12);
+            double orderTotal, total = 0;
+
+            //just some random data to fill
+            for(int x=1; x<5; x++){
+
+                insertCell(table, "10010" + x, Element.ALIGN_RIGHT, 1, bf12);
+                insertCell(table, "ABC00" + x, Element.ALIGN_LEFT, 1, bf12);
+                insertCell(table, "This is Customer Number ABC00" + x, Element.ALIGN_LEFT, 1, bf12);
+
+                orderTotal = Double.valueOf(df.format(Math.random() * 1000));
+                total = total + orderTotal;
+                insertCell(table, df.format(orderTotal), Element.ALIGN_RIGHT, 1, bf12);
+
+            }
+            //merge the cells to create a footer for that section
+            insertCell(table, "New York Total...", Element.ALIGN_RIGHT, 3, bfBold12);
+            insertCell(table, df.format(total), Element.ALIGN_RIGHT, 1, bfBold12);
+
+            //repeat the same as above to display another location
+            insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12);
+            insertCell(table, "California Orders ...", Element.ALIGN_LEFT, 4, bfBold12);
+            orderTotal = 0;
+
+            for(int x=1; x<7; x++){
+
+                insertCell(table, "20020" + x, Element.ALIGN_RIGHT, 1, bf12);
+                insertCell(table, "XYZ00" + x, Element.ALIGN_LEFT, 1, bf12);
+                insertCell(table, "This is Customer Number XYZ00" + x, Element.ALIGN_LEFT, 1, bf12);
+
+                orderTotal = Double.valueOf(df.format(Math.random() * 1000));
+                total = total + orderTotal;
+                insertCell(table, df.format(orderTotal), Element.ALIGN_RIGHT, 1, bf12);
+
+            }
+            insertCell(table, "California Total...", Element.ALIGN_RIGHT, 3, bfBold12);
+            insertCell(table, df.format(total), Element.ALIGN_RIGHT, 1, bfBold12);
+
+            //add the PDF table to the paragraph
+            //paragraph.add(table);
+            // add the paragraph to the document
+           doc.add(table1);
+
         }
-
-        @Override
-        protected String[] doInBackground(String... params) {
-            try {
-                RegisterRequest();
-                return new String[]{"Success"};
-            } catch (Exception e) {
-                return new String[]{"error"};
-            }
+        catch (DocumentException dex)
+        {
+            dex.printStackTrace();
         }
-
-        @Override
-        protected void onPostExecute(String... result) {
-            try {
-                if (response.matches("")) {
-                    Toast.makeText(getContext(), "An error has occurred ", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getContext(), response, Toast.LENGTH_LONG).show();
-
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
+        catch (Exception ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            if (doc != null){
+                //close the document
+                doc.close();
             }
-            if (dialog.isShowing()) {
-                dialog.dismiss();
+            if (docWriter != null){
+                //close the writer
+                docWriter.close();
             }
+            viewPdf("test-2.pdf", "mypdf");
         }
     }
-
-    public void RegisterRequest() {
-        BufferedReader reader = null;
-        response = "";
-        try {
-            JSONObject object = new JSONObject();
-            object.put("Transactionid", "1256");
-            object.put("Transaction_Number", "ts1258967");
-            object.put("Amount", "150");
-            object.put("Paymentmode", "1");
-            object.put("TransactionStatus", "1");
-            object.put("Gateway_transId", "wb123");
-            // JSONObject object = new JSONObject();
-            URL url = new URL(getResources().getString(R.string.url_server) + getResources().getString(R.string.url_pay));
-            // Send POST data request
-
-            URLConnection conn = url.openConnection();
-            conn.setDoInput(true);
-            // conn.setDoOutput (true);
-            conn.setUseCaches(false);
-            conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Host", "android.schoolportal.gr");
-            conn.connect();
-            OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
-            wr.write(object.toString());
-            wr.flush();
-
-            // Get the server response
-
-            reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            StringBuilder sb = new StringBuilder();
-            String line = null;
-
-            // Read Server Response
-            while ((line = reader.readLine()) != null) {
-                // Append server response in string
-                sb.append(line + "\n");
-            }
-            response = sb.toString();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (MalformedURLException e) {
-            // response = response + e.getMessage();
-            //e.printStackTrace();
-        } catch (IOException e) {
-            //  response = response + e.getMessage();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-
-                reader.close();
-            } catch (Exception ex) {
-            }
+    public void insertCell(PdfPTable table, String text, int align, int colspan, Font font) {
+        PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));
+        cell.setHorizontalAlignment(align);
+        if (text.trim().equalsIgnoreCase("")) {
+            cell.setMinimumHeight(10f);
         }
+        table.addCell(cell);
+    }
+    private void viewPdf(String file, String directory) {
 
-    }*/
+        File file1 = new File("/storage/emulated/0/mypdf/test-2.pdf");
+        // File file = new
+        // File(Environment.getExternalStorageDirectory()+"/pdf/PDFOpenParameters.pdf");
+
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        Uri uri = Uri.fromFile(file1);
+        intent.setDataAndType(uri, "application/pdf");
+        startActivity(intent);
+
+//        File file1 = new File("/storage/emulated/0/mypdf/test-2.pdf");
+//        Uri path = Uri.fromFile(file1);
+//        Intent pdfOpenintent = new Intent(Intent.ACTION_VIEW);
+//        pdfOpenintent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        pdfOpenintent.setDataAndType(path, "application/pdf");
+//        try {
+//            startActivity(pdfOpenintent);
+//        }
+//        catch (ActivityNotFoundException e) {
+//
+//        }
+
+//        File pdfFile = new File(Environment.getExternalStorageDirectory().getPath() + "/mypdf/" + file);
+//        Uri path = Uri.fromFile(pdfFile);
+//
+//        // Setting the intent for pdf reader
+//        Intent pdfIntent = new Intent(Intent.ACTION_VIEW);
+//        pdfIntent.setDataAndType(path, "application/pdf");
+//        pdfIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//
+//        try {
+//            startActivity(pdfIntent);
+//        } catch (ActivityNotFoundException e) {
+//            Toast.makeText(getContext(), "Can't read pdf file", Toast.LENGTH_SHORT).show();
+//        }
+    }
+
 }

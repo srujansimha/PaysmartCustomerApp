@@ -237,8 +237,9 @@ public class customerappFlightBookingSearchActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         //getMenuInflater().inflate(R.menu.menu_setting, menu);
-        //Tools.changeMenuIconColor(menu, getResources().getColor(android.R.color.white));
-        //Tools.changeOverflowMenuIconColor(toolbar, getResources().getColor(android.R.color.white));
+        //if(menu.)
+       // Tools.changeMenuIconColor(menu, getResources().getColor(android.R.color.white));
+       // Tools.changeOverflowMenuIconColor(toolbar, getResources().getColor(android.R.color.white));
         return true;
     }
 

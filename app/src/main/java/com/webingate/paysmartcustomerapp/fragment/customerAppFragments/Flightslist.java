@@ -12,12 +12,14 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.R;
@@ -59,7 +61,7 @@ public class Flightslist extends Fragment {
 
 
     private static final String ARG_SECTION_NUMBER = "section_number";
-
+    Toast toast;
     @BindView(R.id.search)
     SearchView editsearch;
     @BindView(R.id.recyclerView)
@@ -193,11 +195,14 @@ public class Flightslist extends Fragment {
                     public void onNext(List<CustomerFlightResponce> responselist) {
                         // Bundle bundle = new Bundle();
                         // bundle.putSerializable("details", (Serializable) responselist);
-
+                        if(responselist.size()!=0){
                         flist= (ArrayList <CustomerFlightResponce>) responselist;
                         adapter = new FlightSchedulelist(flist);
                         recyclerView.setAdapter(adapter);
-
+                        }
+                        else{
+                            DisplayToast("Not Available Flights between this terminals");
+                        }
                         adapter.setOnItemClickListener((view, obj, position) ->
                                 {
                                     //ApplicationConstants.flightslist = responselist.get(position);
@@ -221,6 +226,16 @@ public class Flightslist extends Fragment {
                     }
                     //}
                 });
+
+    }
+    public void DisplayToast(String text){
+        if(toast!=null){
+            toast.cancel();
+            toast=null;
+
+        }
+        toast= Toast.makeText(getContext(),text,Toast.LENGTH_SHORT);
+        toast.show();
 
     }
 
