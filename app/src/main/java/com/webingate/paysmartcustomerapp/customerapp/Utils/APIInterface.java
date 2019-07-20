@@ -212,4 +212,6 @@ public interface APIInterface  {
     public Observable<List<CustomerFlightResponce>> saveFBTransactionMaster(@Body JsonObject jsonObject);//i
 
 
+    @GET("/api/FBTransactionMaster/getFBTransactionMaster")
+    public Observable<List<CustomerFlightResponce>> getFBTransactionMaster();
 }

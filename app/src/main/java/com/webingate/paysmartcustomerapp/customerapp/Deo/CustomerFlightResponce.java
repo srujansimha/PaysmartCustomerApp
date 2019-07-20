@@ -3,6 +3,7 @@ package com.webingate.paysmartcustomerapp.customerapp.Deo;
 import com.google.gson.annotations.SerializedName;
 
 public class CustomerFlightResponce {
+
 	@SerializedName("age") private int age;
 	@SerializedName("Id") private int Id;
 	@SerializedName("name") private String name;
@@ -23,11 +24,21 @@ public class CustomerFlightResponce {
 	@SerializedName("Sourceterminal") private String Sourceterminal;
 	@SerializedName("destinationterminal") private String destinationterminal;
 	@SerializedName("amount") private String amount;
-
+	@SerializedName("description") private String description;
+	@SerializedName("TransactionDate") private String TransactionDate;
+	@SerializedName("StatusName") private String StatusName;
+	@SerializedName("TransGatewayId") private String TransGatewayId;
+	@SerializedName("PasssengerId") private String PasssengerId;
+	@SerializedName("Emaild") private String Emaild;
+	@SerializedName("ContactNo") private String ContactNo;
+	@SerializedName("TicketNo") private String TicketNo;
+	@SerializedName("Source") private String Source;
+	@SerializedName("Destination") private String Destination;
 
 	public int getId(){
 		return Id;
 	}
+	public String getPasssengerId(){return PasssengerId;}
 	public String getActive(){
 		return active;
 	}
@@ -55,8 +66,25 @@ public class CustomerFlightResponce {
 	public String getDestinationterminal(){
 		return destinationterminal;
 	}
-	public String getAmount(){
-		return amount;
+	public String getAmount(){return amount;}
+	public String getStatusName(){return StatusName;}
+	public String getDescription(){
+		return description;
+	}
+	public String getTransactionDate(){
+		return TransactionDate;
+	}
+	public String getTransGatewayId(){
+		return TransGatewayId;
+	}
+	public String getEmailid(){
+		return Emaild;
+	}
+	public String getContactNo(){
+		return ContactNo;
+	}
+	public String getTicketNo(){
+		return TicketNo;
 	}
 
 	public void setName(String name){this.name=name;}
@@ -67,5 +95,7 @@ public class CustomerFlightResponce {
 	public void setMobileno(String Mobileno){this.Mobileno=Mobileno;}
 	public void setEmailid(String emailid){this.emailid=emailid;}
 	public void setSeatno(String seatno){this.seatno=seatno;}
+	public void setSource(String Source){this.Source=Source;}
+	public void setDestination(String Destination){this.Destination=Destination;}
 
 }

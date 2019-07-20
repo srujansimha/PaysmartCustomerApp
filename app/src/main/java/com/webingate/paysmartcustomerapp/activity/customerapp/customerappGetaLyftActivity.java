@@ -490,7 +490,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                 selectDestination.setText("Destination :" + result.routes[0].legs[0].endAddress);
                 List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
                 PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
-                polylineOptions.width(20);
+                //polylineOptions.width(20);
                 if (line != null)
                     line.remove();
                 line = mMap.addPolyline(polylineOptions);

@@ -77,6 +77,7 @@ public class customerappBookingsMainActivity extends AppCompatActivity {
                 break;
             case 1:
                 Toast.makeText(getApplicationContext(), "Clicked option 1.", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(this,customerappFlightBookingsListsActivity.class));
                 break;
             default:
                 Toast.makeText(getApplicationContext(), "default.", Toast.LENGTH_SHORT).show();

@@ -20,6 +20,7 @@ import com.webingate.paysmartcustomerapp.customerapp.Deo.ActiveCountries;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerEOTPVerificationResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerforgotPwdResponse;
 import com.webingate.paysmartcustomerapp.customerapp.ForgotPasswordActivity;
+import com.webingate.paysmartcustomerapp.customerapp.LoginActivity;
 import com.webingate.paysmartcustomerapp.utils.Utils;
 
 import java.util.List;
@@ -84,7 +85,7 @@ public class customerForgotPasswordActivity extends AppCompatActivity {
 
         signInTextView.setOnClickListener(view -> {
            // Toast.makeText(getApplicationContext(), "Clicked Sign In", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(this, login_activity.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         });
 

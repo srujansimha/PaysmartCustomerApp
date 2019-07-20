@@ -23,6 +23,7 @@ import java.util.Iterator;
 @SuppressLint("NewApi")
 public class FlightLayout extends Fragment {
     TextView name,time,subtitle,price,seatsselected;
+    Toast toast;
     private static final String ARG_SECTION_NUMBER = "section_number";
     Button done,seats[][]=new Button[6][4];
 
@@ -85,6 +86,8 @@ public class FlightLayout extends Fragment {
                 if(ApplicationConstants.seatsSelected.size()>0){
                     ApplicationConstants.FRAGMENT=ApplicationConstants.PASSENGERDETAILS;
                     goPage(ApplicationConstants.FRAGMENT);
+                }else{
+                    DisplayToast("Please select Seats");
                 }
             }
         });
@@ -162,5 +165,15 @@ public class FlightLayout extends Fragment {
                 R.anim.rotate_backward);*/
         fragmentTransaction.replace(R.id.flContent, fragment);
         fragmentTransaction.commit();
+    }
+    public void DisplayToast(String text){
+        if(toast!=null){
+            toast.cancel();
+            toast=null;
+
+        }
+        toast= Toast.makeText(getContext(),text,Toast.LENGTH_SHORT);
+        toast.show();
+
     }
 }

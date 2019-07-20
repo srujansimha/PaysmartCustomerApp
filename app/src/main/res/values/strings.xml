@@ -11,9 +11,9 @@
 
 
     <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">
-       <!--AIzaSyBdLsoQN4TDHBGdwXvwp35gFo9o9cn8lus   default-->
+       <!--AIzaSyBdLsoQN4TDHBGdwXvwp35gFo9o9cn8lus-->
         AIzaSyAv573siFczzlzy4kD1a2BN_LQhmwJaa2Q
-        <!--AIzaSyCKPdqX845XL-L84Q9bEOb0L23ghxPLAgo   my api-->
+        <!--AIzaSyCKPdqX845XL-L84Q9bEOb0L23ghxPLAgo-->
     </string>
     <string name="title_activity_login_activity">Paysmart Customer app</string>
 
