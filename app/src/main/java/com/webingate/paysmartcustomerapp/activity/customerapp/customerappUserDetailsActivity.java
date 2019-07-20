@@ -49,14 +49,26 @@ import static java.security.AccessController.getContext;
 public class customerappUserDetailsActivity extends AppCompatActivity {
 
     public static final String MyPREFERENCES = "MyPrefs";
-    public static final String Name = "nameKey";
     public static final String Phone = "phoneKey";
+    public static final String ID = "idKey";
+    public static final String Name = "nameKey";
     public static final String Email = "emailKey";
+    public static final String Password = "passwordkey";
+    public static final String Mobileotp = "mobileotpkey";
+    public static final String Emailotp = "emailotpkey";
+    public static final String Dateofbirth = "dateofbirth";
+    public static final String Gender = "gender";
+    public static final String Paymenttype = "paymenttype";
+    public static final String Profilepic = "profilepic";
+    public static final String Passwordotp = "passwordotpkey";
+    public static final String UserAccountNo = "UserAccountNokey";
+    public static final String Isocode = "ISOCodekey";
+    public static final String UserPhoto = "UserPhoto";
     Toast toast;
 
 //ImageView profileImageView;
     private int position = 1;
-    private int maxPosition = 2;
+    private int maxPosition = 1;
     private Button nextButton, prevButton;
     private TextView imageNoTextView;
 
@@ -77,9 +89,11 @@ ImageView ephoto;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_userdetails_activity);
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        ApplicationConstants.id = prefs.getInt(ID,0);
         ApplicationConstants.username= prefs.getString(Name, null);
         ApplicationConstants.email= prefs.getString(Email, null);
         ApplicationConstants.mobileNo= prefs.getString(Phone, null);
+        ApplicationConstants.userAccountNo = prefs.getString(UserAccountNo,null);
 
         initData();
 
@@ -140,9 +154,6 @@ ImageView ephoto;
 
             if (position < maxPosition) {
                 position++;
-
-
-
                 updatePositionTextView();
                 if(position == 1) {
                     Toast.makeText(this, "Step 1.", Toast.LENGTH_SHORT).show();
@@ -153,38 +164,38 @@ ImageView ephoto;
                     ephoto=(ImageView) findViewById(R.id.Edituserphoto);
 
                 }
-                if(position == 2)
-                {
-                    //EditText name = (EditText)findViewById(R.id.s_name);
-                    name = findViewById(R.id.s_name);
-                    email = findViewById(R.id.s_email);
-                    mno = findViewById(R.id.s_mobileno);
-                    address = findViewById(R.id.s_address);
-                    city = findViewById(R.id.s_city);
-                    postal = findViewById(R.id.s_postal);
-                    state = findViewById(R.id.s_state);
-                    profileImageView = findViewById(R.id.profileImageView);
-
-                    JsonObject object = new JsonObject();
-                    object.addProperty("flag", "U");
-                    object.addProperty("Firstname",name.getText().toString());
-                    //object.addProperty("lastname","kumar");
-
-                    object.addProperty("Mobilenumber",mno.getText().toString());
-                    object.addProperty("Email",email.getText().toString());
-                    //object.addProperty("CountryId","101");
-                    object.addProperty("UserAccountNo", ApplicationConstants.userAccountNo);
-                    object.addProperty("usertypeid", ApplicationConstants.userid);
-                    object.addProperty("UserPhoto","data:" + ApplicationConstants.pic_format + ";base64," +  ApplicationConstants.pic_data);
-                    object.addProperty("Address",address.getText().toString());
-                    object.addProperty("Gender","44");
-                        RegisterCustomer(object);
-
-                    Toast.makeText(this, "Step 2.", Toast.LENGTH_SHORT).show();
-                    setupFragment(new customerappPaymentmodeFragment());
-                }
+//                if(position == 2)
+//                {
+//                    //EditText name = (EditText)findViewById(R.id.s_name);
+//
+//
+//                    //Toast.makeText(this, "Step 2.", Toast.LENGTH_SHORT).show();
+//                    //setupFragment(new customerappPaymentmodeFragment());
+//                }
             } else {
-                Toast.makeText(this, "No More Step.", Toast.LENGTH_SHORT).show();
+                name = findViewById(R.id.s_name);
+                email = findViewById(R.id.s_email);
+                mno = findViewById(R.id.s_mobileno);
+                address = findViewById(R.id.s_address);
+                city = findViewById(R.id.s_city);
+                postal = findViewById(R.id.s_postal);
+                state = findViewById(R.id.s_state);
+                profileImageView = findViewById(R.id.profileImageView);
+
+                JsonObject object = new JsonObject();
+                object.addProperty("flag", "U");
+                object.addProperty("id",ApplicationConstants.id);
+                object.addProperty("Username",name.getText().toString());
+                object.addProperty("Firstname",name.getText().toString());
+                object.addProperty("UserAccountNo",ApplicationConstants.userAccountNo);
+                //object.addProperty("lastname","kumar");
+                object.addProperty("Mobilenumber",mno.getText().toString());
+                object.addProperty("Email",email.getText().toString());
+                object.addProperty("UserPhoto","data:" + ApplicationConstants.pic_format + ";base64," +  ApplicationConstants.pic_data);
+                object.addProperty("Address",address.getText().toString());
+                object.addProperty("Gender","44");
+                RegisterCustomer(object);
+               // Toast.makeText(this, "No More Step.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -202,11 +213,11 @@ ImageView ephoto;
 
                     ephoto=(ImageView) findViewById(R.id.Edituserphoto);
                 }
-                if(position == 2)
-                {
-                    Toast.makeText(this, "Step 2.", Toast.LENGTH_SHORT).show();
-                    setupFragment(new customerappPaymentmodeFragment());
-                }
+//                if(position == 2)
+//                {
+//                    Toast.makeText(this, "Step 2.", Toast.LENGTH_SHORT).show();
+//                    setupFragment(new customerappPaymentmodeFragment());
+//                }
             } else {
                 Toast.makeText(this, "No More Step.", Toast.LENGTH_SHORT).show();
             }
@@ -306,19 +317,20 @@ ImageView ephoto;
 
         //StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappUserDetailsActivity.this).getrestadapter()
-                .RegisterUser(jsonObject)
+                .RegisterUserUpdate(jsonObject)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<RegisterUserResponse>>() {
                     @Override
                     public void onCompleted() {
-                        DisplayToast("Successfully onCompleted");
+                        //DisplayToast("Successfully onCompleted");
                         //StopDialogue();
                     }
                     @Override
                     public void onError(Throwable e) {
                         try {
-                            DisplayToast("Successfully onError");
+                            Log.d("OnError ", e.getMessage());
+                            //DisplayToast("Successfully onError");
                             //DisplayToast("Unable to Register");
                             //StopDialogue();
                         } catch (Exception ex) {
@@ -333,7 +345,18 @@ ImageView ephoto;
                             DisplayToast(response.getDescription());
                         }
                         else{
-                            ApplicationConstants.photo=response.getUserPhoto();
+                            SharedPreferences sharedPref = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString(UserAccountNo, response.getUserAccountNo());
+                            editor.putString(Phone,response.getMobilenumber());
+                            editor.putInt(ID,response.getId());
+                            editor.putString(Name,response.getUsername());
+                            editor.putString(UserPhoto,response.getUserPhoto());
+                            editor.putString(Email,response.getEmail());
+                            editor.commit();
+                            startActivity(new Intent(customerappUserDetailsActivity.this,customerDashboardActivity.class));
+                            finish();
+                            //ApplicationConstants.photo=response.getUserPhoto();
                         }
                     }
                 });

@@ -277,11 +277,11 @@ public class login_activity extends AppCompatActivity{
                             editor.putString(UserPhoto,credentialsResponse.getUserPhoto());
                             editor.putString(Email,credentialsResponse.getEmail());
 
-                            ApplicationConstants.userAccountNo=credentialsResponse.getUserAccountNo();
-                            ApplicationConstants.userid=credentialsResponse.getId();
-                            ApplicationConstants.photo=credentialsResponse.getUserPhoto();
-                            ApplicationConstants.mobNo=credentialsResponse.getMobilenumber();
-                            ApplicationConstants.email=credentialsResponse.getEmail();
+//                            ApplicationConstants.userAccountNo=credentialsResponse.getUserAccountNo();
+//                            ApplicationConstants.userid=credentialsResponse.getId();
+//                            ApplicationConstants.photo=credentialsResponse.getUserPhoto();
+//                            ApplicationConstants.mobNo=credentialsResponse.getMobilenumber();
+//                            ApplicationConstants.email=credentialsResponse.getEmail();
 //                            editor.putString(VEHICLEID, credentialsResponse.getVehicleId());
 //                            editor.putString(Phone, mobileNo.getText().toString());
 //                            editor.putString(Emailotp, null);

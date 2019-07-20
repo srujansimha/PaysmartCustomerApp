@@ -177,7 +177,7 @@ public static final String MyPREFERENCES = "MyPrefs";
     boolean isBookingStarted=true;
     Toast toast;
     ProgressDialog dialog;
-    String useracntno,id;
+    String useracntno;int id;
     String slat,slog,dlat,dlog;
     //TODO: this is to test then scroll view navigation
 //    List<DirectoryHome9ProductsVO> productsList;
@@ -239,7 +239,7 @@ public static final String MyPREFERENCES = "MyPrefs";
   //      selectDestination.setText(C_des);
 
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        id = prefs.getString(ID, null);
+        id = prefs.getInt(ID, 0);
         useracntno = prefs.getString(UserAccountNo, null);
 
         fruits = getResources().getStringArray(R.array.fruits);

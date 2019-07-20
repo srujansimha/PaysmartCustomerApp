@@ -105,6 +105,10 @@ public interface APIInterface  {
     @POST("/api/UserAccount/RegisterUser")
     public Observable<List<RegisterUserResponse>> RegisterUser(@Body JsonObject jsonObject);
 
+    @POST("/api/UserAccount/UpdateRegisterUser")
+    public Observable<List<RegisterUserResponse>> RegisterUserUpdate(@Body JsonObject jsonObject);
+
+
     @GET("/api/TicketBooking/GetAvailableServices")
     public Observable<List<GetAvailableServicesResponse>> GetAvailableServices(@Query("srcId") String srcId, @Query("destId") String destId);//i
 

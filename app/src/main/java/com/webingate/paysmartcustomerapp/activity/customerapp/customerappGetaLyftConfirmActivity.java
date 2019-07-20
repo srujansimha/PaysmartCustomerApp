@@ -118,14 +118,13 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class customerappGetaLyftConfirmActivity extends AppCompatActivity implements OnMapReadyCallback,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
-//    @BindView(R.id.toolbar)
+    //    @BindView(R.id.toolbar)
 //    Toolbar toolbar;
-public static final String MyPREFERENCES = "MyPrefs";
+    public static final String MyPREFERENCES = "MyPrefs";
     public static final String ID = "idKey";
     public static final String UserAccountNo = "UserAccountNokey";
     public static final String BookingNO = "bookingno";
     public static final String Phone = "phoneKey";
-    private static final int intervaltime = 2000;
     LinearLayout bsLayout;
     ArrayList<String> list;
     ArrayAdapter<String> adapter;
@@ -151,7 +150,7 @@ public static final String MyPREFERENCES = "MyPrefs";
     @BindView(R.id.coupon)
     TextView coupon;
     @BindView(R.id.name)
-     TextView paymenttype;
+    TextView paymenttype;
     //    @BindView(R.id.taxi)
 //    AppCompatButton taxi;
 //    @BindView(R.id.meteredtaxi)
@@ -259,10 +258,10 @@ public static final String MyPREFERENCES = "MyPrefs";
             TextView tname = (TextView) findViewById(R.id.name);
             tname.setText(selectedcard);
         }
-       // selectDestination.setText("Destination : " + (dlat + "").substring(0, 10) + " , " + (dlog + "").substring(0, 10));
-       // selectsource.setText("Destination : " + (slat + "").substring(0, 10) + " , " + (slog + "").substring(0, 10));
- //      selectsource.setText(C_src);
-  //      selectDestination.setText(C_des);
+//         selectDestination.setText("Destination : " + (dlat + "").substring(0, 10) + " , " + (dlog + "").substring(0, 10));
+//         selectsource.setText("Destination : " + (slat + "").substring(0, 10) + " , " + (slog + "").substring(0, 10));
+//              selectsource.setText(C_src);
+//              selectDestination.setText(C_des);
 
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         id = prefs.getInt(ID, 0);
@@ -397,7 +396,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                     object.addProperty("CancelledBy", "");
                     object.addProperty("BookingChannel", "app");
                     object.addProperty("Reasons", "");
-                   // object.addProperty("PaymentTypeId", "");
+                    // object.addProperty("PaymentTypeId", "");
                     SaveBookingDetails(object);
                 }
             }
@@ -406,36 +405,36 @@ public static final String MyPREFERENCES = "MyPrefs";
 
         payment.setOnClickListener((View v) -> {
 
-                    View view = getLayoutInflater().inflate(R.layout.customerapp_bottomdialog, null);
+            View view = getLayoutInflater().inflate(R.layout.customerapp_bottomdialog, null);
 
-                    BottomSheetDialog dialog = new BottomSheetDialog(this);
+            BottomSheetDialog dialog = new BottomSheetDialog(this);
 
-                    list = new ArrayList <>(Arrays.asList(fruits));
-                    adapter = new ArrayAdapter <>(this, android.R.layout.simple_list_item_1, list);
-                    ListView listView = view.findViewById(R.id.bsDialogListView);
-                    listView.setAdapter(adapter);
-                    dialog.setContentView(view);
-                    dialog.show();
-                    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            list = new ArrayList <>(Arrays.asList(fruits));
+            adapter = new ArrayAdapter <>(this, android.R.layout.simple_list_item_1, list);
+            ListView listView = view.findViewById(R.id.bsDialogListView);
+            listView.setAdapter(adapter);
+            dialog.setContentView(view);
+            dialog.show();
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-                        public void onItemClick(AdapterView <?> adapter, View v, int position, long id) {
-                            if(position==1)
-                            {
-                                DisplayToast("Please Paymentmode");
+                public void onItemClick(AdapterView <?> adapter, View v, int position, long id) {
+                    if(position==1)
+                    {
+                        DisplayToast("Please Paymentmode");
 
-                                startActivity(new Intent(customerappGetaLyftConfirmActivity.this,customerappPaymentModeDetails.class));
-                            }
-                            else
-                            {
-                                //DisplayToast("selected Cash mode");
-                                dialog.cancel();
-                                TextView tname = (TextView) findViewById(R.id.name);
-                                tname.setText("Cash");
-                                //startActivity(new Intent(customerappGetaLyftConfirmActivity.this,customerappGetaLyftConfirmActivity.class));
-                            }
-                        }
-                    });
-                });
+                        startActivity(new Intent(customerappGetaLyftConfirmActivity.this,customerappPaymentModeDetails.class));
+                    }
+                    else
+                    {
+                        DisplayToast("selected Cash mode");
+                        dialog.cancel();
+                        TextView tname = (TextView) findViewById(R.id.name);
+                        tname.setText("Cash");
+                        //startActivity(new Intent(customerappGetaLyftConfirmActivity.this,customerappGetaLyftConfirmActivity.class));
+                    }
+                }
+            });
+        });
 
         personal.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -541,7 +540,7 @@ public static final String MyPREFERENCES = "MyPrefs";
         marker = mMap.addMarker(markerOptions);
 
         destlatlngnew = new LatLng(Double.parseDouble(dlat), Double.parseDouble(dlog));
-         markerOptions = new MarkerOptions();
+        markerOptions = new MarkerOptions();
         markerOptions.position(destlatlngnew);
         markerOptions.title("Current Position");
         markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
@@ -733,7 +732,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                 selectDestination.setText("Destination :" + result.routes[0].legs[0].endAddress);
                 List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
                 PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
-                polylineOptions.width(20);
+                //polylineOptions.width(10);
                 if (line != null)
                     line.remove();
                 line = mMap.addPolyline(polylineOptions);
@@ -1238,7 +1237,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                 .subscribe(new Subscriber<List<SaveBookingDetailsResponse>>() {
                     @Override
                     public void onCompleted() {
-                          //DisplayToast("Successfully Registered");
+                        //DisplayToast("Successfully Registered");
                         //StopDialogue();
                     }
 
@@ -1258,24 +1257,24 @@ public static final String MyPREFERENCES = "MyPrefs";
                     public void onNext(List<SaveBookingDetailsResponse> responselist) {
                         List<SaveBookingDetailsResponse> res=responselist;
                         if(res.size()!=0){
-                        SaveBookingDetailsResponse response = responselist.get(0);
-                        if(response.getBookingNumber()!=null) {
+                            SaveBookingDetailsResponse response = responselist.get(0);
+                            if(response.getBookingNumber()!=null) {
 
-                            SharedPreferences sharedPref = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString(BookingNO, response.getBookingNumber());
-                            editor.commit();
+                                SharedPreferences sharedPref = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
+                                editor.putString(BookingNO, response.getBookingNumber());
+                                editor.commit();
 
-                            ApplicationConstants.bookingNo = response.getBookingNumber();
-                            isBookingStarted = true;
-                            checkingCabsDialogue = new CheckingCabsDialogue(customerappGetaLyftConfirmActivity.this);
-                            checkingCabsDialogue.setCanceledOnTouchOutside(false);
-                            checkingCabsDialogue.show();
-                            BookingStatus();
-                        }else {
-                            DisplayToast("Booking Failed");
-                            //BookingStatus();
-                        }
+                                ApplicationConstants.bookingNo = response.getBookingNumber();
+                                isBookingStarted = true;
+                                checkingCabsDialogue = new CheckingCabsDialogue(customerappGetaLyftConfirmActivity.this);
+                                checkingCabsDialogue.setCanceledOnTouchOutside(false);
+                                checkingCabsDialogue.show();
+                                BookingStatus();
+                            }else {
+                                DisplayToast("Booking Failed");
+                                //BookingStatus();
+                            }
                         }
                     }
                 });
@@ -1325,7 +1324,7 @@ public static final String MyPREFERENCES = "MyPrefs";
         }
     }
     public void BookingStatus1(JsonObject jsonObject) {
-       // StartDialogue();
+        // StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftConfirmActivity.this).getrestadapter()
                 .BookingStatus(jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -1334,40 +1333,23 @@ public static final String MyPREFERENCES = "MyPrefs";
                     @Override
                     public void onCompleted() {
                         //  DisplayToast("Successfully Registered");
-                           //StopDialogue();
+                        //StopDialogue();
                         if (tt != null) {
                             //StopDialogue();
                             return;
                         }
                         else{
-                            try
-                            {
-                                Thread.sleep(intervaltime);
-                                BookingStatus();
-                            }
-                            catch(InterruptedException ex)
-                            {
-                                Thread.currentThread().interrupt();
-                            }
-
+                            BookingStatus();
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         try {
-                            try
-                            {
-                                Thread.sleep(intervaltime);
-                                BookingStatus();
-                            }
-                            catch(InterruptedException ex)
-                            {
-                                Thread.currentThread().interrupt();
-                            }
+                            BookingStatus();
                             Log.d("OnError ", e.getMessage());
                             //  DisplayToast("Error");
-                                //StopDialogue();
+                            //StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }
@@ -1377,37 +1359,29 @@ public static final String MyPREFERENCES = "MyPrefs";
                     public void onNext(List<CustomerBookingStatusResponse> responselist) {
                         List<CustomerBookingStatusResponse> res=responselist;
                         if(res.size()!=0){
-                        CustomerBookingStatusResponse response = responselist.get(0);
-                        if (response.getBooKingOTP() != null) {
-                            tt=response.getBooKingOTP();
-                            if (checkingCabsDialogue != null) {
-                                //CheckingCabsDialogue dd = new CheckingCabsDialogue(customerappGetaLyftConfirmActivity.this);
-                                //dd.testclose();
-                                checkingCabsDialogue.cancel();
-                            }
-                            isBookingStarted=false;
+                            CustomerBookingStatusResponse response = responselist.get(0);
+                            if (response.getBooKingOTP() != null) {
+                                tt=response.getBooKingOTP();
+                                if (checkingCabsDialogue != null) {
+                                    //CheckingCabsDialogue dd = new CheckingCabsDialogue(customerappGetaLyftConfirmActivity.this);
+                                    //dd.testclose();
+                                    checkingCabsDialogue.cancel();
+                                }
+                                isBookingStarted=false;
 
-                            Intent intent = new Intent(customerappGetaLyftConfirmActivity.this, CurrentTrip.class);
-                            intent.putExtra("lat", sourceLatitude);
-                            intent.putExtra("lon", sourceLongitude);
-                            intent.putExtra("destlat", destLatitude);
-                            intent.putExtra("destlon", destLongitude);
-                            intent.putExtra("details", response);
-                            startActivity(intent);
-                            finish();
-                            return;
-                        }else {
-                            try
-                            {
-                                Thread.sleep(intervaltime);
+                                Intent intent = new Intent(customerappGetaLyftConfirmActivity.this, CurrentTrip.class);
+                                intent.putExtra("lat", sourceLatitude);
+                                intent.putExtra("lon", sourceLongitude);
+                                intent.putExtra("destlat", destLatitude);
+                                intent.putExtra("destlon", destLongitude);
+                                intent.putExtra("details", response);
+                                startActivity(intent);
+                                finish();
+                                return;
+                            }else {
                                 BookingStatus();
                             }
-                            catch(InterruptedException ex)
-                            {
-                                Thread.currentThread().interrupt();
-                            }
                         }
-                    }
                     }
                 });
     }
@@ -1454,7 +1428,7 @@ public static final String MyPREFERENCES = "MyPrefs";
     }
 
     public void AdvanceBookingDetails(JsonObject jsonObject) {
-       // StartDialogue();
+        StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(customerappGetaLyftConfirmActivity.this).getrestadapter()
                 .AdvanceBookingDetails(jsonObject)
                 .subscribeOn(Schedulers.io())
@@ -1463,7 +1437,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                     @Override
                     public void onCompleted() {
                         DisplayToast("Booking Completed");
-                        //StopDialogue();
+                        StopDialogue();
                     }
 
                     @Override
@@ -1471,7 +1445,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                         try {
                             Log.d("OnError ", e.getMessage());
                             DisplayToast("Error");
-                           // StopDialogue();
+                            StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
                         }

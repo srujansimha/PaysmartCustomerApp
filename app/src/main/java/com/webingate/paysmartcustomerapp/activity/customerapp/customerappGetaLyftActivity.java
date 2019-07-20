@@ -139,6 +139,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     Place destination, source;
     static GoogleMap mMap;
     static Marker marker, markerDesst;
+    int updatemarkers = 0;
     private Marker cabs[] = new Marker[5];
     double sourceLatitude = 0.0, sourceLongitude = 0.0, destLatitude = 0.0, destLongitude = 0.0;
     private static final int CHECKPRICE = 1;
@@ -305,7 +306,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
 //                    object.addProperty("BNo", ApplicationConstants.bookingNo);
 //                    object.addProperty("PackageId", "3");
 //                    CalculatePrice(object);
-                   // Toast.makeText(getApplicationContext(), "Clicked : get a lyft details", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Clicked : get a lyft details", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(customerappGetaLyftActivity.this, customerappGetaLyftConfirmActivity.class);
                     intent.putExtra("source", selectsource.getText().toString());
                     intent.putExtra("destination", selectDestination.getText().toString());
@@ -403,8 +404,8 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
             case 4:
                 ApplicationConstants.marker = R.mipmap.marker_car;
                 break;
-                default:
-                    break;
+            default:
+                break;
         }
         for (int i = 0; i < 5; i++) {
             AvailableVehiclesResponse response= new AvailableVehiclesResponse();
@@ -439,9 +440,9 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
     // this method will provide distance and time between two places
     private String getEndLocationTitle(DirectionsResult results) {
         return "Time :" + results.routes[0].legs[0].duration.humanReadable + " Distance :" + results.routes[0].legs[0].distance.humanReadable;
-   }
+    }
     // This task will provide directions and path
-        private class DirectionsTask extends AsyncTask<String, Void, String> {
+    private class DirectionsTask extends AsyncTask<String, Void, String> {
 
         // Downloading data in non-ui thread
         @Override
@@ -470,27 +471,28 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
             super.onPostExecute(results);
             Log.i("Directions", "Got directions");
             if (result != null) {
-                MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
-                        .legs[0].startLocation.lat, result.routes[0]
-                        .legs[0].startLocation.lng))
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-                       .title("Source" + result.routes[0].legs[0].startAddress);
-                if (marker != null)
-                    marker.remove();
-                marker = mMap.addMarker(markerOptions);
-                markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
-                        .legs[0].endLocation.lat, result.routes[0]
-                        .legs[0].endLocation.lng))
-                        .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
-                        .title("Destination" + result.routes[0].legs[0].endAddress);
-                if (markerDesst != null)
-                    markerDesst.remove();
-                markerDesst = mMap.addMarker(markerOptions);
-                selectsource.setText("Source :" + result.routes[0].legs[0].startAddress);
-                selectDestination.setText("Destination :" + result.routes[0].legs[0].endAddress);
+                    MarkerOptions markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
+                            .legs[0].startLocation.lat, result.routes[0]
+                            .legs[0].startLocation.lng))
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+                            .title("Source" + result.routes[0].legs[0].startAddress);
+                    if (marker != null)
+                        marker.remove();
+                    marker = mMap.addMarker(markerOptions);
+                    markerOptions = new MarkerOptions().position(new LatLng(result.routes[0]
+                            .legs[0].endLocation.lat, result.routes[0]
+                            .legs[0].endLocation.lng))
+                            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
+                            .title("Destination" + result.routes[0].legs[0].endAddress);
+                    if (markerDesst != null)
+                        markerDesst.remove();
+                    markerDesst = mMap.addMarker(markerOptions);
+                    selectsource.setText("Source :" + result.routes[0].legs[0].startAddress);
+                    selectDestination.setText("Destination :" + result.routes[0].legs[0].endAddress);
+
                 List<LatLng> decodedPath = PolyUtil.decode(result.routes[0].overviewPolyline.getEncodedPath());
                 PolylineOptions polylineOptions = new PolylineOptions().addAll(decodedPath);
-                polylineOptions.width(20);
+                //polylineOptions.width(10);
                 if (line != null)
                     line.remove();
                 line = mMap.addPolyline(polylineOptions);
@@ -640,12 +642,12 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
                             mMap.setMyLocationEnabled(true);
                         }
                         updateGPSStatus("GPS is Enabled in your device");
-                            try {
-                                LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftActivity.this);
-                                AvailableVehiclesTest(0);
-                            }catch (Exception ex){
-                              Log.println(Log.ASSERT,"error",ex.getMessage().toString());
-                            }
+                        try {
+                            LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, customerappGetaLyftActivity.this);
+                            AvailableVehiclesTest(0);
+                        }catch (Exception ex){
+                            Log.println(Log.ASSERT,"error",ex.getMessage().toString());
+                        }
                         break;
                     case LocationSettingsStatusCodes.RESOLUTION_REQUIRED:
                         // Location settings are not satisfied. But could be fixed by showing the user
@@ -1369,6 +1371,7 @@ public class customerappGetaLyftActivity extends AppCompatActivity implements On
         object.addProperty("BookingChannel", "app");
         object.addProperty("Reasons", "");
         object.addProperty("PaymentTypeId", paymentType);
+        object.addProperty("VehicleGroupId", "34");
         SaveBookingDetails(object);
     }
 

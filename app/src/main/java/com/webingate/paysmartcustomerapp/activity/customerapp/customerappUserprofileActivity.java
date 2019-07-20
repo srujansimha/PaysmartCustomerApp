@@ -50,6 +50,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
     public static final String Email = "emailKey";
     public static final String Password = "passwordkey";
     public static final String UserAccountNo = "UserAccountNokey";
+    public static final String UserPhoto = "UserPhoto";
 
     Toolbar toolbar;
     Toast toast;
@@ -76,25 +77,32 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
     @BindView(R.id.puphone)
     TextView puphone;
 
-    String useracc,usrname,emailid,mobno;
+    @BindView(R.id.userImageView)
+    ImageView userimage;
+
+    String useracc,usrname,emailid,mobno,profilepic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_userprofile_activity);
-        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedpreferences.edit();
-        editor.putString(UserAccountNo, Email);
-        editor.commit();
+//        SharedPreferences sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = sharedpreferences.edit();
+//        editor.putString(UserAccountNo,Email);
+//
+//        editor.commit();
 
         SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         useracc= prefs.getString(UserAccountNo, null);
         usrname = prefs.getString(Name, null);
         emailid = prefs.getString(Email, null);
         mobno = prefs.getString(Phone, null);
+        profilepic = prefs.getString(UserPhoto,null);
+        ApplicationConstants.photo = profilepic;
 
         //puphone.setText("7883890asdf");
-       // phoneno.setText("asdf");
+        //phoneno.setText(mobno);
+
         initUI();
         initData();
         FloatingActionButton edit = findViewById(R.id.editFAB);
@@ -103,6 +111,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
                 v ->{
                 Intent intent = new Intent (customerappUserprofileActivity.this,customerappUserDetailsActivity.class);
                 startActivity(intent);
+                finish();
         });
     }
 
@@ -219,8 +228,8 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         TextView pht =(TextView) findViewById(R.id.phoneTextView);
         TextView username = findViewById(R.id.UsernameTextView);
         TextView fname = findViewById(R.id.FirstnameTextView);
-//        TextView phoneno=(TextView)findViewById(R.id.phoneno);
         TextView puphone=findViewById(R.id.puphone);
+        userimage = findViewById(R.id.userImageView);
 
         //puphone=findViewById(R.id.puphone);
 
@@ -229,7 +238,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
         pht.setText(mobno);
         username.setText(usrname);
         fname.setText(usrname);
-//        phoneno.setText("7893890990");
+        puphone.setText(mobno);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -241,15 +250,18 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
         View headerLayout = navigationView.getHeaderView(0);
         ImageView userImageView = headerLayout.findViewById(R.id.userImageView);
+        TextView phoneno = headerLayout.findViewById(R.id.phoneno);
        // Utils.setCircleImageToImageView(this, userImageView, R.drawable.profile1, 0, 0);
 
+        phoneno.setText(mobno);
         ImageView userImageView1 = findViewById(R.id.userImageView1);
         //Utils.setCircleImageToImageView(this, userImageView1, R.drawable.profile1, 0, 0);
 
 
         if(ApplicationConstants.photo==null){
             Utils.setCircleImageToImageView(getApplicationContext(), userImageView, R.drawable.profile1, 0, 0);
-            Utils.setCircleImageToImageView(getApplicationContext(), userImageView, R.drawable.profile1, 0, 0);
+            Utils.setCircleImageToImageView(getApplicationContext(), userImageView1, R.drawable.profile1, 0, 0);
+
         }
         else
         {
@@ -278,8 +290,13 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-         getMenuInflater().inflate(R.menu.menu_edit, menu);
+         //getMenuInflater().inflate(R.menu.menu_edit, menu);
         return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        finish();
+        return super.onOptionsItemSelected(item);
     }
     private void initToolbar() {
 
