@@ -177,6 +177,8 @@ public class FlightPayments extends Fragment  {
                     obj.setgender((ApplicationConstants.passengergender.get(i)));
                     obj.setMobileno(ApplicationConstants.PassengerMobileno);
                     obj.setEmailid(ApplicationConstants.PassengerEmailid);
+                    obj.setSource(ApplicationConstants.fsource);
+                    obj.setDestination(ApplicationConstants.fdestination);
                     obj.setSeatno(String.valueOf(ApplicationConstants.seatsSelected.get(i)));
                     totalamount=totalamount+famt;
                     pasengerlist.add(obj);
@@ -215,6 +217,8 @@ public class FlightPayments extends Fragment  {
                 obj.setgender((ApplicationConstants.passengergender.get(i)));
                 obj.setMobileno(ApplicationConstants.PassengerMobileno);
                 obj.setEmailid(ApplicationConstants.PassengerEmailid);
+                obj.setSource(ApplicationConstants.fsource);
+                obj.setDestination(ApplicationConstants.fdestination);
                 obj.setSeatno(String.valueOf(ApplicationConstants.seatsSelected.get(i)));
                     totalamount=totalamount+famt;
                 pasengerlist.add(obj);
