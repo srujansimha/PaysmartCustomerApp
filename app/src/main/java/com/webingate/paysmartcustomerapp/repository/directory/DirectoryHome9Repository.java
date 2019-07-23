@@ -200,44 +200,44 @@ public class DirectoryHome9Repository {
             " },\n" +
             "{\n" +
             "  \"id\": \"product12\",\n" +
-            "  \"icon\": \"home9_flight\",\n" +
+            "  \"icon\": \"flight\",\n" +
             "  \"name\": \"Flights\"\n" +
             "},\n" +
             " {\n" +
             "  \"id\": \"product13\",\n" +
-            "  \"icon\": \"home9_rental\",\n" +
+            "  \"icon\": \"taxi\",\n" +
             "  \"name\": \"Hire a vehicle\"\n" +
             "},\n" +
             " {\n" +
             "  \"id\": \"product14\",\n" +
-            "  \"icon\": \"home9_train\",\n" +
+            "  \"icon\": \"towing\",\n" +
             "  \"name\": \"Towing Vehicle\"\n" +
             "},\n" +
             "  {\n" +
             "    \"id\": \"product2\",\n" +
-            "    \"icon\": \"home9_hotel\",\n" +
+            "    \"icon\": \"ambulance\",\n" +
             "    \"name\": \"Ambulance\"\n" +
             "  },\n" +
             "  {\n" +
             "    \"id\": \"product7\",\n" +
-            "    \"icon\": \"home9_bus\",\n" +
+            "    \"icon\": \"ic_bus\",\n" +
             "    \"name\": \"Bus\"\n" +
             "  },\n" +
             "  {\n" +
             "    \"id\": \"product3\",\n" +
-            "    \"icon\": \"cruise\",\n" +
+            "    \"icon\": \"cruise1\",\n" +
             "    \"name\": \"Cruise\"\n" +
-            "  },\n" +
-            "  {\n" +
-            "    \"id\": \"product4\",\n" +
-            "    \"icon\": \"home9_activities\",\n" +
-            "    \"name\": \"Offers & discounts\"\n" +
-            "  },\n" +
-            "  {\n" +
-            "    \"id\": \"product5\",\n" +
-            "    \"icon\": \"home9_hotel\",\n" +
-            "    \"name\": \"Shop\"\n" +
-            "  },\n" +
+            "  }\n" +
+//            "  {\n" +
+//            "    \"id\": \"product4\",\n" +
+//            "    \"icon\": \"home9_activities\",\n" +
+//            "    \"name\": \"Offers & discounts\"\n" +
+//            "  },\n" +
+//            "  {\n" +
+//            "    \"id\": \"product5\",\n" +
+//            "    \"icon\": \"home9_hotel\",\n" +
+//            "    \"name\": \"Shop\"\n" +
+//            "  },\n" +
 //            "  {\n" +
 //            "    \"id\": \"product6\",\n" +
 //            "    \"icon\": \"home9_Ambulance\",\n" +

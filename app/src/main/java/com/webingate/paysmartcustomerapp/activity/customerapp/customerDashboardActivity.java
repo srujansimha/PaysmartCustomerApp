@@ -103,12 +103,12 @@ public class customerDashboardActivity extends AppCompatActivity {
 //                case R.id.searchMenu:
 //                    loadFragment(new customerAppDashboardFragment());
 //                    break;
-//                case R.id.listMenu:
-//                    loadFragment(new AppDirectoryHome2Fragment());
-//                    break;
-//                case R.id.historyMenu:
-//                    loadFragment(new AppDirectoryHome3Fragment());
-//                    break;
+                case R.id.orderMenu:
+                    startActivity(new Intent(customerDashboardActivity.this, customerappCouponsListActivity.class));
+                    break;
+                case R.id.inboxMenu:
+                    startActivity(new Intent(customerDashboardActivity.this, customerappNotificationListActivity.class));
+                    break;
                 case R.id.profileMenu:
                     startActivity(new Intent(customerDashboardActivity.this, customerappUserprofileActivity.class));
 
@@ -122,7 +122,7 @@ public class customerDashboardActivity extends AppCompatActivity {
                     break;
             }
 
-            Toast.makeText(getApplicationContext(), "Clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getApplicationContext(), "Clicked " + item.getTitle(), Toast.LENGTH_SHORT).show();
 
             return false;
         });

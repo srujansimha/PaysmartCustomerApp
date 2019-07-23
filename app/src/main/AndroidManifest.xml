@@ -188,6 +188,8 @@
         <activity android:name=".activity.customerapp.CropingMainActivity" android:theme="@style/Theme.AppCompat.Light"/>
         <activity android:name="cropper.CropImageActivity" android:theme="@style/Theme.AppCompat.Light"/>
         <activity android:name=".activity.customerapp.customerappFlightBookingsListsActivity"></activity>
+        <activity android:name=".activity.customerapp.customerappNotificationListActivity"></activity>
+        <activity android:name=".activity.customerapp.customerappCouponsListActivity"></activity>
 
     </application>
 

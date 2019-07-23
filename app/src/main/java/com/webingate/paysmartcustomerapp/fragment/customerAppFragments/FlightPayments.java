@@ -12,6 +12,7 @@ import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.DocumentsContract;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -26,18 +27,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.load.resource.bytes.BytesResource;
 import com.google.gson.JsonObject;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 import com.pchmn.materialchips.R2;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.activity.customerapp.DialogFlightPaymentTransactionsFragment;
@@ -56,6 +45,7 @@ import com.webingate.paysmartcustomerapp.customerapp.Travels;
 import junit.framework.Test;
 
 import org.joda.time.DateTime;
+import org.w3c.dom.Document;
 
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
@@ -493,163 +483,163 @@ public class FlightPayments extends Fragment  {
 
     }
 
-    private void createPDF (){
-
-        Document doc = new Document();
-        PdfWriter docWriter = null;
-
-        DecimalFormat df = new DecimalFormat("0.00");
-
-        try {
-
-            //special font sizes
-            Font bfBold12 = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, new BaseColor(0, 0, 0));
-            Font bf12 = new Font(Font.FontFamily.TIMES_ROMAN, 12);
-
-            //file path
-            String directory_path = Environment.getExternalStorageDirectory().getPath() + "/mypdf/";
-            File file = new File(directory_path);
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-            String path = directory_path+"test-2.pdf";
-            //String path = "docs/" + pdfFilename;
-            docWriter = PdfWriter.getInstance(doc , new FileOutputStream(path));
-
-            //document header attributes
-            doc.addAuthor("betterThanZero");
-            doc.addCreationDate();
-            doc.addProducer();
-            doc.addCreator("MySampleCode.com");
-            doc.addTitle("Report with Column Headings");
-            doc.setPageSize(PageSize.LETTER);
-
-            //open document
-            doc.open();
-
-            //create a paragraph
-//            Paragraph paragraph = new Paragraph("iText ® is a library that allows you to create and " +
-//                    "manipulate PDF documents. It enables developers looking to enhance web and other " +
-//                    "applications with dynamic PDF document generation and/or manipulation.");
-
-            float[] columnWidths1 = {5f,5f };
-            PdfPTable table1=new PdfPTable(2);
-            //table1.setWidthPercentage(90f);
-            PdfPCell cell1=new PdfPCell(new Phrase("Air india Airlines Tickets",bfBold12));
-            cell1.setBorder(0);
-            cell1.setColspan(2);
-            cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
-            table1.addCell(cell1);
-
-            PdfPCell blankcell=new PdfPCell(new Phrase(Chunk.NEWLINE));
-            blankcell.setColspan(2);
-            blankcell.setBorder(0);
-            table1.addCell(blankcell);
-
-            PdfPCell Address=new PdfPCell(new Phrase("AIR INDIA SMART TICKETS"));
-            Address.setColspan(2);
-            Address.setBorder(0);
-            Address.setHorizontalAlignment(Element.ALIGN_LEFT);
-            table1.addCell(blankcell);
-
-            PdfPCell name=new PdfPCell(new Phrase("Your Boarding Pass"));
-            name.setColspan(2);
-            name.setBorder(0);
-
-            name.setHorizontalAlignment(Element.ALIGN_LEFT);
-            table1.addCell(name);
-
-
-            //specify column widths
-            float[] columnWidths = {1.5f, 2f, 5f, 2f};
-            //create PDF table with the given widths
-            PdfPTable table = new PdfPTable(columnWidths);
-            // set table width a percentage of the page width
-            table.setWidthPercentage(90f);
-
-            //insert column headings
-            insertCell(table, "Order No", Element.ALIGN_RIGHT, 1, bfBold12);
-            insertCell(table, "Account No", Element.ALIGN_LEFT, 1, bfBold12);
-            insertCell(table, "Account Name", Element.ALIGN_LEFT, 1, bfBold12);
-            insertCell(table, "Order Total", Element.ALIGN_RIGHT, 1, bfBold12);
-            table.setHeaderRows(1);
-
-            //insert an empty row
-            insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12);
-            //create section heading by cell merging
-            insertCell(table, "New York Orders ...", Element.ALIGN_LEFT, 4, bfBold12);
-            double orderTotal, total = 0;
-
-            //just some random data to fill
-            for(int x=1; x<5; x++){
-
-                insertCell(table, "10010" + x, Element.ALIGN_RIGHT, 1, bf12);
-                insertCell(table, "ABC00" + x, Element.ALIGN_LEFT, 1, bf12);
-                insertCell(table, "This is Customer Number ABC00" + x, Element.ALIGN_LEFT, 1, bf12);
-
-                orderTotal = Double.valueOf(df.format(Math.random() * 1000));
-                total = total + orderTotal;
-                insertCell(table, df.format(orderTotal), Element.ALIGN_RIGHT, 1, bf12);
-
-            }
-            //merge the cells to create a footer for that section
-            insertCell(table, "New York Total...", Element.ALIGN_RIGHT, 3, bfBold12);
-            insertCell(table, df.format(total), Element.ALIGN_RIGHT, 1, bfBold12);
-
-            //repeat the same as above to display another location
-            insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12);
-            insertCell(table, "California Orders ...", Element.ALIGN_LEFT, 4, bfBold12);
-            orderTotal = 0;
-
-            for(int x=1; x<7; x++){
-
-                insertCell(table, "20020" + x, Element.ALIGN_RIGHT, 1, bf12);
-                insertCell(table, "XYZ00" + x, Element.ALIGN_LEFT, 1, bf12);
-                insertCell(table, "This is Customer Number XYZ00" + x, Element.ALIGN_LEFT, 1, bf12);
-
-                orderTotal = Double.valueOf(df.format(Math.random() * 1000));
-                total = total + orderTotal;
-                insertCell(table, df.format(orderTotal), Element.ALIGN_RIGHT, 1, bf12);
-
-            }
-            insertCell(table, "California Total...", Element.ALIGN_RIGHT, 3, bfBold12);
-            insertCell(table, df.format(total), Element.ALIGN_RIGHT, 1, bfBold12);
-
-            //add the PDF table to the paragraph
-            //paragraph.add(table);
-            // add the paragraph to the document
-           doc.add(table1);
-
-        }
-        catch (DocumentException dex)
-        {
-            dex.printStackTrace();
-        }
-        catch (Exception ex)
-        {
-            ex.printStackTrace();
-        }
-        finally
-        {
-            if (doc != null){
-                //close the document
-                doc.close();
-            }
-            if (docWriter != null){
-                //close the writer
-                docWriter.close();
-            }
-            viewPdf("test-2.pdf", "mypdf");
-        }
-    }
-    public void insertCell(PdfPTable table, String text, int align, int colspan, Font font) {
-        PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));
-        cell.setHorizontalAlignment(align);
-        if (text.trim().equalsIgnoreCase("")) {
-            cell.setMinimumHeight(10f);
-        }
-        table.addCell(cell);
-    }
+//    private void createPDF (){
+//
+//        Document doc = new Document();
+//        PdfWriter docWriter = null;
+//
+//        DecimalFormat df = new DecimalFormat("0.00");
+//
+//        try {
+//
+//            //special font sizes
+//            Font bfBold12 = new Font(Font.FontFamily.TIMES_ROMAN, 12, Font.BOLD, new BaseColor(0, 0, 0));
+//            Font bf12 = new Font(Font.FontFamily.TIMES_ROMAN, 12);
+//
+//            //file path
+//            String directory_path = Environment.getExternalStorageDirectory().getPath() + "/mypdf/";
+//            File file = new File(directory_path);
+//            if (!file.exists()) {
+//                file.mkdirs();
+//            }
+//            String path = directory_path+"test-2.pdf";
+//            //String path = "docs/" + pdfFilename;
+//            docWriter = PdfWriter.getInstance(doc , new FileOutputStream(path));
+//
+//            //document header attributes
+//            doc.addAuthor("betterThanZero");
+//            doc.addCreationDate();
+//            doc.addProducer();
+//            doc.addCreator("MySampleCode.com");
+//            doc.addTitle("Report with Column Headings");
+//            doc.setPageSize(PageSize.LETTER);
+//
+//            //open document
+//            doc.open();
+//
+//            //create a paragraph
+////            Paragraph paragraph = new Paragraph("iText ® is a library that allows you to create and " +
+////                    "manipulate PDF documents. It enables developers looking to enhance web and other " +
+////                    "applications with dynamic PDF document generation and/or manipulation.");
+//
+//            float[] columnWidths1 = {5f,5f };
+//            PdfPTable table1=new PdfPTable(2);
+//            //table1.setWidthPercentage(90f);
+//            PdfPCell cell1=new PdfPCell(new Phrase("Air india Airlines Tickets",bfBold12));
+//            cell1.setBorder(0);
+//            cell1.setColspan(2);
+//            cell1.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            table1.addCell(cell1);
+//
+//            PdfPCell blankcell=new PdfPCell(new Phrase(Chunk.NEWLINE));
+//            blankcell.setColspan(2);
+//            blankcell.setBorder(0);
+//            table1.addCell(blankcell);
+//
+//            PdfPCell Address=new PdfPCell(new Phrase("AIR INDIA SMART TICKETS"));
+//            Address.setColspan(2);
+//            Address.setBorder(0);
+//            Address.setHorizontalAlignment(Element.ALIGN_LEFT);
+//            table1.addCell(blankcell);
+//
+//            PdfPCell name=new PdfPCell(new Phrase("Your Boarding Pass"));
+//            name.setColspan(2);
+//            name.setBorder(0);
+//
+//            name.setHorizontalAlignment(Element.ALIGN_LEFT);
+//            table1.addCell(name);
+//
+//
+//            //specify column widths
+//            float[] columnWidths = {1.5f, 2f, 5f, 2f};
+//            //create PDF table with the given widths
+//            PdfPTable table = new PdfPTable(columnWidths);
+//            // set table width a percentage of the page width
+//            table.setWidthPercentage(90f);
+//
+//            //insert column headings
+//            insertCell(table, "Order No", Element.ALIGN_RIGHT, 1, bfBold12);
+//            insertCell(table, "Account No", Element.ALIGN_LEFT, 1, bfBold12);
+//            insertCell(table, "Account Name", Element.ALIGN_LEFT, 1, bfBold12);
+//            insertCell(table, "Order Total", Element.ALIGN_RIGHT, 1, bfBold12);
+//            table.setHeaderRows(1);
+//
+//            //insert an empty row
+//            insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12);
+//            //create section heading by cell merging
+//            insertCell(table, "New York Orders ...", Element.ALIGN_LEFT, 4, bfBold12);
+//            double orderTotal, total = 0;
+//
+//            //just some random data to fill
+//            for(int x=1; x<5; x++){
+//
+//                insertCell(table, "10010" + x, Element.ALIGN_RIGHT, 1, bf12);
+//                insertCell(table, "ABC00" + x, Element.ALIGN_LEFT, 1, bf12);
+//                insertCell(table, "This is Customer Number ABC00" + x, Element.ALIGN_LEFT, 1, bf12);
+//
+//                orderTotal = Double.valueOf(df.format(Math.random() * 1000));
+//                total = total + orderTotal;
+//                insertCell(table, df.format(orderTotal), Element.ALIGN_RIGHT, 1, bf12);
+//
+//            }
+//            //merge the cells to create a footer for that section
+//            insertCell(table, "New York Total...", Element.ALIGN_RIGHT, 3, bfBold12);
+//            insertCell(table, df.format(total), Element.ALIGN_RIGHT, 1, bfBold12);
+//
+//            //repeat the same as above to display another location
+//            insertCell(table, "", Element.ALIGN_LEFT, 4, bfBold12);
+//            insertCell(table, "California Orders ...", Element.ALIGN_LEFT, 4, bfBold12);
+//            orderTotal = 0;
+//
+//            for(int x=1; x<7; x++){
+//
+//                insertCell(table, "20020" + x, Element.ALIGN_RIGHT, 1, bf12);
+//                insertCell(table, "XYZ00" + x, Element.ALIGN_LEFT, 1, bf12);
+//                insertCell(table, "This is Customer Number XYZ00" + x, Element.ALIGN_LEFT, 1, bf12);
+//
+//                orderTotal = Double.valueOf(df.format(Math.random() * 1000));
+//                total = total + orderTotal;
+//                insertCell(table, df.format(orderTotal), Element.ALIGN_RIGHT, 1, bf12);
+//
+//            }
+//            insertCell(table, "California Total...", Element.ALIGN_RIGHT, 3, bfBold12);
+//            insertCell(table, df.format(total), Element.ALIGN_RIGHT, 1, bfBold12);
+//
+//            //add the PDF table to the paragraph
+//            //paragraph.add(table);
+//            // add the paragraph to the document
+//           doc.add(table1);
+//
+//        }
+//        catch (DocumentException dex)
+//        {
+//            dex.printStackTrace();
+//        }
+//        catch (Exception ex)
+//        {
+//            ex.printStackTrace();
+//        }
+//        finally
+//        {
+//            if (doc != null){
+//                //close the document
+//                doc.close();
+//            }
+//            if (docWriter != null){
+//                //close the writer
+//                docWriter.close();
+//            }
+//            viewPdf("test-2.pdf", "mypdf");
+//        }
+//    }
+//    public void insertCell(PdfPTable table, String text, int align, int colspan, Font font) {
+//        PdfPCell cell = new PdfPCell(new Phrase(text.trim(), font));
+//        cell.setHorizontalAlignment(align);
+//        if (text.trim().equalsIgnoreCase("")) {
+//            cell.setMinimumHeight(10f);
+//        }
+//        table.addCell(cell);
+//    }
     private void viewPdf(String file, String directory) {
 
         File file1 = new File("/storage/emulated/0/mypdf/test-2.pdf");
