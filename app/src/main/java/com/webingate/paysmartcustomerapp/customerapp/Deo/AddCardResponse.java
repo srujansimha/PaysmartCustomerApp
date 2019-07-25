@@ -13,11 +13,13 @@ public class AddCardResponse {
 	@SerializedName("UserId") private String UserId;
 	@SerializedName("EffectiveFrom") private String EffectiveFrom;
 	@SerializedName("EffectiveTo") private String EffectiveTo;
+	@SerializedName("CVV") private String CVV;
 
 	public String getCustomer(){return Customer;}
 	public String getCardNumber(){return CardNumber;}
 	public int getId(){return Id;}
-
+	public String getEffectiveTo(){return EffectiveTo;}
+	public String getCVV(){return CVV;}
 	@Override
  	public String toString(){
 		return 

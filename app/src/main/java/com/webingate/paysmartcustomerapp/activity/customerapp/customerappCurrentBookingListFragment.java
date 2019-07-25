@@ -2,6 +2,7 @@ package com.webingate.paysmartcustomerapp.activity.customerapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -31,7 +32,9 @@ import rx.schedulers.Schedulers;
 
 public class customerappCurrentBookingListFragment extends Fragment {
 
-
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String ID ="idKey";
+    public static final String Phone = "phoneKey";
     Toast toast;
     private Context context;
     ListView listView1;
@@ -58,7 +61,8 @@ public class customerappCurrentBookingListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View view = inflater.inflate(R.layout.customerapp_bookinglist_tabfragment, container, false);
-
+        SharedPreferences prefs = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        ApplicationConstants.mobileNo= prefs.getString(Phone, null);
         initData();
 
         initUI();
@@ -72,9 +76,7 @@ public class customerappCurrentBookingListFragment extends Fragment {
 
 
     private void initData() {
-        mb=ApplicationConstants.userAccountNo;
-        int tt=1;
-        GetCustomerCurrentTrips(mb,tt);
+        GetCustomercompleteTrips( ApplicationConstants.mobileNo,3);
     }
 
     private void initUI() {
@@ -209,11 +211,12 @@ public class customerappCurrentBookingListFragment extends Fragment {
 
     }
 
-    public void GetCustomerCurrentTrips( String driverNo, int status){
+    public void GetCustomercompleteTrips( String customermno, int flag){
+
 
         //StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(getActivity()).getrestadapter()
-                .GetCustomertrips(driverNo,status)
+                .GetPSVehiclebookingbyStatus(customermno,flag)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<GetCustomerBookingListResponse>>() {

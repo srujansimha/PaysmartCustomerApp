@@ -175,6 +175,9 @@ public class customerappPaymentModeActivity extends AppCompatActivity {
                                     intent.putExtra("Name",obj.getCustomer());
                                     intent.putExtra("fl","U");
                                     intent.putExtra("Id",obj.getId());
+                                    intent.putExtra("CVV",obj.getCVV());
+                                    intent.putExtra("Effectiveto",obj.getEffectiveTo());
+
                                     startActivity(intent);
                                 }
                         );

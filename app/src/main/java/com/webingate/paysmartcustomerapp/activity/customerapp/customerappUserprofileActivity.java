@@ -362,7 +362,7 @@ public class customerappUserprofileActivity extends AppCompatActivity implements
                             DisplayToast(response.getDescription());
                         }
                         else{
-                                startActivity( new Intent(customerappUserprofileActivity.this, customerewalletActivity.class));
+                                startActivity( new Intent(customerappUserprofileActivity.this, DashboardEWallet.class));
                             //editor.commit();
                             //startActivity(new Intent(customerEOTPVerificationActivity.this, login_activity.class));
 //                       Intent intent = new Intent(customerEOTPVerificationActivity.this, businessappMOTPVerificationActivity.class);

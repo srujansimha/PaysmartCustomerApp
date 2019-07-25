@@ -30,7 +30,7 @@ public class ApplicationConstants {
     public static  String estPrice;
     public static String userAccountNo;
     public static int tripFlag=0;
-    public static int userid=0;
+    public static int userid;
     public static String mobileNo;
     public static int id;
     public static String username;

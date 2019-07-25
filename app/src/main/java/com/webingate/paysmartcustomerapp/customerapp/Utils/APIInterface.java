@@ -218,4 +218,10 @@ public interface APIInterface  {
 
     @GET("/api/FBTransactionMaster/getFBTransactionMaster")
     public Observable<List<CustomerFlightResponce>> getFBTransactionMaster();
+
+    @GET("/api/WalletBalance/GetCustomerEwalletHistoy")
+    public Observable<List<WalletBalanceResponse>> GetCustomerEwalletHistoy(@Query("mobileno") String mobileNo);
+
+    @GET("/api/VehicleBooking/GetPSVehiclebookingbyStatus")
+    public Observable<List<GetCustomerBookingListResponse>> GetPSVehiclebookingbyStatus(@Query("customermno") String customermno,@Query("flag") int flag);
 }

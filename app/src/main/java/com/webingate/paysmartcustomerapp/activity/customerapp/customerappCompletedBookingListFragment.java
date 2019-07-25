@@ -2,6 +2,7 @@ package com.webingate.paysmartcustomerapp.activity.customerapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -30,6 +31,10 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class customerappCompletedBookingListFragment extends Fragment {
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String ID ="idKey";
+    public static final String Phone = "phoneKey";
+
     Toast toast;
     private Context context;
     private String bookingno;
@@ -48,7 +53,8 @@ public class customerappCompletedBookingListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
        View view = inflater.inflate(R.layout.customerapp_bookinglist_tabfragment, container, false);
-
+        SharedPreferences prefs = getActivity().getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        ApplicationConstants.mobileNo= prefs.getString(Phone, null);
         initData();
 
         initUI();
@@ -62,9 +68,8 @@ public class customerappCompletedBookingListFragment extends Fragment {
 
 
     private void initData() {
-        mb=ApplicationConstants.userAccountNo;//com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.ApplicationConstants.mobileNo;
-        int tt=2;
-        GetCustomercompleteTrips(mb,tt);
+
+        GetCustomercompleteTrips( ApplicationConstants.mobileNo,1);
     }
 
     private void initUI() {
@@ -170,11 +175,11 @@ public class customerappCompletedBookingListFragment extends Fragment {
 
     }
 
-    public void GetCustomercompleteTrips( String driverNo, int status){
+    public void GetCustomercompleteTrips( String customermno, int flag){
 
         //StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(getActivity()).getrestadapter()
-                .GetCustomertrips(driverNo,status)
+                .GetPSVehiclebookingbyStatus(customermno,flag)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<List<GetCustomerBookingListResponse>>() {
