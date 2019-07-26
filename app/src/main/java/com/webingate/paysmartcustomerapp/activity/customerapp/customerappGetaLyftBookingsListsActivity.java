@@ -37,12 +37,28 @@ public class customerappGetaLyftBookingsListsActivity extends AppCompatActivity 
         return true;
     }
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new customerappCurrentBookingListFragment(), "Current & in progress");
-        adapter.addFragment(new customerappCompletedBookingListFragment(), "Completed");
-        adapter.addFragment(new customerappCancelBookingListFragment(), "Cancelled");
-       //adapter.addFragment(new UiContainerTabLayoutTab3Fragment(), "Tab 3");
-        viewPager.setAdapter(adapter);
+
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        customerappCurrentBookingListFragment GameListLiveFragmentobj=new customerappCurrentBookingListFragment();
+        customerappCompletedBookingListFragment GameListUpcomingFragmentobj=new customerappCompletedBookingListFragment();
+        customerappCancelBookingListFragment GameListCompletedFragmentobj=new customerappCancelBookingListFragment();
+
+
+        viewPagerAdapter.addFragment(GameListLiveFragmentobj, "Current & in progress");
+        viewPagerAdapter.addFragment(GameListUpcomingFragmentobj, "Completed");
+        viewPagerAdapter.addFragment(GameListCompletedFragmentobj, "Cancelled");
+
+        viewPager.setAdapter(viewPagerAdapter);
+        viewPager.setCurrentItem(1);
+
+//        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+//        adapter.addFragment(new customerappCurrentBookingListFragment(), "Current & in progress");
+//        adapter.addFragment(new customerappCompletedBookingListFragment(), "Completed");
+//        adapter.addFragment(new customerappCancelBookingListFragment(), "Cancelled");
+//       //adapter.addFragment(new UiContainerTabLayoutTab3Fragment(), "Tab 3");
+//        viewPager.setAdapter(adapter);
+//        viewPager.setCurrentItem(1);
     }
 
     //region Init Toolbar
