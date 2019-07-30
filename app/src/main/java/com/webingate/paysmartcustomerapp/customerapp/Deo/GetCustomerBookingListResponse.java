@@ -4,122 +4,125 @@ import com.google.gson.annotations.SerializedName;
 
 public class GetCustomerBookingListResponse {
 
-	@SerializedName("DepartureTime")
-	private String departureTime;
+	@SerializedName("DepartureTime")	private String departureTime;
 
-	@SerializedName("DestLongitude")
-	private String destLongitude;
+	@SerializedName("DestLongitude")	private String destLongitude;
 
-	@SerializedName("CancelledBy")
-	private String cancelledBy;
+	@SerializedName("CancelledBy")	private String cancelledBy;
 
-	@SerializedName("BookedDate")
-	private String bookedDate;
+	@SerializedName("BookedDate")	private String bookedDate;
 
-	@SerializedName("Src")
-	private String src;
+	@SerializedName("Src")	private String src;
 
-	@SerializedName("SrcLatitude")
-	private String srcLatitude;
+	@SerializedName("SrcLatitude")	private String srcLatitude;
 
-	@SerializedName("Rating")
-	private String rating;
+	@SerializedName("Rating")	private String rating;
 
-	@SerializedName("RatedBy")
-	private String ratedBy;
+	@SerializedName("RatedBy")	private String ratedBy;
 
-	@SerializedName("VechId")
-	private String vechId;
+	@SerializedName("VechId")	private String vechId;
 
-	@SerializedName("NoofVehicles")
-	private String noofVehicles;
+	@SerializedName("NoofVehicles")	private String noofVehicles;
 
-	@SerializedName("UpdatedBy")
-	private String updatedBy;
+	@SerializedName("UpdatedBy")	private String updatedBy;
 
-	@SerializedName("Pricing")
-	private String pricing;
+	@SerializedName("Pricing")	private String pricing;
 
-	@SerializedName("BookingStatus")
-	private String bookingStatus;
+	@SerializedName("BookingStatus")	private String bookingStatus;
 
-	@SerializedName("DepartueDate")
-	private String departueDate;
+	@SerializedName("DepartueDate")	private String departueDate;
 
-	@SerializedName("CancelledOn")
-	private String cancelledOn;
+	@SerializedName("CancelledOn")	private String cancelledOn;
 
-	@SerializedName("BookingType")
-	private String bookingType;
+	@SerializedName("BookingType")	private String bookingType;
 
-	@SerializedName("PaymentStatus")
-	private String paymentStatus;
+	@SerializedName("PaymentStatus")	private String paymentStatus;
 
-	@SerializedName("BNo")
-	private String bNo;
+	@SerializedName("BNo")	private String bNo;
 
-	@SerializedName("Dest")
-	private String dest;
+	@SerializedName("Dest")	private String dest;
 
-	@SerializedName("CustomerPhoneNo")
-	private String customerPhoneNo;
+	@SerializedName("CustomerPhoneNo")	private String customerPhoneNo;
 
-	@SerializedName("ClosingTime")
-	private String closingTime;
+	@SerializedName("ClosingTime")	private String closingTime;
 
-	@SerializedName("CompanyId")
-	private String companyId;
+	@SerializedName("CompanyId")	private String companyId;
 
-	@SerializedName("Comments")
-	private String comments;
+	@SerializedName("Comments")	private String comments;
 
-	@SerializedName("Amount")
-	private String amount;
+	@SerializedName("Amount")	private String amount;
 
-	@SerializedName("NoofSeats")
-	private String noofSeats;
+	@SerializedName("NoofSeats")	private String noofSeats;
 
-	@SerializedName("Reasons")
-	private String reasons;
+	@SerializedName("Reasons")	private String reasons;
 
-	@SerializedName("CustomerId")
-	private String customerId;
+	@SerializedName("CustomerId")	private String customerId;
 
-	@SerializedName("BookedTime")
-	private String bookedTime;
+	@SerializedName("BookedTime")	private String bookedTime;
 
-	@SerializedName("SrcLongitude")
-	private String srcLongitude;
+	@SerializedName("SrcLongitude")	private String srcLongitude;
 
-	@SerializedName("DriverId")
-	private String driverId;
+	@SerializedName("DriverId")	private String driverId;
 
-	@SerializedName("DestId")
-	private String destId;
+	@SerializedName("DestId")	private String destId;
 
-	@SerializedName("BookingChannel")
-	private String bookingChannel;
+	@SerializedName("BookingChannel")	private String bookingChannel;
 
-	@SerializedName("DriverPhoneNo")
-	private String driverPhoneNo;
+	@SerializedName("DriverPhoneNo")	private String driverPhoneNo;
 
-	@SerializedName("SrcId")
-	private String srcId;
+	@SerializedName("SrcId")	private String srcId;
 
-	@SerializedName("PackageId")
-	private String packageId;
+	@SerializedName("PackageId")	private String packageId;
 
-	@SerializedName("ClosingDate")
-	private String closingDate;
+	@SerializedName("ClosingDate")	private String closingDate;
 
-	@SerializedName("UpdatedUserId")
-	private String updatedUserId;
+	@SerializedName("UpdatedUserId")	private String updatedUserId;
 
-	@SerializedName("Id")
-	private int id;
+	@SerializedName("Id")	private int id;
 
-	@SerializedName("DestLatitude")
-	private String destLatitude;
+	@SerializedName("DestLatitude")	private String destLatitude;
+
+	@SerializedName("Name")	private String Name;
+
+	@SerializedName("Age")	private String Age;
+	@SerializedName("appuserid")	private int appuserid;
+	@SerializedName("Flag")	private String Flag;
+	@SerializedName("gender")	private String gender;
+	@SerializedName("Mobileno")	private String Mobileno;
+	@SerializedName("Emailid")	private String Emailid;
+	@SerializedName("Seatno")	private String Seatno;
+	@SerializedName("Seats")	private String Seats;
+	@SerializedName("TicketNo")	private String TicketNo;
+
+	public String getTicketNo(){ return TicketNo;}
+	public void setFName(String Name){
+		this.Name = Name;
+	}
+	public void setAge(String Age){
+		this.Age = Age;
+	}
+	public void setUserId(int appuserid){
+		this.appuserid = appuserid;
+	}
+	public void setinsupddelflag(String Flag){
+		this.Flag = Flag;
+	}
+	public void setgender(String gender){
+		this.gender = gender;
+	}
+	public void setMobileNo(String Mobileno){
+		this.Mobileno = Mobileno;
+	}
+	public void setEmailId(String Emailid){
+		this.Emailid = Emailid;
+	}
+	public void setSeatNo(String Seatno){
+		this.Seatno = Seatno;
+	}
+	public void setSeats(String Seats){
+		this.Seats = Seats;
+	}
+
 
 	public void setDepartureTime(String departureTime){
 		this.departureTime = departureTime;

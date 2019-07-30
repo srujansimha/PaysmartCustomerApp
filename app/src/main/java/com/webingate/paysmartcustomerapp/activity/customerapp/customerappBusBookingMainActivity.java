@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.webingate.paysmartcustomerapp.R;
+import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerGetstopsResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Ticket_Source_Destination_Date;
 
@@ -62,6 +63,20 @@ public class customerappBusBookingMainActivity extends AppCompatActivity {
 
     private void initUI() {
         initToolbar();
+        if(ApplicationConstants.seatsSelected!=null){
+            ApplicationConstants.seatsSelected.clear();
+        }
+        if(ApplicationConstants.passengerlist!=null){
+            ApplicationConstants.passengerlist.clear();
+        }
+        if(ApplicationConstants.passengerage!=null){
+            ApplicationConstants.passengerage.clear();
+        }
+        if(ApplicationConstants.passengergender!=null){
+            ApplicationConstants.passengergender.clear();
+        }
+
+
         loadFragment(new Ticket_Source_Destination_Date());
 
     }

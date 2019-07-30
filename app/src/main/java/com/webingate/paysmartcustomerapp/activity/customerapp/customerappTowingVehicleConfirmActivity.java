@@ -371,6 +371,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                     object.addProperty("CancelledBy", "");
                     object.addProperty("BookingChannel", "app");
                     object.addProperty("Reasons", "");
+                    object.addProperty("VehicleGroupId", "37");
                    // object.addProperty("PaymentTypeId", "");
                     SaveBookingDetails(object);
                 }

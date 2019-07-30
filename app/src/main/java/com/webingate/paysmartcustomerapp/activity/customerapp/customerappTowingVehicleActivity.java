@@ -299,8 +299,11 @@ public class customerappTowingVehicleActivity extends AppCompatActivity implemen
                     intent.putExtra("destination", selectDestination.getText().toString());
                     intent.putExtra("slat",lat1.toString());
                     intent.putExtra("slog",log1.toString());
-                    intent.putExtra("dlat",dlat.toString());
-                    intent.putExtra("dlog",dlog.toString());
+                    String destlat = dlat.toString();
+                    String destlog = dlog.toString();
+                    intent.putExtra("dlat",destlat);
+                    intent.putExtra("dlog",destlog);
+                    intent.putExtra("cardselected","");
                     startActivity(intent);
                 }
             }

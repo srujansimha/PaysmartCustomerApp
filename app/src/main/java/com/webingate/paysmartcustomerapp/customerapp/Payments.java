@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 import com.webingate.paysmartcustomerapp.activity.customerapp.DialogPaymentTransactionsFragment;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappBusBookingMainActivity;
+import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerFlightResponce;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerPayResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.GetCustomerBookingListResponse;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.ValidateCredentialsResponse;
@@ -35,6 +36,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -58,6 +60,7 @@ public class Payments extends Fragment {
 
     Unbinder unbinder;
     private String response;
+    Double totalamount=0.0;
 
     Toast toast;
     ProgressDialog dialog ;
@@ -88,21 +91,47 @@ public class Payments extends Fragment {
         ewallet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ApplicationConstants.pmode="EWallet";
-                JsonObject object = new JsonObject();
-                object.addProperty("Id", "");
-                object.addProperty("TicketNo", "D435");
-                object.addProperty("TransId", 150);
-                object.addProperty("EmailId", ApplicationConstants.pemail);
-                object.addProperty("MobileNo", ApplicationConstants.pmobno);
-                object.addProperty("JourneyDate", "");
-                object.addProperty("JourneyTime","");
-                object.addProperty("Src",ApplicationConstants.source);
-                object.addProperty("Dest",ApplicationConstants.destination);
-                object.addProperty("NoOfSeats",1);
-                object.addProperty("insupddelflag", "I");
-                object.addProperty("Amount", "150");
-                SaveBusBooking(object);
+                ApplicationConstants.pmode="E-Wallet";
+//                JsonObject object = new JsonObject();
+//                object.addProperty("Id", "");
+//                object.addProperty("TicketNo", "D435");
+//                object.addProperty("TransId", 150);
+//                object.addProperty("EmailId", ApplicationConstants.pemail);
+//                object.addProperty("MobileNo", ApplicationConstants.pmobno);
+//                object.addProperty("JourneyDate", "");
+//                object.addProperty("JourneyTime","");
+//                object.addProperty("Src",ApplicationConstants.source);
+//                object.addProperty("Dest",ApplicationConstants.destination);
+//                object.addProperty("NoOfSeats",String.valueOf(ApplicationConstants.seatsSelected.get(i)));
+//                object.addProperty("insupddelflag", "I");
+//                object.addProperty("Amount", "150");
+//                SaveBusBooking(object);
+
+                ArrayList<GetCustomerBookingListResponse> pasengerlist=new ArrayList<>();
+                Double bamt=150.0;//Double.parseDouble(ApplicationConstants.busamount);
+
+                for(int i=0;i<ApplicationConstants.passengerlist.size();i++){
+                    GetCustomerBookingListResponse obj=new GetCustomerBookingListResponse();
+                    obj.setFName(ApplicationConstants.passengerlist.get(i));
+                    obj.setAge((ApplicationConstants.passengerage.get(i)!=null)?(ApplicationConstants.passengerage.get(i)):"0");
+                    obj.setUserId(ApplicationConstants.userid);
+                    obj.setinsupddelflag("I");
+                    obj.setgender((ApplicationConstants.passengergender.get(i)));
+                    obj.setMobileNo(ApplicationConstants.pmobno);
+                    obj.setEmailId(ApplicationConstants.pemail);
+                    obj.setSrc(ApplicationConstants.source);
+                    obj.setDest(ApplicationConstants.destination);
+                    obj.setSeats(String.valueOf(ApplicationConstants.seatsSelected.get(i)));
+                    obj.setSeatNo(String.valueOf(ApplicationConstants.seatsSelected.get(i)));
+                    obj.setAmount(String.valueOf(totalamount+bamt));
+                    //totalamount=totalamount+bamt;
+                    pasengerlist.add(obj);
+                    obj=null;
+                }
+
+                if(pasengerlist.size()!=0){
+                    SaveBusBooking(pasengerlist);
+                }
                 //Pay(object);
                 /*PaymentRequest paymentRequest = new PaymentRequest();
                 paymentRequest.execute();*/
@@ -246,7 +275,7 @@ public class Payments extends Fragment {
     }
 
 
-    public void SaveBusBooking(JsonObject jsonObject){
+    public void SaveBusBooking(ArrayList<GetCustomerBookingListResponse> jsonObject){
 
         //StartDialogue();
         com.webingate.paysmartcustomerapp.customerapp.Utils.DataPrepare.get(getActivity()).getrestadapter()
@@ -274,6 +303,7 @@ public class Payments extends Fragment {
                     @Override
                     public void onNext(List<GetCustomerBookingListResponse> responselist) {
                         List<GetCustomerBookingListResponse> res=responselist;
+                        String ticketno = res.get(0).getTicketNo();
                         showDialogPaymentTransactions();
 
                     }

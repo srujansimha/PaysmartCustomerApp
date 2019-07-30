@@ -396,6 +396,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                     object.addProperty("CancelledBy", "");
                     object.addProperty("BookingChannel", "app");
                     object.addProperty("Reasons", "");
+                    object.addProperty("VehicleGroupId", "34");
                     // object.addProperty("PaymentTypeId", "");
                     SaveBookingDetails(object);
                 }

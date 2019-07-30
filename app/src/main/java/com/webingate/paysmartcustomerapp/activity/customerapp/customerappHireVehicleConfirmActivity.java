@@ -112,6 +112,7 @@ public class customerappHireVehicleConfirmActivity extends AppCompatActivity imp
 public static final String MyPREFERENCES = "MyPrefs";
     public static final String ID = "idKey";
     public static final String UserAccountNo = "UserAccountNokey";
+    public static final String BookingNO = "bookingno";
 
     LinearLayout bsLayout;
     ArrayList<String> list;
@@ -369,6 +370,7 @@ public static final String MyPREFERENCES = "MyPrefs";
                     object.addProperty("CancelledBy", "");
                     object.addProperty("BookingChannel", "app");
                     object.addProperty("Reasons", "");
+                    object.addProperty("VehicleGroupId", "43");
                    // object.addProperty("PaymentTypeId", "");
                     SaveBookingDetails(object);
                 }
@@ -1229,6 +1231,10 @@ public static final String MyPREFERENCES = "MyPrefs";
                     public void onNext(List<SaveBookingDetailsResponse> responselist) {
                         SaveBookingDetailsResponse response = responselist.get(0);
                         if(response.getBookingNumber()!=null) {
+                            SharedPreferences sharedPref = getSharedPreferences(MyPREFERENCES, MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString(BookingNO, response.getBookingNumber());
+                            editor.commit();
                             ApplicationConstants.bookingNo = response.getBookingNumber();
                             isBookingStarted = true;
                             checkingCabsDialogue = new CheckingCabsDialogue(customerappHireVehicleConfirmActivity.this);

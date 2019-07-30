@@ -31,6 +31,9 @@ public class PassengerDetails extends Fragment {
     Button payment;
     EditText mobileno,email;
     EditText fgender,fname,fage;
+    ArrayList<String> namelist=new ArrayList();
+    ArrayList<String> agelist=new ArrayList();
+    ArrayList<String> genderlist=new ArrayList();
 
     ArrayList selected=new ArrayList();
     public static PassengerDetails newInstance(int SectionNumber) {
@@ -87,6 +90,20 @@ public class PassengerDetails extends Fragment {
                 ApplicationConstants.FRAGMENT=ApplicationConstants.PAYMENTS;
                 ApplicationConstants.pmobno = mobileno.getText().toString();
                 ApplicationConstants.pemail = email.getText().toString();
+                for(int i=0;i<ApplicationConstants.seatsSelected.size();i++){
+
+                    if(names[i].getText().toString()!=null){
+                        namelist.add(names[i].getText().toString());
+                        ApplicationConstants.passengerlist=namelist;
+                    }
+
+                    if(age[i].getText().toString()!=null){
+                        agelist.add(age[i].getText().toString());
+                        ApplicationConstants.passengerage=agelist;
+                    }
+                    genderlist.add(gender[i].getText().toString());
+                    ApplicationConstants.passengergender=genderlist;
+                }
 //                ApplicationConstants.pname = fname.getText().toString();
 //                ApplicationConstants.passengerage = fage.getText().toString();
 //                ApplicationConstants.pgender = fgender.getText().toString();

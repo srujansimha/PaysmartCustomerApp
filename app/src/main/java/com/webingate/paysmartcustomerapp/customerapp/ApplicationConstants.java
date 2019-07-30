@@ -116,6 +116,7 @@ public class ApplicationConstants {
     public static String pname;
     public static String pgender;
     public static String passengerdate;
+    public static String busamount;
     //Registration Details
     /*public static String Username="";
     public static String Email="";
