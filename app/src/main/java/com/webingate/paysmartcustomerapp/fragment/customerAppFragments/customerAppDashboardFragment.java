@@ -18,6 +18,7 @@ import com.webingate.paysmartcustomerapp.R;
 
 
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappAmbulanceActivity;
+import com.webingate.paysmartcustomerapp.activity.customerapp.customerappBusActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappBusBookingMainActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappFlightBookingSearchActivity;
 import com.webingate.paysmartcustomerapp.activity.customerapp.customerappGetaLyftActivity;
@@ -184,7 +185,7 @@ public class customerAppDashboardFragment extends Fragment {
                         startActivity(intent);
                         break;
                     case 5:
-                        intent = new Intent(getActivity(), customerappBusBookingMainActivity.class);
+                        intent = new Intent(getActivity(), customerappBusActivity.class);
                         startActivity(intent);
 
                         break;

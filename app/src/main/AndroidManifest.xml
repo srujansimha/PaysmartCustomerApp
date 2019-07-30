@@ -191,6 +191,7 @@
         <activity android:name=".activity.customerapp.customerappNotificationListActivity"></activity>
         <activity android:name=".activity.customerapp.customerappCouponsListActivity"></activity>
         <activity android:name=".activity.customerapp.DashboardEWalletHistory"></activity>
+        <activity android:name=".activity.customerapp.customerappBusActivity"></activity>
 
     </application>
 
