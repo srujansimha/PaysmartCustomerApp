@@ -1,12 +1,16 @@
 package com.webingate.paysmartcustomerapp.activity.customerapp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,7 +31,9 @@ import rx.schedulers.Schedulers;
 //import com.webingate.commontemplate.utils.Tools;
 
 public class customerappPaymentCardDetails extends AppCompatActivity {
-
+    public static final String MyPREFERENCES = "MyPrefs";
+    public static final String ID ="idKey";
+    int userid;
     private TextView card_number;
     private TextView card_expire;
     private TextView card_cvv;
@@ -46,6 +52,9 @@ public class customerappPaymentCardDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_payment_card_details);
 
+        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        ApplicationConstants.userid = prefs.getInt(ID, 0);
+
         card_number = (TextView) findViewById(R.id.card_number);
         card_expire = (TextView) findViewById(R.id.card_expire);
         card_cvv = (TextView) findViewById(R.id.card_cvv);
@@ -55,17 +64,24 @@ public class customerappPaymentCardDetails extends AppCompatActivity {
         cardname=intent.getStringExtra("Name");
         update=intent.getStringExtra("fl");
         id=intent.getIntExtra("Id",0);
+        ccv=intent.getStringExtra("CVV");
+        cexp=intent.getStringExtra("Effectiveto");
+
         et_card_number = (TextInputEditText) findViewById(R.id.et_card_number);
         et_expire = (TextInputEditText) findViewById(R.id.et_expire);
         et_cvv = (TextInputEditText) findViewById(R.id.et_cvv);
         et_name = (TextInputEditText) findViewById(R.id.et_name);
         Addcard=(Button) findViewById(R.id.Addcard);
+
         if(cardno!=null && card_name!=null){
             et_card_number.setText(cardno.toString().replaceAll("\\s+","") );
             et_name.setText(cardname);
             card_number.setText(cardno.toString().trim());
             card_name.setText(cardname);
-
+            et_cvv.setText(ccv.toString());
+            et_expire.setText(cexp.toString());
+            card_cvv.setText(ccv.toString());
+            card_expire.setText(cexp.toString());
         }
         et_card_number.addTextChangedListener(new TextWatcher() {
             @Override
@@ -171,7 +187,8 @@ public class customerappPaymentCardDetails extends AppCompatActivity {
             object.addProperty("UserId",ApplicationConstants.userid);
             object.addProperty("Customer",(cname!=null?cname:cardname));
             object.addProperty("EffectiveFrom","");
-            object.addProperty("EffectiveTo","");
+            object.addProperty("CVV",card_cvv.getText().toString());
+            object.addProperty("EffectiveTo",card_expire.getText().toString());
             object.addProperty("Id",(id!=0?id:"").toString());
             object.addProperty("insupdflag",(update!=null?'U':'I'));
             addCard(object);
@@ -201,8 +218,8 @@ public class customerappPaymentCardDetails extends AppCompatActivity {
                     @Override
                     public void onError(Throwable e) {
                         try {
-                            DisplayToast("Successfully onError");
-                            //DisplayToast("Unable to Register");
+
+                            DisplayToast(e.getMessage());
                             //StopDialogue();
                         } catch (Exception ex) {
                             ex.printStackTrace();
