@@ -3,6 +3,7 @@ package com.webingate.paysmartcustomerapp.activity.customerapp;
 import android.Manifest;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -22,6 +23,9 @@ import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
@@ -32,9 +36,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.InputType;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
@@ -78,6 +85,7 @@ import com.google.maps.model.TravelMode;
 import com.webingate.paysmartcustomerapp.R;
 import com.webingate.paysmartcustomerapp.adapter.customerapp_VehicleTypesAdapter;
 import com.webingate.paysmartcustomerapp.customerapp.ApplicationConstants;
+import com.webingate.paysmartcustomerapp.customerapp.BusLayout;
 import com.webingate.paysmartcustomerapp.customerapp.CheckingCabsDialogue;
 import com.webingate.paysmartcustomerapp.customerapp.CurrentTrip;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.AvailableVehiclesResponse;
@@ -133,6 +141,7 @@ public class customerappBusActivity extends AppCompatActivity implements OnMapRe
     AppCompatButton rideNow;
     @BindView(R.id.ridelater)
     AppCompatButton rideLater;
+    EditText src1,dest1;
     private GoogleMap.OnCameraIdleListener onCameraIdleListener;
     String serverUrl = "";
     int bookingId = 0;
@@ -164,6 +173,7 @@ public class customerappBusActivity extends AppCompatActivity implements OnMapRe
     boolean isBookingStarted=true;
     Toast toast;
     ProgressDialog dialog;
+    Dialog dialog1;
     Double lat1,log1,dlat,dlog;
     //TODO: this is to test then scroll view navigation
     List<GetalyftVehiclelist> productsList;
@@ -389,7 +399,6 @@ public class customerappBusActivity extends AppCompatActivity implements OnMapRe
     }
 
     public  void AvailableVehiclesTest(int vehicleType){
-        vehicleType = 1;
         switch (vehicleType){
             case 0:
                 ApplicationConstants.marker = R.mipmap.ic_bus;
@@ -400,48 +409,121 @@ public class customerappBusActivity extends AppCompatActivity implements OnMapRe
             case 2:
                 ApplicationConstants.marker = R.mipmap.ic_bus;
                 break;
-            case 3:
-                ApplicationConstants.marker = R.mipmap.ic_bus;
-                break;
-            case 4:
-                ApplicationConstants.marker = R.mipmap.ic_bus;
-                break;
+//            case 3:
+//                ApplicationConstants.marker = R.mipmap.ic_bus;
+//                break;
+//            case 4:
+//                ApplicationConstants.marker = R.mipmap.ic_bus;
+//                break;
             default:
                 break;
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 3; i++) {
             AvailableVehiclesResponse response= new AvailableVehiclesResponse();
-            double lat = 17.459 + (0.001 * (i+1)); //response.getLatitude();
-            double lon = 78.423+ (0.001 * (i+1));//response.getLongitude();
+            double lat = 17.459 + (0.001 * (i-1)); //response.getLatitude();
+            double lon = 78.425+ (0.001 * (i-1));//response.getLongitude();
             LatLng lng = new LatLng(lat, lon);
             MarkerOptions markerOptions = new MarkerOptions();
             markerOptions.position(lng);
-            markerOptions.title("Dest : "+response.getLatitude()+"\n"+response.getLongitude());
+            markerOptions.title("ETA : 2min"+"\n");
             markerOptions.getPosition();
             markerOptions.icon(BitmapDescriptorFactory.fromResource(ApplicationConstants.marker));
             cabs[i] = mMap.addMarker(markerOptions);
 
+
+//            View.OnClickListener (v->){
+//                AlertDialog.Builder alertDialog = new AlertDialog.Builder(customerappBusActivity.this, R.style.Theme_AppCompat_DayNight_Dialog);
+//                alertDialog.setTitle("Ride Details");
+//                alertDialog.setMessage("Src : "+selectsource.getText().toString()+"\n"+"Dest : "+response.getLatitude()+"\n"+response.getLongitude());
+//                alertDialog.setPositiveButton("OK",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                DisplayToast("Booking Successfull");
+//                            }
+//                        });
+//
+//
+//                alertDialog.show();
+//            }
              mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-            AlertDialog.Builder alertDialog = new AlertDialog.Builder(customerappBusActivity.this, R.style.Theme_AppCompat_DayNight_Dialog);
-            alertDialog.setTitle("Ride Details");
-            alertDialog.setMessage("Src : "+selectsource.getText().toString()+"\n"+"Dest : "+response.getLatitude()+"\n"+response.getLongitude());
-            alertDialog.setPositiveButton("OK",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                              DisplayToast("Booking Successfull");
-                        }
-                    });
-
-
-            alertDialog.show();
+                showCustomDialog();
             }
         });
 
 
 
         }
+    }
+
+
+    private void showCustomDialog() {
+        //mcontext =Context();
+        dialog1 = new Dialog(this);
+        dialog1.requestWindowFeature(Window.FEATURE_NO_TITLE); // before
+        dialog1.setContentView(R.layout.dialog_bus);
+        dialog1.setCancelable(false);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(dialog1.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+
+
+        ((TextView) dialog1.findViewById(R.id.tv_src)).setMovementMethod(LinkMovementMethod.getInstance());
+        ((TextView) dialog1.findViewById(R.id.tv_dest)).setMovementMethod(LinkMovementMethod.getInstance());
+
+        src1 = (EditText)dialog1.findViewById(R.id.editsrc);
+        dest1 = (EditText)dialog1.findViewById(R.id.editdest);
+
+        src1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    dest = 1;
+                    Intent intent =
+                            new PlaceAutocomplete.IntentBuilder(PlaceAutocomplete.MODE_FULLSCREEN)
+                                    .build(customerappBusActivity.this);
+                    //startActivityForResult(intent, PLACE_AUTOCOMPLETE_REQUEST_CODE);
+                } catch (GooglePlayServicesRepairableException e) {
+                    // TODO: Handle the error.
+                } catch (GooglePlayServicesNotAvailableException e) {
+                    // TODO: Handle the error.
+                }
+            }
+        });
+
+        ((Button) dialog1.findViewById(R.id.bt_accept)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(src1.getText().toString().matches("")){
+                    DisplayToast("Please Enter Source");
+                }
+                if(dest1.getText().toString().matches("")){
+                    DisplayToast("Please Enter Destination");
+                }
+
+                else {
+                    Intent notificationIntent = new Intent(getApplicationContext(),BusLayout.class);
+                    //startActivity(notificationIntent);
+                   DisplayToast("Booking success");
+                    //Toast.makeText(FeatureProfileGeneralProfile2Activity.this, "Button Accept Clicked", Toast.LENGTH_SHORT).show();}}
+                }
+            }
+        });
+
+        ((Button) dialog1.findViewById(R.id.bt_cancel)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Toast.makeText(FeatureProfileGeneralProfile2Activity.this, "Button Decline Clicked", Toast.LENGTH_SHORT).show();
+                dialog1.dismiss();
+            }
+        });
+
+
+        dialog1.show();
+        dialog1.getWindow().setAttributes(lp);
     }
 
     //toolbar button click
