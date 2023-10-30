@@ -2,9 +2,6 @@ package com.webingate.paysmartcustomerapp.customerapp;
 import com.webingate.paysmartcustomerapp.R;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +11,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Spinner;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.webingate.paysmartcustomerapp.adapter.uicollection.GeneralItemSpinnerAdapter;
 import com.webingate.paysmartcustomerapp.customerapp.Deo.CustomerGetstopsResponse;

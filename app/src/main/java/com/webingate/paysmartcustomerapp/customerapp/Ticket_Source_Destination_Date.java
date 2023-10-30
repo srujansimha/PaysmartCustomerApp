@@ -9,10 +9,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +52,10 @@ import com.webingate.paysmartcustomerapp.object.DirectoryHome9ProductsVO;
 import com.webingate.paysmartcustomerapp.repository.directory.DirectoryHome9Repository;
 
 import static com.webingate.paysmartcustomerapp.data.DataGenerator.getAvailableServices;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 @SuppressLint("NewApi")
 public class Ticket_Source_Destination_Date extends Fragment {

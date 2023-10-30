@@ -19,14 +19,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -104,6 +96,15 @@ import com.webingate.paysmartcustomerapp.R;
 
 import static com.google.android.gms.location.LocationRequest.*;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,RatingBarDialogue.Ratingfinished {
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String ID = "idKey";
@@ -126,20 +127,13 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
     private static final int ACCESS_FINE_LOCATION_INTENT_ID = 3;
     private static final String BROADCAST_ACTION = "android.location.PROVIDERS_CHANGED";
     DirectionsResult result;
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
 
-    @BindView(R.id.drivertimedistance)
+    Toolbar toolbar;
     TextView driverTimeDistance;
-    @BindView(R.id.driverimage)
     ImageView driverimage;
-    @BindView(R.id.driverdetails)
     TextView driverDetails;
-    @BindView(R.id.vehicleimage)
     ImageView vehicleImage;
-    @BindView(R.id.cancel_ride)
     AppCompatButton cancelRide;
-    @BindView(R.id.call)
     AppCompatButton callCustomer;
     private LocationRequest mLocationRequest;
     private LatLng latLng, latlngnew;
@@ -168,6 +162,15 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
                 .build();
         initGoogleAPIClient();//Init Google API Client
         checkPermissions();//Check Permission
+
+
+        driverTimeDistance = findViewById(R.id.drivertimedistance);
+        driverimage = findViewById(R.id.driverimage);
+        driverDetails = findViewById(R.id.driverdetails);
+        vehicleImage = findViewById(R.id.vehicleimage);
+        cancelRide = findViewById(R.id.cancel_ride);
+        callCustomer = findViewById(R.id.call);
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -463,6 +466,7 @@ public class CurrentTrip extends AppCompatActivity implements OnMapReadyCallback
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             // Check for the integer request code originally supplied to startResolutionForResult().
             case REQUEST_CHECK_SETTINGS:

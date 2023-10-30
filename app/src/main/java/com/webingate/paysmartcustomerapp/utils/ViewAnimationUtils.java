@@ -1,10 +1,11 @@
 package com.webingate.paysmartcustomerapp.utils;
 
-import android.support.constraint.ConstraintLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 /**
  * Created by Panacea-Soft on 6/13/18.

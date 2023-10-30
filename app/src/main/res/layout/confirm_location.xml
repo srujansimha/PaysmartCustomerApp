@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_10"
+    android:orientation="vertical">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_marginTop="5dp"
+        app:cardCornerRadius="4dp">
+        <fragment
+            android:id="@+id/place_autocomplete_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:name="com.google.android.libraries.places.compat.ui.PlaceAutocompleteFragment"/>
+    </androidx.cardview.widget.CardView>
+
+
+    <LinearLayout
+        android:id="@+id/lyt_suggestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:clickable="true"
+
+        android:visibility="visible">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/grey_10" />
+
+        <TextView
+            android:id="@+id/currentlocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:drawableLeft="@drawable/mappin"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            android:textSize="16dp"
+            android:clickable="true"
+            android:focusableInTouchMode="false"
+            android:textColor="@color/colorPrimary"
+            android:text="Current Location" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/tes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/placeName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="No Place selected"
+            android:textSize="20dp"
+            android:clickable="true" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/insLL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/instructions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="To select your current location, Please click on \n Current location Pin. \n Or \n To search another location, please click on search."
+            android:textSize="14dp"
+            android:textColor="#123"
+            android:padding="10dp"
+            android:gravity="center"/>
+
+
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

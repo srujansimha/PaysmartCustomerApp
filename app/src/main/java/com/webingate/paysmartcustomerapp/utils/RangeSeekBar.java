@@ -16,6 +16,8 @@ import android.view.MotionEvent;
 import android.view.ViewConfiguration;
 import android.widget.ImageView;
 
+import androidx.appcompat.widget.AppCompatImageView;
+
 import com.webingate.paysmartcustomerapp.R;
 
 import java.math.BigDecimal;
@@ -27,7 +29,7 @@ import java.math.BigDecimal;
  */
 
 
-public class RangeSeekBar<T extends Number> extends android.support.v7.widget.AppCompatImageView {
+public class RangeSeekBar<T extends Number> extends AppCompatImageView {
     private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private Bitmap thumbImage = BitmapFactory.decodeResource(getResources(), R.drawable.ic_range_bar_bg);
     private Bitmap thumbImage2 = BitmapFactory.decodeResource(getResources(), R.drawable.ic_seek_thumb);

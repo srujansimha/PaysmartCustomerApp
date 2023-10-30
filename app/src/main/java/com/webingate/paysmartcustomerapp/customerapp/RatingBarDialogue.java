@@ -33,14 +33,14 @@ public class RatingBarDialogue extends Dialog implements
     public Dialog d;
     private static final int GETFEEDBACK = 3;
 
-    @BindView(R.id.ratingid)
+
     TextView ratingid;
-    @BindView(R.id.dialog_ratingbar)
     RatingBar feedback;
-    @BindView(R.id.input_comments)
     EditText comments;
-    @BindView(R.id.submit)
     Button submit;
+    Activity mActivity;
+
+
     Ratingfinished ratingfinished;
 
     public interface Ratingfinished{
@@ -58,7 +58,13 @@ public class RatingBarDialogue extends Dialog implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.ratingbar);
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
+
+       ratingid = findViewById(R.id.ratingid);
+       feedback = findViewById(R.id.dialog_ratingbar);
+       comments = findViewById(R.id.input_comments);
+       submit  = findViewById(R.id.submit);
+
         submit.setOnClickListener(this);
     }
 
@@ -73,10 +79,10 @@ public class RatingBarDialogue extends Dialog implements
             ratingfinished.Rating(comments.getText().toString(),feedback.getRating() + "");
           //  CurrentTrip.tripFlag = GETFEEDBACK;
             Rating();
-            getOwnerActivity().startActivity(new Intent(getContext(), customerDashboardActivity.class));
-            getOwnerActivity().finish();
-            dismiss();
 
+            Intent i = new Intent(c, customerDashboardActivity.class);
+            c.startActivity(i);
+            dismiss();
         }
     }
 

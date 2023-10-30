@@ -18,17 +18,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -37,6 +26,18 @@ import android.widget.Button;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -105,26 +106,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class customerappHireVehicleActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener,Payments_Dialoguebox.PaymentDetails,RideLater_Dialoguebox.RideLater,CheckingCabsDialogue.checkingcabsDialogue {
-    @BindView(R.id.toolbar)
-    Toolbar toolbar;
-    @BindView(R.id.map_source)
-    TextView selectsource;
-    @BindView(R.id.source_gps_location)
-    Button sourceGpsLocation;
-    @BindView(R.id.table_row)
-    TableRow tableRow;
-    @BindView(R.id.map_destination)
-    TextView selectDestination;
-    //    @BindView(R.id.taxi)
-//    AppCompatButton taxi;
-//    @BindView(R.id.meteredtaxi)
-//    AppCompatButton meteredtaxi;
-//    @BindView(R.id.bus)
-    AppCompatButton bus;
-    @BindView(R.id.ridenow)
-    AppCompatButton rideNow;
-    @BindView(R.id.ridelater)
-    AppCompatButton rideLater;
+
     private GoogleMap.OnCameraIdleListener onCameraIdleListener;
     String serverUrl = "";
     int bookingId = 0;
@@ -160,6 +142,14 @@ public class customerappHireVehicleActivity extends AppCompatActivity implements
     List<GetalyftVehiclelist> productsList;
     customerapp_VehicleTypesAdapter productsAdapter;
     RecyclerView rvProduct;
+    TextView selectsource;
+    Button sourceGpsLocation;
+    TableRow tableRow;
+    TextView selectDestination;
+    AppCompatButton bus;
+    AppCompatButton rideNow;
+    AppCompatButton rideLater;
+    Toolbar toolbar;
 
     @Override
     public void onBackPressed() {
@@ -195,13 +185,22 @@ public class customerappHireVehicleActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.customerapp_hirevehicle_activity);
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
         dialog = new ProgressDialog.Builder(customerappHireVehicleActivity.this)
                 .setTitle("Loading...")
                 .setTitleColorRes(R.color.gray)
                 .build();
         initGoogleAPIClient();//Init Google API Client
         checkPermissions();//Check Permission
+
+        selectsource = findViewById(R.id.map_source);
+        sourceGpsLocation = findViewById(R.id.source_gps_location);
+        tableRow = findViewById(R.id.table_row);
+        selectDestination = findViewById(R.id.map_destination);
+        rideNow = findViewById(R.id.ridenow);
+        rideLater = findViewById(R.id.ridelater);
+        toolbar = findViewById(R.id.toolbar);
+
         //  configureCameraIdle();//cofigure drag destionatio selection
         setSupportActionBar(toolbar);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -659,6 +658,7 @@ public class customerappHireVehicleActivity extends AppCompatActivity implements
     @SuppressLint("MissingPermission")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PLACE_AUTOCOMPLETE_REQUEST_CODE:
                 if (dest == 1) {
@@ -679,7 +679,7 @@ public class customerappHireVehicleActivity extends AppCompatActivity implements
                         mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
                         // Getting Directions from source to destination
                         if (!selectDestination.getText().toString().matches("")) {
-                            customerappHireVehicleActivity.DirectionsTask downloadTask = new customerappHireVehicleActivity.DirectionsTask();
+                            DirectionsTask downloadTask = new DirectionsTask();
                             downloadTask.execute();
                         }
                         dest = 0;
@@ -702,7 +702,7 @@ public class customerappHireVehicleActivity extends AppCompatActivity implements
                             markerDesst.remove();
                         markerDesst = mMap.addMarker(markerOptions);
                         // Getting Directions from source to destination
-                        customerappHireVehicleActivity.DirectionsTask downloadTask = new customerappHireVehicleActivity.DirectionsTask();
+                        DirectionsTask downloadTask = new DirectionsTask();
                         downloadTask.execute();
                         dest = 0;
                         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);

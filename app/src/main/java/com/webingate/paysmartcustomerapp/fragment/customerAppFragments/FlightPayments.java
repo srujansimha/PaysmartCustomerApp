@@ -13,10 +13,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.DocumentsContract;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
 import android.util.Xml;
 import android.view.LayoutInflater;
@@ -24,6 +20,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.load.resource.bytes.BytesResource;
 import com.google.gson.JsonObject;
@@ -42,7 +43,7 @@ import com.webingate.paysmartcustomerapp.customerapp.Ticket_Source_Destination_D
 import com.webingate.paysmartcustomerapp.customerapp.TravelModel;
 import com.webingate.paysmartcustomerapp.customerapp.Travels;
 
-import junit.framework.Test;
+
 
 import org.joda.time.DateTime;
 import org.w3c.dom.Document;
@@ -74,7 +75,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 @SuppressLint("NewApi")
-public class FlightPayments extends Fragment  {
+public class FlightPayments extends Fragment {
 
     public static final String MyPREFERENCES = "MyPrefs";
     public static final String Phone = "phoneKey";

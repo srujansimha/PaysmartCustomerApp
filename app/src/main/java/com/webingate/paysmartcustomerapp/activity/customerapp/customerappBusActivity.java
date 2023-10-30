@@ -20,20 +20,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.method.LinkMovementMethod;
@@ -48,6 +34,18 @@ import android.widget.EditText;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -126,20 +124,14 @@ public class customerappBusActivity extends AppCompatActivity implements OnMapRe
     public static final String Password = "passwordkey";
     public static final String UserAccountNo = "UserAccountNokey";
 
-    @BindView(R.id.toolbar)
+
     Toolbar toolbar;
-    @BindView(R.id.map_source)
     TextView selectsource;
-    @BindView(R.id.source_gps_location)
     Button sourceGpsLocation;
-    @BindView(R.id.table_row)
     TableRow tableRow;
-    @BindView(R.id.map_destination)
     TextView selectDestination;
     AppCompatButton bus;
-    @BindView(R.id.ridenow)
     AppCompatButton rideNow;
-    @BindView(R.id.ridelater)
     AppCompatButton rideLater;
     EditText src1,dest1;
     private GoogleMap.OnCameraIdleListener onCameraIdleListener;
@@ -225,6 +217,15 @@ public class customerappBusActivity extends AppCompatActivity implements OnMapRe
         initGoogleAPIClient();//Init Google API Client
         checkPermissions();//Check Permission
         //  configureCameraIdle();//cofigure drag destionatio selection
+
+        selectsource = findViewById(R.id.map_source);
+        sourceGpsLocation = findViewById(R.id.source_gps_location);
+        tableRow = findViewById(R.id.table_row);
+        selectDestination = findViewById(R.id.map_destination);
+        rideNow = findViewById(R.id.ridenow);
+        rideLater = findViewById(R.id.ridelater);
+        toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
@@ -779,6 +780,7 @@ public class customerappBusActivity extends AppCompatActivity implements OnMapRe
     @SuppressLint("MissingPermission")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PLACE_AUTOCOMPLETE_REQUEST_CODE:
                 if (dest == 1) {
@@ -799,7 +801,7 @@ public class customerappBusActivity extends AppCompatActivity implements OnMapRe
                         mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
                         // Getting Directions from source to destination
                         if (!selectDestination.getText().toString().matches("")) {
-                            customerappBusActivity.DirectionsTask downloadTask = new customerappBusActivity.DirectionsTask();
+                            DirectionsTask downloadTask = new DirectionsTask();
                             downloadTask.execute();
                         }
                         dest = 0;
@@ -813,8 +815,8 @@ public class customerappBusActivity extends AppCompatActivity implements OnMapRe
                         DisplayToast(destination.getName().toString());
                         destLatitude = destination.getLatLng().latitude;
                         destLongitude = destination.getLatLng().longitude;
-                        dlat=destLatitude;
-                        dlog=destLongitude;
+                        dlat = destLatitude;
+                        dlog = destLongitude;
                         selectDestination.setText("Destination :" + destination.getName() + "," + destination.getAddress());
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(destination.getLatLng());
@@ -824,7 +826,7 @@ public class customerappBusActivity extends AppCompatActivity implements OnMapRe
                             markerDesst.remove();
                         markerDesst = mMap.addMarker(markerOptions);
                         // Getting Directions from source to destination
-                        customerappBusActivity.DirectionsTask downloadTask = new customerappBusActivity.DirectionsTask();
+                        DirectionsTask downloadTask = new DirectionsTask();
                         downloadTask.execute();
                         dest = 0;
                         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);

@@ -117,6 +117,8 @@ public class ApplicationConstants {
     public static String pgender;
     public static String passengerdate;
     public static String busamount;
+    public static String customeraddress;
+    public static int currentloc;
     //Registration Details
     /*public static String Username="";
     public static String Email="";

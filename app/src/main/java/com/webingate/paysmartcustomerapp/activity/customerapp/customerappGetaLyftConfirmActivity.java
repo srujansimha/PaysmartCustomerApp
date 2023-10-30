@@ -21,19 +21,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,6 +34,15 @@ import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -75,6 +71,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.JsonObject;
 import com.google.maps.DirectionsApi;
 import com.google.maps.GeoApiContext;
@@ -132,32 +129,24 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
     String[] fruits;
 
     JsonObject object1;
-    @BindView(R.id.map_source)
-    TextView selectsource;
-    @BindView(R.id.source_gps_location)
-    Button sourceGpsLocation;
-    @BindView(R.id.table_row)
-    TableRow tableRow;
-    @BindView(R.id.map_destination)
-    TextView selectDestination;
 
-    @BindView(R.id.pricetextview)
+    TextView selectsource;
+    Button sourceGpsLocation;
+    TableRow tableRow;
+    TextView selectDestination;
     TextView price;
-    @BindView(R.id.payment)
     TextView payment;
-    @BindView(R.id.personal)
     TextView personal;
-    @BindView(R.id.coupon)
     TextView coupon;
-    @BindView(R.id.name)
     TextView paymenttype;
+
     //    @BindView(R.id.taxi)
 //    AppCompatButton taxi;
 //    @BindView(R.id.meteredtaxi)
 //    AppCompatButton meteredtaxi;
 //    @BindView(R.id.bus)
     AppCompatButton bus;
-    @BindView(R.id.ConfirmBooking)
+
     AppCompatButton ConfirmBooking;
     private GoogleMap.OnCameraIdleListener onCameraIdleListener;
     String serverUrl = "";
@@ -234,6 +223,16 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
 //        SharedPreferences prefs = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 //        id = prefs.getString(ID, null);
 
+        selectsource = findViewById(R.id.map_source);
+        sourceGpsLocation= findViewById(R.id.source_gps_location);
+        tableRow= findViewById(R.id.table_row);
+        selectDestination= findViewById(R.id.map_destination);
+        price= findViewById(R.id.pricetextview);
+        payment= findViewById(R.id.payment);
+        personal= findViewById(R.id.personal);
+        coupon= findViewById(R.id.coupon);
+        ConfirmBooking = findViewById(R.id.ConfirmBooking);
+
         Intent intent = getIntent();
 
         C_src=intent.getStringExtra("source");
@@ -270,7 +269,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
 
 
         fruits = getResources().getStringArray(R.array.fruits);
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
         dialog = new ProgressDialog.Builder(customerappGetaLyftConfirmActivity.this)
                 .setTitle("Loading...")
                 .setTitleColorRes(R.color.gray)
@@ -907,6 +906,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
     @SuppressLint("MissingPermission")
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case PLACE_AUTOCOMPLETE_REQUEST_CODE:
                 if (dest == 1) {
@@ -927,7 +927,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                         //mMap.animateCamera(CameraUpdateFactory.zoomTo(16.5f));
                         // Getting Directions from source to destination
                         if (!selectDestination.getText().toString().matches("")) {
-                            customerappGetaLyftConfirmActivity.DirectionsTask downloadTask = new customerappGetaLyftConfirmActivity.DirectionsTask();
+                            DirectionsTask downloadTask = new DirectionsTask();
                             downloadTask.execute();
                         }
                         dest = 0;
@@ -948,7 +948,7 @@ public class customerappGetaLyftConfirmActivity extends AppCompatActivity implem
                             markerDesst.remove();
                         //markerDesst = mMap.addMarker(markerOptions);
                         // Getting Directions from source to destination
-                        customerappGetaLyftConfirmActivity.DirectionsTask downloadTask = new customerappGetaLyftConfirmActivity.DirectionsTask();
+                        DirectionsTask downloadTask = new DirectionsTask();
                         downloadTask.execute();
                         dest = 0;
                         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);

@@ -18,13 +18,9 @@ public class CheckingCabsDialogue extends Dialog implements
 
     public Activity c;
     public Dialog d;
-    @BindView(R.id.name)
     TextView name;
-    @BindView(R.id.minsec)
     TextView minsec;
-    @BindView(R.id.displaytime)
     TextView timer;
-    @BindView(R.id.progressbar)
     ProgressBar progressbar;
     private CountDownTimer countDownTimer;
     private ProgressBar pb;
@@ -45,7 +41,11 @@ public class CheckingCabsDialogue extends Dialog implements
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.checking_cabs);
-        ButterKnife.bind(this);
+        //ButterKnife.bind(this);
+        name = findViewById(R.id.name);
+        minsec = findViewById(R.id.minsec);
+        timer = findViewById(R.id.displaytime);
+        progressbar = findViewById(R.id.progressbar);
         name.setText("Checking Cabs\n Please Wait....");
         countDownTimer = new CountDownTimer(240000, 1000) {
             @Override
